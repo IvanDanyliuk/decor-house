@@ -17,7 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <header>Header</header>
+        <header className='w-full h-24 flex items-center'>
+          <div className='container mx-auto flex justify-between'>
+            <div>menu and logo</div>
+            <div>search, cart, and user menu</div>
+          </div>
+        </header>
         <main>
           {children}
         </main>
