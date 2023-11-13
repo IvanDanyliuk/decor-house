@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* LAYOUT */
+body {
+  @apply flex flex-col min-h-screen;
+}
+
+main {
+  @apply flex min-h-full flex-auto flex-col;
+}
+
+/* NAV MENU */
+.ant-drawer-header-title {
+  @apply flex-row-reverse;
+}
+
+.main-nav-link-group {
+  @apply flex flex-col gap-8 text-accent-dark text-xl font-medium;
+}
+
+.secondary-nav-link-group {
+  @apply flex flex-col gap-8 text-gray-regular text-lg font-medium;
+}

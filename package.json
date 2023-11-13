@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "flowbite": "^2.0.0",
-    "flowbite-react": "^0.6.4",
+    "@ant-design/icons": "^5.2.6",
+    "antd": "^5.11.0",
     "mongoose": "^8.0.0",
     "next": "14.0.1",
     "react": "^18",
@@ -22,6 +22,7 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
+    "sass": "^1.69.5",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
