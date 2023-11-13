@@ -1,8 +1,9 @@
-import { FacebookFilled, InstagramFilled, MailOutlined, PhoneFilled } from '@ant-design/icons'
-import Link from 'next/link'
-import React from 'react'
+import React from 'react';
+import Link from 'next/link';
+import { FacebookFilled, InstagramFilled, MailOutlined, PhoneFilled } from '@ant-design/icons';
 
-const ContactLinks = () => {
+
+const ContactLinks: React.FC = () => {
   return (
     <ul className='flex items-center gap-6'>
       <li>
@@ -26,7 +27,7 @@ const ContactLinks = () => {
         </Link>
       </li>
     </ul>
-  )
-}
+  );
+};
 
-export default ContactLinks
+export default ContactLinks;

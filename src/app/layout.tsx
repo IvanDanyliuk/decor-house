@@ -1,12 +1,13 @@
-import type { Metadata } from 'next'
-import { Montserrat } from 'next/font/google'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Divider } from 'antd';
+import { Montserrat } from 'next/font/google';
 import './globals.scss'
+import { ShoppingCartOutlined } from '@ant-design/icons';
 import NavMenu from '../../components/layout/NavMenu';
 import Search from '../../components/layout/Search';
-import Link from 'next/link';
-import { ShoppingCartOutlined } from '@ant-design/icons';
 import ContactLinks from '../../components/ui/ContactLinks';
-import { Divider } from 'antd';
+
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 
@@ -23,7 +24,7 @@ export default function RootLayout({
   const year = new Date().getFullYear();
 
   return (
-    <html lang="en">
+    <html lang='en'>
       <body className={montserrat.className}>
         <header className='w-full h-24 flex items-center'>
           <div className='container mx-auto flex justify-between'>
@@ -68,5 +69,5 @@ export default function RootLayout({
         </footer>
       </body>
     </html>
-  )
-}
+  );
+};

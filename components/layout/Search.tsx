@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import { SearchOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 
 
 const Search: React.FC = () => {

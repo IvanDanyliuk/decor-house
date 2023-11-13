@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Divider, Drawer } from 'antd';
-import { MenuOutlined, PhoneFilled, MailOutlined, FacebookFilled, InstagramFilled } from '@ant-design/icons';
+import { MenuOutlined } from '@ant-design/icons';
 import ContactLinks from '../ui/ContactLinks';
 
 
@@ -87,7 +87,7 @@ const NavMenu: React.FC = () => {
         <ContactLinks />
       </Drawer>
     </>
-  )
+  );
 };
 
 export default NavMenu;
