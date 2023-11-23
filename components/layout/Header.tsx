@@ -4,9 +4,11 @@ import { ShoppingCartOutlined } from '@ant-design/icons';
 import NavMenu from './NavMenu';
 import Search from './Search';
 import AuthButton from './AuthButton';
+import { connectToDB } from '@/lib/database';
 
 
 const Header: React.FC = () => {
+  connectToDB()
   return (
     <header className='w-full h-24 flex items-center'>
       <div className='container mx-auto flex justify-between'>
