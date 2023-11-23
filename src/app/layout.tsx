@@ -1,12 +1,12 @@
+import './globals.scss';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { Divider } from 'antd';
 import { Montserrat } from 'next/font/google';
-import './globals.scss';
-import ContactLinks from '../../components/ui/ContactLinks';
-import SessionProvider from '../../components/SessionProvider';
-import Header from '../../components/layout/Header';
+import ContactLinks from '../components/ui/ContactLinks';
+import SessionProvider from '../components/SessionProvider';
+import Header from '../components/layout/Header';
 
 
 const montserrat = Montserrat({ subsets: ['latin'] });
