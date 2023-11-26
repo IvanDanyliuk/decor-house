@@ -12,6 +12,14 @@ main {
   @apply flex min-h-full flex-auto flex-col;
 }
 
+.link-primary {
+  @apply flex justify-center items-center bg-accent-dark text-white uppercase rounded;
+}
+
+.page-heading-primary {
+  @apply text-5xl font-bold uppercase;
+}
+
 /* NAV MENU */
 .ant-drawer-header-title {
   @apply flex-row-reverse;

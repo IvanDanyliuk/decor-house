@@ -8,7 +8,8 @@ import TextField from '../ui/TextField';
 interface RegisterData {
   name: string;
   phone: string;
-  address: string;
+  address?: string;
+  photo?: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -57,7 +58,7 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={submitRegisterData} className='relative w-full flex flex-wrap justify-start md:gap-20'>
-      <fieldset className='flex flex-col flex-1 gap-3'>
+      <fieldset className='flex flex-col flex-1 gap-6'>
         <TextField 
           label='First Name and Last Name *' 
           name='name' 
@@ -73,11 +74,18 @@ const RegisterForm: React.FC = () => {
         <TextField 
           label='Address' 
           name='address' 
-          value={registerData.address} 
+          value={registerData.address || ''} 
+          onChange={handleRegisterData} 
+        />
+        <TextField 
+          label='Photo' 
+          name='photo' 
+          value={registerData.photo || ''} 
+          type='file'
           onChange={handleRegisterData} 
         />
       </fieldset>
-      <fieldset className='flex flex-col flex-1 gap-3'>
+      <fieldset className='flex flex-col flex-1 gap-6'>
         <TextField 
           label='Email *' 
           name='email' 
