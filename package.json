@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
+    "@uploadthing/react": "^6.0.2",
     "antd": "^5.11.0",
     "mongoose": "^8.0.1",
     "next": "14.0.1",
     "next-auth": "^4.24.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "uploadthing": "^6.0.3"
   },
   "devDependencies": {
     "@types/node": "^20",

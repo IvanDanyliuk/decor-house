@@ -3,6 +3,8 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import TextField from '../ui/TextField';
+import UploadImageButton from '../ui/UploadImageBtn';
+import { UploaderEndpoint } from '@/lib/common.types';
 
 
 interface RegisterData {
@@ -19,6 +21,7 @@ const initialRegisterData = {
   name: '',
   phone: '',
   address: '',
+  photo: '',
   email: '',
   password: '',
   confirmPassword: '',
@@ -46,6 +49,13 @@ const RegisterForm: React.FC = () => {
     setRegisterData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleImageUrl = (imageUrl: string) => {
+    setRegisterData((prevState) => ({
+      ...prevState,
+      photo: imageUrl
     }));
   };
 
@@ -77,12 +87,10 @@ const RegisterForm: React.FC = () => {
           value={registerData.address || ''} 
           onChange={handleRegisterData} 
         />
-        <TextField 
-          label='Photo' 
-          name='photo' 
-          value={registerData.photo || ''} 
-          type='file'
-          onChange={handleRegisterData} 
+        <UploadImageButton 
+          label='Profile Photo' 
+          endpoint={UploaderEndpoint.ProfilePicture} 
+          setImageUrl={handleImageUrl}
         />
       </fieldset>
       <fieldset className='flex flex-col flex-1 gap-6'>
