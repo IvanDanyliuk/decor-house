@@ -25,9 +25,5 @@ const config: Config = {
 };
 
 export default withUt({
-  // Your existing Tailwind config
-  
   ...config
 });
-
-// export default config
