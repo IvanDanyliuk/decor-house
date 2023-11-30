@@ -1,7 +1,4 @@
-import { connectToDB } from '../database';
-import UserModel from '../models/user.model';
-
-interface UserData {
+interface RegisterParams {
   name: string;
   phone: string;
   address?: string;
@@ -10,11 +7,10 @@ interface UserData {
   password: string;
 }
 
-export const signup = async (userData: UserData) => {
+export const register = async (userData: RegisterParams) => {
   try {
-    connectToDB();
-
+    
   } catch (error: any) {
-    throw new Error(`Cannot create an account: ${error.message}`);
+    throw new Error(error.message);
   }
 }

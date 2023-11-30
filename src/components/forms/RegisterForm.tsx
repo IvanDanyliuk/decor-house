@@ -27,21 +27,11 @@ const initialRegisterData = {
   confirmPassword: '',
 };
 
-//<<<<<<<<<<<<<<<<<TEMPORARY>>>>>>>>>>>>>>>>>>>>
-const sendData = (registerData: any) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log(registerData);
-      //@ts-ignore
-      resolve();
-    }, 3000);
-  });
-}
-
 
 const RegisterForm: React.FC = () => {
   const [registerData, setRegisterData] = useState<RegisterData>(initialRegisterData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -62,7 +52,30 @@ const RegisterForm: React.FC = () => {
   const submitRegisterData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    await sendData(registerData);
+
+    if(registerData.password !== registerData.confirmPassword) {
+      setError('Passwords do not match!');
+      return;
+    }
+    
+    const res = await fetch('api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: registerData.name,
+        phone: registerData.phone,
+        address: registerData.address,
+        photo: registerData.photo,
+        email: registerData.email,
+        password: registerData.password,
+      })
+    });
+
+    console.log('Registered User', res);
+
+    setRegisterData(initialRegisterData);
     router.push('/');
   };
 
