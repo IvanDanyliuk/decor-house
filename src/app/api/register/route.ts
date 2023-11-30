@@ -11,6 +11,11 @@ export const POST = async (req: Request) => {
     
     await connectToDB();
 
+    const existingUser = await User.findOne({ email });
+    if(existingUser) {
+      return new NextResponse('User with such email already exists', { status: 400 })
+    }
+
     const user = await User.create({ name, phone, address, photo, email, password: hashedPassword, role: 'user', cart: [] });
     console.log('USER', user)
     return NextResponse.json(user);
