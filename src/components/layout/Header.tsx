@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
+import axios from 'axios';
 import { LoginOutlined, LogoutOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import NavMenu from './NavMenu';
 import Search from './Search';
@@ -13,12 +14,27 @@ const Header: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  console.log('SESSION', session)
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [error, setError] = useState<string | null>();
+
+  const fetchUser = async (email: string) => {
+    const { data } = await axios.get('/api/user', { params: { email } });
+    return data;
+  }
 
   const handleSignOut = () => {
     signOut();
     router.push('/');
   };
+
+  useEffect(() => {
+    try {
+      const user = fetchUser(session?.user?.email!);
+      setCurrentUser(user);
+    } catch (error: any) {
+      console.log('HEADER_ERROR', error)
+    }
+  }, []);
 
   return (
     <header className='w-full h-24 flex items-center'>

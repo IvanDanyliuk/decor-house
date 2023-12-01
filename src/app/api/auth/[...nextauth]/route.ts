@@ -29,8 +29,6 @@ export const authOptions = {
 
           const passwordValid = user && bcrypt.compare(credentials.password, user.password);
 
-          console.log('LOGIN', { user, passwordValid })
-
           if(passwordValid) {
             return user;
           }
