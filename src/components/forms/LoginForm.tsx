@@ -1,8 +1,9 @@
 'use client';
 
 import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { signIn } from 'next-auth/react';
 import TextField from '../ui/TextField';
-import { useRouter } from 'next/navigation';
+import { isEmailValid } from '@/utils/helpers';
 
 
 interface LoginData {
@@ -21,8 +22,6 @@ const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const router = useRouter();
-
   const handleLoginData = (e: ChangeEvent<HTMLInputElement>) => {
     setLoginData((prevState) => ({
       ...prevState,
@@ -33,20 +32,19 @@ const LoginForm: React.FC = () => {
   const submitLoginData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    const res = await fetch('api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: loginData.email,
-        password: loginData.password,
-      })
-    });
+
+    if(!isEmailValid(loginData.email)) {
+      setError('Email is not valid');
+      return;
+    }
+
+    if(!loginData.password && loginData.password.length < PASSWORD_MIN_LENGTH) {
+      setError('Password is not valid!');
+    }
+
+    await signIn('credentials', { email: loginData.email, password: loginData.password, callbackUrl: '/' });
 
     setLoginData(initialLoginData);
-    router.push('/');
   };
 
   return (
@@ -60,6 +58,7 @@ const LoginForm: React.FC = () => {
       <TextField 
         label='Password' 
         name='password' 
+        type='password'
         value={loginData.password} 
         onChange={handleLoginData} 
       />

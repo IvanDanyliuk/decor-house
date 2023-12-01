@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
 import { LoginOutlined, LogoutOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import NavMenu from './NavMenu';
 import Search from './Search';
@@ -10,9 +11,13 @@ import Search from './Search';
 
 const Header: React.FC = () => {
   const { data: session } = useSession();
+  const router = useRouter();
+
+  console.log('SESSION', session)
 
   const handleSignOut = () => {
     signOut();
+    router.push('/');
   };
 
   return (

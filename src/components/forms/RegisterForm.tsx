@@ -1,10 +1,12 @@
 'use client';
 
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from "next-auth/react";
 import TextField from '../ui/TextField';
 import UploadImageButton from '../ui/UploadImageBtn';
 import { UploaderEndpoint } from '@/lib/common.types';
+import { isEmailValid } from '@/utils/helpers';
 
 
 interface RegisterData {
@@ -34,6 +36,7 @@ const RegisterForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
+  const { data: session, status: sessionStatus } = useSession();
 
   const handleRegisterData = (e: ChangeEvent<HTMLInputElement>) => {
     setRegisterData((prevState) => ({
@@ -53,31 +56,52 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
 
+    if(!isEmailValid(registerData.email)) {
+      setError('Email is not valid!');
+      return;
+    }
+
+    if(registerData.password && registerData.password.length < PASSWORD_MIN_LENGTH) {
+      setError(`Your password should contain ${PASSWORD_MIN_LENGTH} or more symbols!`);
+      return;
+    }
+
     if(registerData.password !== registerData.confirmPassword) {
       setError('Passwords do not match!');
       return;
     }
     
-    const res = await fetch('api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: registerData.name,
-        phone: registerData.phone,
-        address: registerData.address,
-        photo: registerData.photo,
-        email: registerData.email,
-        password: registerData.password,
-      })
-    });
+    try {
+      const res = await fetch('api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: registerData.name,
+          phone: registerData.phone,
+          address: registerData.address,
+          photo: registerData.photo,
+          email: registerData.email,
+          password: registerData.password,
+        })
+      });
 
-    console.log('Registered User', res);
+      console.log(res)
+    } catch (error: any) {
+      setError(`Registration Error: ${error.message}`);
+      return;
+    }
 
     setRegisterData(initialRegisterData);
     router.push('/');
   };
+
+  useEffect(() => {
+    if (sessionStatus === 'authenticated') {
+      router.replace('/dashboard');
+    }
+  }, [sessionStatus, router]);
 
   return (
     <form onSubmit={submitRegisterData} className='relative w-full flex flex-wrap justify-start md:gap-20'>
