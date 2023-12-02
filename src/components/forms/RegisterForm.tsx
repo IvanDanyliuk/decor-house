@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
 import TextField from '../ui/TextField';
@@ -9,7 +9,7 @@ import { UploaderEndpoint } from '@/lib/common.types';
 import { isEmailValid } from '@/utils/helpers';
 
 
-interface RegisterData {
+interface IRegisterData {
   name: string;
   phone: string;
   address?: string;
@@ -19,7 +19,7 @@ interface RegisterData {
   confirmPassword: string;
 }
 
-const initialRegisterData = {
+const initialRegisterData: IRegisterData = {
   name: '',
   phone: '',
   address: '',
@@ -31,7 +31,7 @@ const initialRegisterData = {
 
 
 const RegisterForm: React.FC = () => {
-  const [registerData, setRegisterData] = useState<RegisterData>(initialRegisterData);
+  const [registerData, setRegisterData] = useState<IRegisterData>(initialRegisterData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -104,7 +104,10 @@ const RegisterForm: React.FC = () => {
   }, [sessionStatus, router]);
 
   return (
-    <form onSubmit={submitRegisterData} className='relative w-full flex flex-wrap justify-start md:gap-20'>
+    <form 
+      onSubmit={submitRegisterData} 
+      className='relative w-full flex flex-wrap justify-start md:gap-20'
+    >
       <fieldset className='flex flex-col flex-1 gap-6'>
         <TextField 
           label='First Name and Last Name *' 
@@ -154,7 +157,9 @@ const RegisterForm: React.FC = () => {
         />
       </fieldset>
       <fieldset className='w-full'>
-        <button type='submit' className='w-72 h-12 bg-accent-dark text-white uppercase rounded'>{isLoading ? 'Loading...' : 'Register'}</button>
+        <button type='submit' className='w-72 h-12 bg-accent-dark text-white uppercase rounded'>
+          {isLoading ? 'Loading...' : 'Register'}
+        </button>
       </fieldset>
     </form>
   );

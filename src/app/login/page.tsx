@@ -1,8 +1,8 @@
-import LoginForm from '@/components/forms/LoginForm';
-import { Divider } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
+import { Divider } from 'antd';
+import LoginForm from '@/components/forms/LoginForm';
+
 
 const Login: React.FC = () => {
   return (

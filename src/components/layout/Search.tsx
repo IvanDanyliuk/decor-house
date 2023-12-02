@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -21,7 +21,7 @@ const Search: React.FC = () => {
         <SearchOutlined style={{ fontSize: '20px' }} />
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;

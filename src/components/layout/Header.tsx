@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import axios from 'axios';
-import { LoginOutlined, LogoutOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { LoginOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import NavMenu from './NavMenu';
 import Search from './Search';
+import UserMenu from './UserMenu';
 
 
 const Header: React.FC = () => {
@@ -19,8 +20,8 @@ const Header: React.FC = () => {
 
   const fetchUser = async (email: string) => {
     const { data } = await axios.get('/api/user', { params: { email } });
-    return data;
-  }
+    setCurrentUser(data);
+  };
 
   const handleSignOut = () => {
     signOut();
@@ -29,8 +30,9 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     try {
-      const user = fetchUser(session?.user?.email!);
-      setCurrentUser(user);
+      if(session?.user) {
+        fetchUser(session.user.email!);
+      }
     } catch (error: any) {
       console.log('HEADER_ERROR', error)
     }
@@ -50,11 +52,8 @@ const Header: React.FC = () => {
             <span>{`(${3})`}</span>
           </Link>
           {
-            session?.user?.name ? (
-              <button onClick={handleSignOut} className='flex gap-1'>
-                <LogoutOutlined />
-                <span className='text-sm'>Sign Out</span>
-              </button>
+            currentUser ? (
+              <UserMenu user={currentUser} />
             ) : (
               <Link href='/login' className='flex gap-1'>
                 <LoginOutlined />

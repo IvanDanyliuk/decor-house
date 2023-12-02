@@ -1,24 +1,24 @@
 'use client';
 
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import TextField from '../ui/TextField';
 import { isEmailValid } from '@/utils/helpers';
 
 
-interface LoginData {
+interface ILoginData {
   email: string;
   password: string;
 }
 
-const initialLoginData = {
+const initialLoginData: ILoginData = {
   email: '',
   password: '',
 };
 
 
 const LoginForm: React.FC = () => {
-  const [loginData, setLoginData] = useState<LoginData>(initialLoginData);
+  const [loginData, setLoginData] = useState<ILoginData>(initialLoginData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 

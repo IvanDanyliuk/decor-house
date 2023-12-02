@@ -1,32 +1,65 @@
-import React from 'react';
-import { Dropdown } from 'antd';
+import { Avatar, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
+import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 
-const items: MenuProps['items'] = [
+interface IUserMenuProps {
+  user: {
+    _id: string;
+    name: string;
+    photo: string;
+    role: string;
+    phone: string;
+  };
+}
+
+
+const userItems: MenuProps['items'] = [
   {
-    label: <a href="https://www.antgroup.com">1st menu item</a>,
+    label: <Link href='/profile'>Profile</Link>,
     key: '0',
   },
   {
-    label: <a href="https://www.aliyun.com">2nd menu item</a>,
+    label: <Link href='/orders'>My Orders</Link>,
     key: '1',
   },
   {
-    type: 'divider',
+    label: <button onClick={() => signOut()}>Sign Out</button>,
+    key: '2',
+  },
+];
+
+const adminItems: MenuProps['items'] = [
+  {
+    label: <Link href='/profile'>Profile</Link>,
+    key: '0',
   },
   {
-    label: '3rd menu item',
+    label: <Link href='/orders'>My Orders</Link>,
+    key: '1',
+  },
+  {
+    label: <Link href='/dashboard'>Dashboard</Link>,
+    key: '2',
+  },
+  {
+    label: <button onClick={() => signOut()}>Sign Out</button>,
     key: '3',
   },
 ];
 
 
-const UserMenu: React.FC = () => {
+const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
+  console.log(user)
   return (
-    <Dropdown menu={{ items }} trigger={['click']}>
-      <button>
-
+    <Dropdown 
+      menu={{ items: user.role === 'admin' ? adminItems : userItems }} 
+      trigger={['click']}
+    >
+      <button className='flex items-center gap-1'>
+        <Avatar src={user.photo} />
+        <span>{user.name}</span>
       </button>
     </Dropdown>
   )
