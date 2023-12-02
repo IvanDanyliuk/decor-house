@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Divider, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';

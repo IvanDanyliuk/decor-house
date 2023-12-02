@@ -24,8 +24,6 @@ export default async function RootLayout({
   const year = new Date().getFullYear();
   const session = await getServerSession();
 
-  console.log('Current Session', session)
-
   return (
     <html lang='en'>
       <body className={montserrat.className}>
