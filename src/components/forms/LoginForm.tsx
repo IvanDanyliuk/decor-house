@@ -2,6 +2,8 @@
 
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
+import { notification } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import TextField from '../ui/TextField';
 import { isEmailValid } from '@/utils/helpers';
 
@@ -20,7 +22,16 @@ const initialLoginData: ILoginData = {
 const LoginForm: React.FC = () => {
   const [loginData, setLoginData] = useState<ILoginData>(initialLoginData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (error: string) => {
+    api.open({
+      message: 'Cannot sign in!',
+      description: error,
+      icon: <ExclamationCircleOutlined style={{ color: '#cf4646' }} />
+    });
+  };
 
   const handleLoginData = (e: ChangeEvent<HTMLInputElement>) => {
     setLoginData((prevState) => ({
@@ -34,15 +45,20 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
 
     if(!isEmailValid(loginData.email)) {
-      setError('Email is not valid');
+      openNotification('Email is not valid');
       return;
     }
 
     if(!loginData.password && loginData.password.length < PASSWORD_MIN_LENGTH) {
-      setError('Password is not valid!');
+      openNotification('Password is not valid!');
+      return;
     }
 
-    await signIn('credentials', { email: loginData.email, password: loginData.password, callbackUrl: '/' });
+    try {
+      await signIn('credentials', { email: loginData.email, password: loginData.password, callbackUrl: '/' });
+    } catch (error: any) {
+      openNotification(`Cannot sign in. Error: ${error.message}`);
+    }
 
     setLoginData(initialLoginData);
   };
@@ -62,7 +78,10 @@ const LoginForm: React.FC = () => {
         value={loginData.password} 
         onChange={handleLoginData} 
       />
-      <button type='submit' className='mx-auto w-full h-12 bg-accent-dark text-white uppercase rounded'>{isLoading ? 'Loading...' : 'Sign In'}</button>
+      {contextHolder}
+      <button type='submit' className='mx-auto w-full h-12 bg-accent-dark text-white uppercase rounded'>
+        {isLoading ? 'Loading...' : 'Sign In'}
+      </button>
     </form>
   );
 };

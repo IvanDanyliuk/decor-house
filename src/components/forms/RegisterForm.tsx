@@ -3,6 +3,8 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
+import { notification } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import TextField from '../ui/TextField';
 import UploadImageButton from '../ui/UploadImageBtn';
 import { UploaderEndpoint } from '@/lib/common.types';
@@ -33,7 +35,16 @@ const initialRegisterData: IRegisterData = {
 const RegisterForm: React.FC = () => {
   const [registerData, setRegisterData] = useState<IRegisterData>(initialRegisterData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (error: string) => {
+    api.open({
+      message: 'Cannot register!',
+      description: error,
+      icon: <ExclamationCircleOutlined style={{ color: '#cf4646' }} />
+    });
+  };
 
   const router = useRouter();
   const { data: session, status: sessionStatus } = useSession();
@@ -57,22 +68,22 @@ const RegisterForm: React.FC = () => {
     setIsLoading(true);
 
     if(!isEmailValid(registerData.email)) {
-      setError('Email is not valid!');
+      openNotification('Email is not valid!');
       return;
     }
 
     if(registerData.password && registerData.password.length < PASSWORD_MIN_LENGTH) {
-      setError(`Your password should contain ${PASSWORD_MIN_LENGTH} or more symbols!`);
+      openNotification(`Your password should contain ${PASSWORD_MIN_LENGTH} or more symbols!`);
       return;
     }
 
     if(registerData.password !== registerData.confirmPassword) {
-      setError('Passwords do not match!');
+      openNotification('Passwords do not match!');
       return;
     }
     
     try {
-      const res = await fetch('api/register', {
+      await fetch('api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -86,10 +97,9 @@ const RegisterForm: React.FC = () => {
           password: registerData.password,
         })
       });
-
-      console.log(res)
     } catch (error: any) {
-      setError(`Registration Error: ${error.message}`);
+      // setError(`Registration Error: ${error.message}`);
+      openNotification(`Registration Error: ${error.message}`);
       return;
     }
 
@@ -156,6 +166,7 @@ const RegisterForm: React.FC = () => {
           onChange={handleRegisterData} 
         />
       </fieldset>
+      {contextHolder}
       <fieldset className='w-full'>
         <button type='submit' className='w-72 h-12 bg-accent-dark text-white uppercase rounded'>
           {isLoading ? 'Loading...' : 'Register'}
