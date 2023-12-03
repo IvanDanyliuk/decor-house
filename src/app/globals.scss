@@ -20,6 +20,19 @@ main {
   @apply text-5xl font-bold uppercase;
 }
 
+//FORMS
+.ant-form-item-label {
+  @apply flex items-center;
+}
+
+.ant-form-item-required {
+  @apply w-36 text-lg font-semibold;
+}
+
+.ant-input {
+  @apply px-3 grow text-sm border border-gray-regular rounded;
+}
+
 /* NAV MENU */
 .ant-drawer-header-title {
   @apply flex-row-reverse;

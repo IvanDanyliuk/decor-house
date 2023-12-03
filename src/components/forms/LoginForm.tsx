@@ -1,11 +1,9 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { notification } from 'antd';
+import { Input, Form, notification } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import TextField from '../ui/TextField';
-import { isEmailValid } from '@/utils/helpers';
 
 
 interface ILoginData {
@@ -13,14 +11,13 @@ interface ILoginData {
   password: string;
 }
 
-const initialLoginData: ILoginData = {
-  email: '',
-  password: '',
-};
+type FieldType = {
+  email: string;
+  password: string;
+}
 
 
 const LoginForm: React.FC = () => {
-  const [loginData, setLoginData] = useState<ILoginData>(initialLoginData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [api, contextHolder] = notification.useNotification();
@@ -33,56 +30,49 @@ const LoginForm: React.FC = () => {
     });
   };
 
-  const handleLoginData = (e: ChangeEvent<HTMLInputElement>) => {
-    setLoginData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }));
-  };
-
-  const submitLoginData = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onFinish = async (values: any) => {
     setIsLoading(true);
 
-    if(!isEmailValid(loginData.email)) {
-      openNotification('Email is not valid');
-      return;
-    }
-
-    if(!loginData.password && loginData.password.length < PASSWORD_MIN_LENGTH) {
-      openNotification('Password is not valid!');
-      return;
-    }
-
     try {
-      await signIn('credentials', { email: loginData.email, password: loginData.password, callbackUrl: '/' });
+      await signIn('credentials', { email: values.email, password: values.password, callbackUrl: '/' });
     } catch (error: any) {
       openNotification(`Cannot sign in. Error: ${error.message}`);
     }
+  };
 
-    setLoginData(initialLoginData);
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('LOGIN FORM ERROR', errorInfo)
   };
 
   return (
-    <form onSubmit={submitLoginData} className='relative mx-auto max-w-md flex flex-wrap justify-start md:gap-6'>
-      <TextField 
-        label='Email' 
-        name='email' 
-        value={loginData.email} 
-        onChange={handleLoginData} 
-      />
-      <TextField 
-        label='Password' 
-        name='password' 
-        type='password'
-        value={loginData.password} 
-        onChange={handleLoginData} 
-      />
+    <Form
+      name='signin'
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete='off'
+    >
+      <Form.Item<FieldType> 
+        label='Email'
+        name='email'
+        rules={[{ required: true, message: 'Enter your email!' }]}
+      >
+        <Input style={{ height: '3rem' }} />
+      </Form.Item>
+      <Form.Item<FieldType> 
+        label='Password'
+        name='password'
+        rules={[{ required: true, message: 'Enter your password!' }]}
+      >
+        <Input.Password style={{ height: '3rem' }} />
+      </Form.Item>
+      <Form.Item>
+        <button type='submit' className='mx-auto w-full h-12 bg-accent-dark text-white uppercase rounded'>
+          {isLoading ? 'Loading...' : 'Sign In'}
+        </button>
+      </Form.Item>
       {contextHolder}
-      <button type='submit' className='mx-auto w-full h-12 bg-accent-dark text-white uppercase rounded'>
-        {isLoading ? 'Loading...' : 'Sign In'}
-      </button>
-    </form>
+    </Form>
   );
 };
 
