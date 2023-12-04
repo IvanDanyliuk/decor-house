@@ -1,4 +1,4 @@
-import NextAuth, { Account, User as AccountUser } from 'next-auth';
+import NextAuth from 'next-auth';
 import CreadentialsProvider from 'next-auth/providers/credentials';
 import GitHubProvider from 'next-auth/providers/github';
 import bcrypt from 'bcryptjs';

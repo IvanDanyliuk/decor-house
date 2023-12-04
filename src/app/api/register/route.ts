@@ -16,7 +16,7 @@ export const POST = async (req: Request) => {
       return new NextResponse('User with such email already exists', { status: 400 })
     }
 
-    await User.create({ name, phone, address, photo, email, password: hashedPassword, role: 'user', cart: [] });
+    const user = await User.create({ name, phone, address, photo, email, password: hashedPassword, role: 'user', cart: [] });
     
     return new NextResponse('User has been successfully registered!', { status: 200 });
   } catch (error: any) {

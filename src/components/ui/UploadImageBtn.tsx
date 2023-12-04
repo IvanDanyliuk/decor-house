@@ -5,16 +5,14 @@ import { UploaderEndpoint } from '@/lib/common.types';
 
 
 interface UploadImageButtonProps {
-  label: string;
   endpoint: UploaderEndpoint;
   setImageUrl: (url: string) => void;
 }
 
 
-const UploadImageButton: React.FC<UploadImageButtonProps> = ({ label, endpoint, setImageUrl }) => {
+const UploadImageButton: React.FC<UploadImageButtonProps> = ({ endpoint, setImageUrl }) => {
   return (
-    <div className='w-full flex items-center gap-3'>
-      <div className='w-36 text-sm font-semibold'>{label}</div>
+    <div className='w-full flex items-start'>
       <UploadButton
         endpoint={endpoint}
         appearance={{

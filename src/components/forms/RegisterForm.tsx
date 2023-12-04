@@ -1,17 +1,16 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from "next-auth/react";
-import { notification } from 'antd';
+import Link from 'next/link';
+import { signIn } from 'next-auth/react';
+import { Input, Form, notification, Col, Row } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import TextField from '../ui/TextField';
 import UploadImageButton from '../ui/UploadImageBtn';
 import { UploaderEndpoint } from '@/lib/common.types';
-import { isEmailValid } from '@/utils/helpers';
 
 
-interface IRegisterData {
+type RegisterData = {
   name: string;
   phone: string;
   address?: string;
@@ -21,158 +20,143 @@ interface IRegisterData {
   confirmPassword: string;
 }
 
-const initialRegisterData: IRegisterData = {
-  name: '',
-  phone: '',
-  address: '',
-  photo: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-};
-
 
 const RegisterForm: React.FC = () => {
-  const [registerData, setRegisterData] = useState<IRegisterData>(initialRegisterData);
+  const [photoUrl, setPhotoUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  
+
+  const router = useRouter();
+
   const [api, contextHolder] = notification.useNotification();
 
   const openNotification = (error: string) => {
     api.open({
-      message: 'Cannot register!',
+      message: 'Cannot sign in!',
       description: error,
       icon: <ExclamationCircleOutlined style={{ color: '#cf4646' }} />
     });
   };
 
-  const router = useRouter();
-  const { data: session, status: sessionStatus } = useSession();
+  const onFinish = async (values: RegisterData) => {
+    setIsLoading(true);
 
-  const handleRegisterData = (e: ChangeEvent<HTMLInputElement>) => {
-    setRegisterData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }));
+    try {
+        setIsLoading(true);
+
+        if(values.password !== values.confirmPassword) {
+          throw new Error('Passwords do not match!');
+        }
+
+        const response = await fetch('api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ...values,
+            photo: photoUrl
+          })
+        });
+
+        if(response.ok) {
+          await signIn('credentials', { email: values.email, password: values.password, callbackUrl: '/' });
+        }
+
+        router.push('/');
+    } catch (error: any) {
+      openNotification(`Cannot create a new account. Error: ${error.message}`);
+    }
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    const errors: string[] = errorInfo.errorFields.map((error: any) => error.errors[0]);
+    openNotification(`Something went wrong. ${errors.join(' ')}`);
   };
 
   const handleImageUrl = (imageUrl: string) => {
-    setRegisterData((prevState) => ({
-      ...prevState,
-      photo: imageUrl
-    }));
+    setPhotoUrl(imageUrl);
   };
-
-  const submitRegisterData = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if(!isEmailValid(registerData.email)) {
-      openNotification('Email is not valid!');
-      return;
-    }
-
-    if(registerData.password && registerData.password.length < PASSWORD_MIN_LENGTH) {
-      openNotification(`Your password should contain ${PASSWORD_MIN_LENGTH} or more symbols!`);
-      return;
-    }
-
-    if(registerData.password !== registerData.confirmPassword) {
-      openNotification('Passwords do not match!');
-      return;
-    }
-    
-    try {
-      await fetch('api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: registerData.name,
-          phone: registerData.phone,
-          address: registerData.address,
-          photo: registerData.photo,
-          email: registerData.email,
-          password: registerData.password,
-        })
-      });
-    } catch (error: any) {
-      // setError(`Registration Error: ${error.message}`);
-      openNotification(`Registration Error: ${error.message}`);
-      return;
-    }
-
-    setRegisterData(initialRegisterData);
-    router.push('/');
-  };
-
-  useEffect(() => {
-    if (sessionStatus === 'authenticated') {
-      router.replace('/dashboard');
-    }
-  }, [sessionStatus, router]);
 
   return (
-    <form 
-      onSubmit={submitRegisterData} 
-      className='relative w-full flex flex-wrap justify-start md:gap-20'
+    <Form
+      name='register'
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete='off'
     >
-      <fieldset className='flex flex-col flex-1 gap-6'>
-        <TextField 
-          label='First Name and Last Name *' 
-          name='name' 
-          value={registerData.name} 
-          onChange={handleRegisterData} 
-        />
-        <TextField 
-          label='Phone *' 
-          name='phone' 
-          value={registerData.phone} 
-          onChange={handleRegisterData} 
-        />
-        <TextField 
-          label='Address' 
-          name='address' 
-          value={registerData.address || ''} 
-          onChange={handleRegisterData} 
-        />
-        <UploadImageButton 
-          label='Profile Photo' 
-          endpoint={UploaderEndpoint.ProfilePicture} 
-          setImageUrl={handleImageUrl}
-        />
-      </fieldset>
-      <fieldset className='flex flex-col flex-1 gap-6'>
-        <TextField 
-          label='Email *' 
-          name='email' 
-          type='email'
-          value={registerData.email} 
-          onChange={handleRegisterData} 
-        />
-        <TextField 
-          label='Password *' 
-          name='password' 
-          type='password'
-          value={registerData.password} 
-          onChange={handleRegisterData} 
-        />
-        <TextField 
-          label='Confirm Password *' 
-          name='confirmPassword' 
-          type='password'
-          value={registerData.confirmPassword} 
-          onChange={handleRegisterData} 
-        />
-      </fieldset>
-      {contextHolder}
-      <fieldset className='w-full'>
-        <button type='submit' className='w-72 h-12 bg-accent-dark text-white uppercase rounded'>
+      <Row gutter={{ md: 30 }}>
+        <Col md={12}>
+          <Form.Item<RegisterData> 
+            label='First Name and Last Name'
+            name='name'
+            rules={[{ required: true, message: 'Enter your name!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item<RegisterData> 
+            label='Phone'
+            name='phone'
+            rules={[{ required: true, message: 'Enter your phone number!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item<RegisterData> 
+            label='Address'
+            name='address'
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item<RegisterData> 
+            label='Photo'
+            name='photo'
+          >
+            <UploadImageButton  
+              endpoint={UploaderEndpoint.ProfilePicture} 
+              setImageUrl={handleImageUrl}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12}>
+          <Form.Item<RegisterData> 
+            label='Email'
+            name='email'
+            rules={[{ required: true, message: 'Enter your email!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item<RegisterData> 
+            label='Password'
+            name='password'
+            rules={[{ required: true, message: 'Enter your password!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item<RegisterData> 
+            label='Confirm Password'
+            name='confirmPassword'
+            rules={[{ required: true, message: 'Confirm your password!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+        </Col>
+      </Row>
+      <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
+        <button 
+          type='submit' 
+          className='w-full md:w-72 h-12 bg-accent-dark text-white uppercase rounded'
+        >
           {isLoading ? 'Loading...' : 'Register'}
         </button>
-      </fieldset>
-    </form>
+        <Link 
+          href='/login' 
+          className='w-full md:w-72 h-12 link-primary uppercase'
+        >
+          <span>Go back to login page</span>
+        </Link>
+      </div>
+      {contextHolder}
+    </Form>
   );
 };
 

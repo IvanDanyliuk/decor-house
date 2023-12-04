@@ -6,11 +6,6 @@ import { Input, Form, notification } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 
-interface ILoginData {
-  email: string;
-  password: string;
-}
-
 type FieldType = {
   email: string;
   password: string;
@@ -41,7 +36,7 @@ const LoginForm: React.FC = () => {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('LOGIN FORM ERROR', errorInfo)
+    openNotification(`Error: ${errorInfo}`)
   };
 
   return (
@@ -66,11 +61,12 @@ const LoginForm: React.FC = () => {
       >
         <Input.Password style={{ height: '3rem' }} />
       </Form.Item>
-      <Form.Item>
-        <button type='submit' className='mx-auto w-full h-12 bg-accent-dark text-white uppercase rounded'>
-          {isLoading ? 'Loading...' : 'Sign In'}
-        </button>
-      </Form.Item>
+      <button 
+        type='submit' 
+        className='mx-auto w-full h-12 bg-accent-dark text-white uppercase rounded'
+      >
+        {isLoading ? 'Loading...' : 'Sign In'}
+      </button>
       {contextHolder}
     </Form>
   );

@@ -21,17 +21,30 @@ main {
 }
 
 //FORMS
-.ant-form-item-label {
-  @apply flex items-center;
+.ant-form {
+  @apply text-lg #{!important};
 }
 
-.ant-form-item-required {
-  @apply w-36 text-lg font-semibold;
+.ant-col {
+  @apply w-full #{!important};
 }
 
-.ant-input {
-  @apply px-3 grow text-sm border border-gray-regular rounded;
+.ant-form-item-row {
+  @apply flex items-center md:gap-3 #{!important};
+
+  .ant-form-item-label, .ant-form-item-required {
+    @apply w-full md:w-36 font-semibold text-left #{!important};
+
+    label {
+      @apply w-full md:w-36 font-semibold text-left #{!important};
+    }
+  }
 }
+
+.ant-input, .ant-input-password {
+  @apply px-3 py-3 h-auto border border-gray-regular rounded;
+}
+
 
 /* NAV MENU */
 .ant-drawer-header-title {
