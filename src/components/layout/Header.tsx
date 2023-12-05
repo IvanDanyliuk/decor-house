@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import axios from 'axios';
 import { LoginOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import NavMenu from './NavMenu';
+import NavMenu from '../navigation/NavMenu';
 import Search from './Search';
-import UserMenu from './UserMenu';
+import UserMenu from '../navigation/UserMenu';
 
 
 const Header: React.FC = () => {

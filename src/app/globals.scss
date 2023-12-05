@@ -46,7 +46,7 @@ main {
 }
 
 
-/* NAV MENU */
+/* NAVIGATION */
 .ant-drawer-header-title {
   @apply flex-row-reverse;
 }
@@ -58,3 +58,27 @@ main {
 .secondary-nav-link-group {
   @apply flex flex-col gap-8 text-gray-regular text-lg font-medium;
 }
+
+.ant-menu {
+  @apply relative w-full flex justify-center text-base font-inherit uppercase border-none #{!important};
+
+  .ant-menu-item {
+    @apply py-3 flex-1 text-gray-regular font-semibold text-center #{!important};
+
+    &:after {
+      @apply absolute bottom-0 left-0 w-full border-b-4 border-gray-regular #{!important};
+    }
+  }
+
+  .ant-menu-item-selected {
+    @apply text-gray-dark #{!important};
+
+    &:after {
+      @apply absolute bottom-0 left-0 w-full border-b-4 border-gray-dark #{!important};
+    }
+  }
+}
+
+// .ant-menu-horizontal {
+//   @apply border-b-4 border-gray-regular #{!important};
+// }
