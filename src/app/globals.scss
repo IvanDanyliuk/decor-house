@@ -47,6 +47,7 @@ main {
 
 
 /* NAVIGATION */
+//====== MAIN MENU ======
 .ant-drawer-header-title {
   @apply flex-row-reverse;
 }
@@ -59,8 +60,9 @@ main {
   @apply flex flex-col gap-8 text-gray-regular text-lg font-medium;
 }
 
+//====== DASHBOARD MENU ======
 .ant-menu {
-  @apply relative w-full flex justify-center text-base font-inherit uppercase border-none #{!important};
+  @apply relative w-full flex justify-center text-sm font-inherit uppercase border-none #{!important};
 
   .ant-menu-item {
     @apply py-3 flex-1 text-gray-regular font-semibold text-center #{!important};
@@ -78,7 +80,3 @@ main {
     }
   }
 }
-
-// .ant-menu-horizontal {
-//   @apply border-b-4 border-gray-regular #{!important};
-// }
