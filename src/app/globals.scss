@@ -33,10 +33,10 @@ main {
   @apply flex items-center md:gap-3 #{!important};
 
   .ant-form-item-label, .ant-form-item-required {
-    @apply w-full md:w-36 font-semibold text-left #{!important};
+    @apply w-full md:w-36 font-semibold text-left font-inherit whitespace-normal #{!important};
 
     label {
-      @apply w-full md:w-36 font-semibold text-left #{!important};
+      @apply w-full md:w-36 font-semibold text-left text-gray-dark font-inherit #{!important};
     }
   }
 }

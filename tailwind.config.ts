@@ -18,6 +18,9 @@ const config: Config = {
         'gray-medium': '#E6E6E6',
         'gray-regular': '#999999',
         'gray-dark': '#575757',
+      },
+      fontFamily: {
+        'inherit': ['inherit']
       }
     },
   },
