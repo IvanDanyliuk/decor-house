@@ -64,6 +64,7 @@ const RegisterForm: React.FC = () => {
 
         router.push('/');
     } catch (error: any) {
+      setIsLoading(false);
       openNotification(`Cannot create a new account. Error: ${error.message}`);
     }
   };

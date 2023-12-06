@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, MenuProps } from 'antd';
+import { usePathname, useRouter } from 'next/navigation';
 
 
 const menuItems: MenuProps['items'] = [
@@ -44,9 +45,24 @@ const menuItems: MenuProps['items'] = [
 const DashboardMenu = () => {
   const [currentLink, setCurrentLink] = useState('products');
 
+  const router = useRouter();
+  const pathname = usePathname();
+
   const onClick: MenuProps['onClick'] = (e) => {
     setCurrentLink(e.key);
   };
+
+  useEffect(() => {
+    const url = pathname.split('/');
+    
+    if(currentLink !== url[2]) {
+      setCurrentLink(url[2]);
+    }
+
+    if(url.length === 2) {
+      router.push('/dashboard/products');
+    }
+  }, [pathname]);
 
   return (
     <Menu 

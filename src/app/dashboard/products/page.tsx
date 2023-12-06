@@ -6,7 +6,7 @@ const Products: React.FC = () => {
   return (
     <div>
       Products
-      <Link href='/dashboard/products/create-product'>New</Link>
+      <Link href='/create-product'>New</Link>
     </div>
   );
 };

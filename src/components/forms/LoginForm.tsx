@@ -31,12 +31,14 @@ const LoginForm: React.FC = () => {
     try {
       await signIn('credentials', { email: values.email, password: values.password, callbackUrl: '/' });
     } catch (error: any) {
+      setIsLoading(false);
       openNotification(`Cannot sign in. Error: ${error.message}`);
     }
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    openNotification(`Error: ${errorInfo}`)
+    const errors: string[] = errorInfo.errorFields.map((error: any) => error.errors[0]);
+    openNotification(`Error: ${errors}`);
   };
 
   return (

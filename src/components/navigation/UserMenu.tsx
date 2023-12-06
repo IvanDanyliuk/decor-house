@@ -1,7 +1,7 @@
-import { Avatar, Dropdown } from 'antd';
-import type { MenuProps } from 'antd';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import { Avatar, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 
 
 interface IUserMenuProps {
@@ -51,7 +51,6 @@ const adminItems: MenuProps['items'] = [
 
 
 const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
-  console.log(user)
   return (
     <Dropdown 
       menu={{ items: user.role === 'admin' ? adminItems : userItems }} 
@@ -62,7 +61,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
         <span>{user.name}</span>
       </button>
     </Dropdown>
-  )
-}
+  );
+};
 
-export default UserMenu
+export default UserMenu;
