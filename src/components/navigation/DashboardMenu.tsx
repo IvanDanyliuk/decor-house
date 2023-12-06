@@ -3,10 +3,14 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, MenuProps } from 'antd';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 
 const menuItems: MenuProps['items'] = [
+  {
+    label: <Link href='/dashboard'>Stats</Link>,
+    key: 'statistic',
+  },
   {
     label: <Link href='/dashboard/products'>Products</Link>,
     key: 'products',
@@ -43,9 +47,8 @@ const menuItems: MenuProps['items'] = [
 
 
 const DashboardMenu = () => {
-  const [currentLink, setCurrentLink] = useState('products');
+  const [currentLink, setCurrentLink] = useState('statistic');
 
-  const router = useRouter();
   const pathname = usePathname();
 
   const onClick: MenuProps['onClick'] = (e) => {
@@ -54,13 +57,9 @@ const DashboardMenu = () => {
 
   useEffect(() => {
     const url = pathname.split('/');
-    
-    if(currentLink !== url[2]) {
-      setCurrentLink(url[2]);
-    }
 
-    if(url.length === 2) {
-      router.push('/dashboard/products');
+    if(url[2] && currentLink !== url[2]) {
+      setCurrentLink(url[2]);
     }
   }, [pathname]);
 
