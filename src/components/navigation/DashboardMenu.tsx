@@ -1,41 +1,41 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import Link from 'next/link';
 import { Menu, MenuProps } from 'antd';
-import { useRouter } from 'next/navigation';
 
 
 const menuItems: MenuProps['items'] = [
   {
-    label: 'Products',
+    label: <Link href='/dashboard/products'>Products</Link>,
     key: 'products',
   },
   {
-    label: 'Categories',
+    label: <Link href='/dashboard/categories'>Categories</Link>,
     key: 'categories',
   },
   {
-    label: 'Users',
+    label: <Link href='/dashboard/users'>Users</Link>,
     key: 'users',
   },
   {
-    label: 'Manufacturers',
+    label: <Link href='/dashboard/manufacturers'>Manufacturers</Link>,
     key: 'manufacturers',
   },
   {
-    label: 'Interiors',
+    label: <Link href='/dashboard/interiors'>Interiors</Link>,
     key: 'interiors',
   },
   {
-    label: 'Promotions',
+    label: <Link href='/dashboard/promotions'>Promotions</Link>,
     key: 'promotions',
   },
   {
-    label: 'Shops',
+    label: <Link href='/dashboard/shops'>Shops</Link>,
     key: 'shops',
   },
   {
-    label: 'Posts',
+    label: <Link href='/dashboard/posts'>Posts</Link>,
     key: 'posts',
   },
 ];
@@ -44,16 +44,9 @@ const menuItems: MenuProps['items'] = [
 const DashboardMenu = () => {
   const [currentLink, setCurrentLink] = useState('products');
 
-  const router = useRouter();
-
   const onClick: MenuProps['onClick'] = (e) => {
-    console.log('CURRENT LINK', e);
     setCurrentLink(e.key);
   };
-
-  useEffect(() => {
-    router.push(`/dashboard/${currentLink}`);
-  }, [currentLink]);
 
   return (
     <Menu 
