@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 const menuItems: MenuProps['items'] = [
   {
     label: <Link href='/dashboard'>Stats</Link>,
-    key: 'statistic',
+    key: 'statistics',
   },
   {
     label: <Link href='/dashboard/products'>Products</Link>,
@@ -47,7 +47,7 @@ const menuItems: MenuProps['items'] = [
 
 
 const DashboardMenu = () => {
-  const [currentLink, setCurrentLink] = useState('statistic');
+  const [currentLink, setCurrentLink] = useState('statistics');
 
   const pathname = usePathname();
 
