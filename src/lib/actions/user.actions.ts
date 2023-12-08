@@ -1,5 +1,70 @@
-import User from "../models/user.model"
+'use server'
+
+import { revalidatePath } from 'next/cache';
+import bcrypt from 'bcryptjs';
+import { z as zod } from 'zod';
+import { connectToDB } from '../database';
+import User from '../models/user.model'
+import { utapi } from '../uploadthing';
+
+
+const userSchema = zod.object({
+  name: zod.string().min(1, 'Name is required!').max(100),
+  phone: zod.string().min(12, 'Phone number is required!'),
+  address: zod.string(),
+  email: zod.string().min(1, 'Email is required!').email('Invalid email!'),
+  password: zod.string().min(1, 'Password is required!').min(6, 'Password must have 6 characters'),
+  confirmPassword: zod.string().min(1, 'Password confirmation is required!'),
+}).refine(data => data.password === data.confirmPassword, {
+  path: ['confirmPassword'],
+  message: 'Passwords do not match',
+});
+
 
 export const getCurrentUser = async (email: string) => {
   return await User.findOne({ email });
+}
+
+export const register = async (prevState: any, formData: FormData) => {
+  const name = formData.get('name');
+  const phone = formData.get('phone');
+  const address = formData.get('address');
+  const photo = formData.getAll('photo');
+  const email = formData.get('email');
+  const password = formData.get('password') as string;
+  const confirmPassword = formData.get('confirmPassword');
+
+  try {
+    await connectToDB();
+
+    const validatedFields = userSchema.safeParse({
+      name, phone, address, photo, email, password, confirmPassword
+    });
+
+    if(!validatedFields.success) {
+      console.log('VALIDATION ERROR', validatedFields.error.flatten().fieldErrors)
+      return {
+        errors: validatedFields.error.flatten().fieldErrors,
+      }
+    }
+    
+    const existingUser = await User.findOne({ email });
+
+    if(existingUser) throw new Error('User already exists');
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const imageUrl = new Blob(photo).size > 0 ? (await utapi.uploadFiles(photo))[0].data?.url : '';
+
+    await User.create({
+      name,
+      phone,
+      address,
+      photo: imageUrl,
+      email,
+      password: hashedPassword,
+      role: 'user',
+    });
+  } catch (error) {
+    
+  }
 }

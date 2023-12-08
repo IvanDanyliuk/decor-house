@@ -1,17 +1,12 @@
-import { ChangeEvent } from 'react';
-
-
 interface TextFieldProps {
   label: string;
   name: string;
-  value: string;
   type?: string;
   required?: boolean;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 
-const TextField: React.FC<TextFieldProps> = ({ label, name, value, type, required, onChange }) => {
+const TextField: React.FC<TextFieldProps> = ({ label, name, type, required }) => {
   return (
     <div className='w-full flex items-center gap-3'>
       <label htmlFor={name} className='w-36 text-sm font-semibold'>{label}</label>
@@ -20,9 +15,7 @@ const TextField: React.FC<TextFieldProps> = ({ label, name, value, type, require
         id={name}
         type={type || 'text'} 
         name={name} 
-        value={value} 
         required={required} 
-        onChange={onChange} 
       />
     </div>
   );
