@@ -23,8 +23,7 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileUploader = e.target.files;
-    setSelectedFiles(Array.from(e.target.files ?? []))
-    console.log('FILE UPLOADER', fileUploader)
+    setSelectedFiles(Array.from(e.target.files ?? []));
   };
 
   return (
@@ -34,7 +33,7 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required
         <div className='w-full flex gap-1 items-center  '>
           <button 
             type='button'
-            className='w-36 h-10 bg-slate-500 text-white font-semibold rounded'
+            className='w-36 h-10 bg-slate-500 text-sm text-white uppercase rounded'
             onClick={handleClick}
           >
             Upload
