@@ -20,31 +20,6 @@ main {
   @apply text-5xl font-bold uppercase;
 }
 
-//FORMS
-.ant-form {
-  @apply text-lg #{!important};
-}
-
-.ant-col {
-  @apply w-full #{!important};
-}
-
-.ant-form-item-row {
-  @apply flex items-center md:gap-3 #{!important};
-
-  .ant-form-item-label, .ant-form-item-required {
-    @apply w-full md:w-36 font-semibold text-left font-inherit whitespace-normal #{!important};
-
-    label {
-      @apply w-full md:w-36 font-semibold text-left text-gray-dark font-inherit #{!important};
-    }
-  }
-}
-
-.ant-input, .ant-input-password {
-  @apply px-3 py-3 h-auto border border-gray-regular rounded;
-}
-
 
 /* NAVIGATION */
 //====== MAIN MENU ======

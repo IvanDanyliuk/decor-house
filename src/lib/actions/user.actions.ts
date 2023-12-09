@@ -44,18 +44,18 @@ export const register = async (prevState: any, formData: FormData) => {
     if(!validatedFields.success) {
       console.log('VALIDATION ERROR', validatedFields.error.flatten().fieldErrors)
       return {
-        errors: validatedFields.error.flatten().fieldErrors,
+        error: validatedFields.error.flatten().fieldErrors,
       }
     }
     
     const existingUser = await User.findOne({ email });
 
-    if(existingUser) throw new Error('User already exists');
+    if(existingUser) return { error: 'User already exists' };
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const imageUrl = new Blob(photo).size > 0 ? (await utapi.uploadFiles(photo))[0].data?.url : '';
 
-    await User.create({
+    const newUser = await User.create({
       name,
       phone,
       address,
@@ -64,7 +64,17 @@ export const register = async (prevState: any, formData: FormData) => {
       password: hashedPassword,
       role: 'user',
     });
+    return {
+      data: {
+        email,
+        password: hashedPassword
+      },
+      error: null,
+      message: 'User has been successfully created!'
+    }
   } catch (error) {
-    
+    return {
+      error: 'Failed to register',
+    }
   }
-}
+};
