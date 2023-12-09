@@ -1,6 +1,5 @@
 'use server'
 
-import { revalidatePath } from 'next/cache';
 import bcrypt from 'bcryptjs';
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
@@ -10,7 +9,7 @@ import { utapi } from '../uploadthing';
 
 const userSchema = zod.object({
   name: zod.string().min(1, 'Name is required!').max(100),
-  phone: zod.string().min(12, 'Phone number is required!'),
+  phone: zod.string(),
   address: zod.string(),
   email: zod.string().min(1, 'Email is required!').email('Invalid email!'),
   password: zod.string().min(1, 'Password is required!').min(6, 'Password must have 6 characters'),
@@ -42,7 +41,6 @@ export const register = async (prevState: any, formData: FormData) => {
     });
 
     if(!validatedFields.success) {
-      console.log('VALIDATION ERROR', validatedFields.error.flatten().fieldErrors)
       return {
         error: validatedFields.error.flatten().fieldErrors,
       }
@@ -64,13 +62,14 @@ export const register = async (prevState: any, formData: FormData) => {
       password: hashedPassword,
       role: 'user',
     });
+
     return {
       data: {
-        email,
-        password: hashedPassword
+        email: newUser.email,
+        password: newUser.password
       },
       error: null,
-      message: 'User has been successfully created!'
+      message: 'User has been successfully created!',
     }
   } catch (error) {
     return {

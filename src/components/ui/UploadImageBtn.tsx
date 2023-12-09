@@ -1,40 +1,69 @@
 'use client';
 
-import { UploadButton } from '../../utils/uploadthing';
-import { UploaderEndpoint } from '@/lib/common.types';
+import { useState, useRef } from 'react';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 
-interface UploadImageButtonProps {
-  endpoint: UploaderEndpoint;
-  setImageUrl: (url: string) => void;
+interface IUploadImageButton {
+  label: string;
+  name: string;
+  required?: boolean;
+  multiple?: boolean;
+  error?: string[]
 }
 
 
-const UploadImageButton: React.FC<UploadImageButtonProps> = ({ endpoint, setImageUrl }) => {
+const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required, multiple, error }) => {
+  const [selectedFiles, setSelectedFiles] = useState<any>([])
+  const ref = useRef<HTMLInputElement>(null);
+
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    ref.current?.click();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileUploader = e.target.files;
+    setSelectedFiles(Array.from(e.target.files ?? []))
+    console.log('FILE UPLOADER', fileUploader)
+  };
+
   return (
-    <div className='w-full flex items-start'>
-      <UploadButton
-        endpoint={endpoint}
-        appearance={{
-          button: {
-            height: '2.5rem',
-            background: '#458398'
-          },
-          container: {
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-center',
-          }
-        }}
-        onClientUploadComplete={(res) => {
-          if(res) {
-            setImageUrl(res[0].url)
-          }
-        }}
-        onUploadError={(error: Error) => {
-          alert(`ERROR! ${error.message}`);
-        }}
-      />
+    <div className='w-full flex items-center gap-3'>
+      <label htmlFor={name} className='w-36 text-sm font-semibold'>{label}</label>
+      <div className='relative grow'>
+        <div className='w-full flex gap-1 items-center  '>
+          <button 
+            type='button'
+            className='w-36 h-10 bg-slate-500 text-white font-semibold rounded'
+            onClick={handleClick}
+          >
+            Upload
+          </button>
+          <ul className='flex gap-3 text-xs'>
+            {selectedFiles.map((file: any) => (
+              <li key={`file-${file.name}`}>{file.name}</li>
+            ))}
+          </ul>
+        </div>
+        <input 
+            ref={ref}
+            className={`hidden h-10 w-full text-sm `}
+            id={name}
+            type='file'
+            name={name} 
+            required={required} 
+            multiple={multiple}
+            onChange={handleChange}
+          />
+        <p className='mt-1 text-xs text-red-600'>
+          {error && (
+            <>
+              <ExclamationCircleOutlined />
+              <span className='ml-1'>{error.join(' ')}</span>
+            </>
+          )}
+        </p>
+      </div>
     </div>
   );
 };

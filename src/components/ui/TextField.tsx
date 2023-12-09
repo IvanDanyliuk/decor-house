@@ -15,17 +15,17 @@ const TextField: React.FC<TextFieldProps> = ({ label, name, type, required, erro
       <label htmlFor={name} className='w-36 text-sm font-semibold'>{label}</label>
       <div className='relative grow'>
         <input 
-          className='px-3 h-10 w-full text-sm border border-gray-regular rounded'
+          className={`px-3 h-10 w-full text-sm border ${error ? 'border-red-600' : 'border-gray-regular'} rounded`}
           id={name}
           type={type || 'text'} 
           name={name} 
           required={required} 
         />
-        <p className='mt-1 text-xs'>
+        <p className='mt-1 text-xs text-red-600'>
           {error && (
             <>
               <ExclamationCircleOutlined />
-              <span>{error.join(' ')}</span>
+              <span className='ml-1'>{error.join(' ')}</span>
             </>
           )}
         </p>

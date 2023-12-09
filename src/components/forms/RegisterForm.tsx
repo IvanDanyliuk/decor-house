@@ -1,13 +1,13 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
-
 import { useEffect, useRef, useCallback } from 'react';
+import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import TextField from '../ui/TextField';
 import { register } from '@/lib/actions/user.actions';
 import SubmitButton from '../ui/SubmitButtom';
+import UploadImageButton from '../ui/UploadImageBtn';
 
 
 const initialState = {
@@ -64,9 +64,8 @@ const RegisterForm: React.FC = () => {
           label='Address' 
           error={state && state.error && state.error['address']!} 
         />
-        <TextField 
+        <UploadImageButton 
           name='photo' 
-          type='file' 
           label='Photo' 
         />
       </fieldset>
