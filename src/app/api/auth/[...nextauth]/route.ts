@@ -1,12 +1,19 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CreadentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
 import bcrypt from 'bcryptjs';
 import { connectToDB } from '@/lib/database';
 import User from '@/lib/models/user.model';
 
 
-export const authOptions = {
+//DEPLOYMENT
+//Change the following setting in the Google Dashboard to deploy the app
+//API & Services --> OAuth Consent Screen:
+// - Testing --- press 'Publish App' button
+// - 
+
+export const authOptions: NextAuthOptions = {
   providers: [
     CreadentialsProvider({
       id: 'credentials',
@@ -43,6 +50,10 @@ export const authOptions = {
       clientId: process.env.GITHUB_ID ?? '',
       clientSecret: process.env.GITHUB_SECRET ?? '',
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+    })
   ],
 };
 
