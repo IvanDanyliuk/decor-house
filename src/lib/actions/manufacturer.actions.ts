@@ -1,3 +1,5 @@
+'use server';
+
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
 import Manufacturer from '../models/manufacturer.model';
@@ -29,7 +31,7 @@ export const getManufacturers = async () => {
   }
 };
 
-export const createManufacturer = async (formData: FormData) => {
+export const createManufacturer = async (prevState: any,formData: FormData) => {
   const name = formData.get('name');
   const country = formData.get('country');
 

@@ -1,93 +1,55 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import { useFormState } from 'react-dom';
 import Link from 'next/link';
-import { Input, Form, notification } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { createManufacturer } from '@/lib/actions/manufacturer.actions';
+import TextField from '../ui/TextField';
+import SubmitButton from '../ui/SubmitButtom';
 
 
-type ManufacturerType = {
-  name: string;
-  country: string;
-}
+const initialState = {
+  name: '',
+  country: '',
+};
 
 
 const ManufacturerForm: React.FC = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter();
-  const [api, contextHolder] = notification.useNotification();
+  const [state, formAction] = useFormState(createManufacturer, initialState);
+  const ref = useRef<HTMLFormElement>(null);
 
-  const openNotification = (error: string) => {
-    api.open({
-      message: 'Cannot create a new manufacturer!',
-      description: error,
-      icon: <ExclamationCircleOutlined style={{ color: '#cf4646' }} />
-    });
-  };
-
-  const onFinish = async (values: any) => {
-    setIsLoading(true);
-
-    try {
-      await fetch('api/manufacturers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-      
-      router.push('/dashboard/manufacturers');
-    } catch (error: any) {
-      setIsLoading(false);
-      openNotification(`Error: ${error.message}`);
+  useEffect(() => {
+    if(state && !state.error) {
+      ref.current?.reset();
     }
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    const errors: string[] = errorInfo.errorFields.map((error: any) => error.errors[0]);
-    openNotification(`Error: ${errors}`)
-  };
+  }, [state, formAction]);
 
   return (
-    <Form
-      name='createManufacturer'
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete='off'
+    <form 
+      ref={ref} 
+      action={formAction}
+      className='w-full flex flex-wrap gap-6'
     >
-      <Form.Item<ManufacturerType>
-        label='Name'
-        name='name'
-        rules={[{ required: true, message: 'Name is required!' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item<ManufacturerType>
-        label='Country'
-        name='country'
-        rules={[{ required: true, message: 'Country is required!' }]}
-      >
-        <Input />
-      </Form.Item>
+      <TextField 
+        name='name' 
+        label='Name' 
+        error={state && state.error && state.error['name']!} 
+      />
+      <TextField 
+        name='country' 
+        label='Country' 
+        error={state && state.error && state.error['country']!} 
+      />
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
-        <button
-          type='submit' 
-          className='w-full md:w-72 h-12 bg-accent-dark text-white uppercase rounded'
-        >
-          {isLoading ? 'Loading...' : 'Submit'}
-        </button>
+        <SubmitButton label='Create' />
         <Link 
-          href='/dashboard/manufacturers' 
+          href='/login' 
           className='w-full md:w-72 h-12 link-primary uppercase'
         >
-          <span>Go back to Dashboard</span>
+          <span>Go back to login page</span>
         </Link>
       </div>
-      {contextHolder}
-    </Form>
+    </form>
   );
 };
 

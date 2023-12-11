@@ -18,7 +18,7 @@ const initialState = {
   email: '',
   password: '',
   confirmPassword: '',
-}
+};
 
 
 const RegisterForm: React.FC = () => {
@@ -40,7 +40,7 @@ const RegisterForm: React.FC = () => {
       ref.current?.reset();
       userSignIn();
     }
-  }, [state, formAction])
+  }, [state, formAction]);
 
   return (
     <form 
