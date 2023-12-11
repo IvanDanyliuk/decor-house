@@ -21,7 +21,23 @@ const userSchema = zod.object({
 
 
 export const getCurrentUser = async (email: string) => {
-  return await User.findOne({ email });
+  try {
+    await connectToDB();
+
+    const user = await User.findOne({ email });
+
+    return {
+      data: user,
+      error: null,
+      message: '',
+    };
+  } catch (error: any) {
+    return { 
+      data: null,
+      error: error.message,
+      message: 'User not found',
+    };
+  }
 }
 
 export const register = async (prevState: any, formData: FormData) => {
@@ -43,7 +59,7 @@ export const register = async (prevState: any, formData: FormData) => {
     if(!validatedFields.success) {
       return {
         error: validatedFields.error.flatten().fieldErrors,
-      }
+      };
     }
     
     const existingUser = await User.findOne({ email });
@@ -70,10 +86,10 @@ export const register = async (prevState: any, formData: FormData) => {
       },
       error: null,
       message: 'User has been successfully created!',
-    }
+    };
   } catch (error) {
     return {
       error: 'Failed to register',
-    }
+    };
   }
 };

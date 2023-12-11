@@ -15,12 +15,12 @@ const AuthButton: React.FC<IAuthButton> = ({ session }) => {
   return (
     <button 
       className='mx-auto w-full h-12 flex justify-center items-center gap-3 border border-gray-light rounded'
-      onClick={() => signIn('google', { ...user, callbackUrl: '/'})}
+      onClick={() => signIn('google')}
     >
       <Image src='/assets/images/google-icon-logo.svg' alt='Google' width={20} height={20} />
       <span className='text-sm'>Sign In with Google</span>
     </button>
-  )
-}
+  );
+};
 
-export default AuthButton
+export default AuthButton;

@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Divider } from 'antd';
 import LoginForm from '@/components/forms/LoginForm';
