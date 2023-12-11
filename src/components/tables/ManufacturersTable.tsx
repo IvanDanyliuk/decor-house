@@ -1,7 +1,9 @@
 'use client'
 
+import { Table } from 'antd';
+import Column from 'antd/es/table/Column';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+
 
 interface IManufacturersTable {
   manufacturers: {
@@ -11,9 +13,15 @@ interface IManufacturersTable {
   }[];
 }
 
+
 const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) => {
   return (
-    <div>ManufacturersTable</div>
+    <Table dataSource={manufacturers} pagination={false}>
+      <Column title='ID' dataIndex='_id' key='_id' />
+      <Column title='Name' dataIndex='name' key='name' />
+      <Column title='Country' dataIndex='country' key='country' />
+
+    </Table>
   );
 };
 

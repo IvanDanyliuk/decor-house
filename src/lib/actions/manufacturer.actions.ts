@@ -11,14 +11,23 @@ const manufacturerSchema = zod.object({
 });
 
 
-export const getManufacturers = async () => {
+export const getManufacturers = async ({ page, itemsPerPage }: { page: number, itemsPerPage: number }) => {
   try {
     await connectToDB();
 
-    const manufacturers = await Manufacturer.find({}).select('-__v');
+    const manufacturers = await Manufacturer
+      .find({})
+      .limit(itemsPerPage)
+      .skip((page - 1) * itemsPerPage)
+      .select('-__v');
+
+    const count = await Manufacturer.countDocuments();
 
     return {
-      data: manufacturers,
+      data: {
+        manufacturers,
+        count, 
+      },
       error: null,
       message: '',
     };
