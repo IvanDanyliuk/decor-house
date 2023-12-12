@@ -3,6 +3,7 @@
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
 import Manufacturer from '../models/manufacturer.model';
+import { revalidatePath } from 'next/cache';
 
 
 const manufacturerSchema = zod.object({
@@ -66,7 +67,29 @@ export const createManufacturer = async (prevState: any,formData: FormData) => {
     return {
       data: null,
       error: error.message,
-      message: 'Cannot create a new manufacturer',
+      message: 'Unable to create a new manufacturer',
     };
   }
 };
+
+export const deleteManufacturer = async ({ id, path }: { id: string, path: string }) => {
+  try {
+    await connectToDB();
+
+    await Manufacturer.findByIdAndDelete(id);
+
+    revalidatePath(path);
+
+    return {
+      data: null,
+      error: null,
+      message: 'Manufacturer has been successfully deleted!',
+    }
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Unable to delete the manufacturer',
+    }
+  }
+}

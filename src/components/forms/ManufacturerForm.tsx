@@ -43,10 +43,10 @@ const ManufacturerForm: React.FC = () => {
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
         <SubmitButton label='Create' />
         <Link 
-          href='/login' 
+          href='/dashboard/manufacturers' 
           className='w-full md:w-72 h-12 link-primary uppercase'
         >
-          <span>Go back to login page</span>
+          <span>Go back to Dashboard</span>
         </Link>
       </div>
     </form>

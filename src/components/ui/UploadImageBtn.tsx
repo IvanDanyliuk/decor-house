@@ -22,7 +22,6 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileUploader = e.target.files;
     setSelectedFiles(Array.from(e.target.files ?? []));
   };
 
@@ -40,7 +39,7 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required
           </button>
           <ul className='flex gap-3 text-xs'>
             {selectedFiles.map((file: any) => (
-              <li key={`file-${file.name}`}>{file.name}</li>
+              <li key={crypto.randomUUID()}>{file.name}</li>
             ))}
           </ul>
         </div>
