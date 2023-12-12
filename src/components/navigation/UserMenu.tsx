@@ -58,7 +58,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
     >
       <button className='flex items-center gap-1'>
         <Avatar src={user.photo} />
-        <span>{user.name}</span>
+        <span className='hidden md:inline'>{user.name}</span>
       </button>
     </Dropdown>
   );

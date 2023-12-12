@@ -2,7 +2,7 @@
 
 import { deleteManufacturer } from '@/lib/actions/manufacturer.actions';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Table } from 'antd';
+import { Popconfirm, Table, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import Link from 'next/link';
 
@@ -25,8 +25,13 @@ interface DataType {
 
 
 const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) => {
-  const handleManufacturerDelete = async (id: string) => {
+  const confirmDeleting = async (id: string) => {
     await deleteManufacturer({ id, path: '/dashboard/manufacturers' });
+  };
+  
+  const cancelDeleting = (e: React.MouseEvent<HTMLElement> | undefined) => {
+    console.log(e)
+    message.error('Click on No');
   };
 
   const tableColumns: ColumnsType<DataType> = [
@@ -56,12 +61,20 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
           >
             <EditOutlined />
           </Link>
-          <button 
-            className='w-8 h-8 rounded bg-gray-light'
-            onClick={() => handleManufacturerDelete(record._id)}
+          <Popconfirm
+            title='Delete Manufacturer'
+            description='Are you sure you want to delete this manufacturer?'
+            onConfirm={(e) => confirmDeleting(record._id)}
+            onCancel={cancelDeleting}
+            okText='Yes'
+            cancelText='No'
           >
-            <DeleteOutlined />
-          </button>
+            <button 
+              className='w-8 h-8 rounded bg-gray-light'
+            >
+              <DeleteOutlined />
+            </button>
+          </Popconfirm>
         </div>
       )
     },
@@ -69,6 +82,7 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
 
   return (
     <Table 
+      sticky
       columns={tableColumns} 
       dataSource={manufacturers} 
       pagination={false} 

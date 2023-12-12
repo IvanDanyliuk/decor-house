@@ -41,7 +41,7 @@ export const getManufacturers = async ({ page, itemsPerPage }: { page: number, i
   }
 };
 
-export const createManufacturer = async (prevState: any,formData: FormData) => {
+export const createManufacturer = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
   const country = formData.get('country');
 
@@ -57,6 +57,8 @@ export const createManufacturer = async (prevState: any,formData: FormData) => {
     }
 
     await Manufacturer.create({ name, country });
+
+    revalidatePath('/dashboard/menufacturers');
 
     return {
       data: null,

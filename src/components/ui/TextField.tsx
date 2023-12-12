@@ -12,9 +12,9 @@ interface TextFieldProps {
 
 const TextField: React.FC<TextFieldProps> = ({ label, name, type, required, error }) => {
   return (
-    <div className='w-full flex items-center gap-3'>
-      <label htmlFor={name} className='w-36 text-sm font-semibold'>{label}</label>
-      <div className='relative grow'>
+    <div className='w-full flex flex-col md:flex-row items-center gap-3'>
+      <label htmlFor={name} className='w-full md:w-36 text-sm font-semibold'>{label}</label>
+      <div className='relative w-full md:grow'>
         <input 
           className={`px-3 h-10 w-full text-sm border ${error ? 'border-red-600' : 'border-gray-regular'} rounded`}
           id={name}
