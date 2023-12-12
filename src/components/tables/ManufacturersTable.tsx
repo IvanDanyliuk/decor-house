@@ -1,10 +1,10 @@
 'use client'
 
-import { deleteManufacturer } from '@/lib/actions/manufacturer.actions';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 import { Popconfirm, Table, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import Link from 'next/link';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { deleteManufacturer } from '@/lib/actions/manufacturer.actions';
 
 
 interface IManufacturer {
@@ -57,7 +57,7 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
         <div className='flex'>
           <Link 
             className='mr-3 w-8 h-8 flex justify-center items-center text-center rounded bg-gray-light'
-            href={`/edit-manufacturer`}
+            href={`/edit-manufacturer/${record._id}`}
           >
             <EditOutlined />
           </Link>

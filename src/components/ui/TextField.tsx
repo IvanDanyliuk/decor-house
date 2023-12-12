@@ -5,12 +5,13 @@ interface TextFieldProps {
   label: string;
   name: string;
   type?: string;
+  defaultValue?: string;
   required?: boolean;
   error?: string[]
 }
 
 
-const TextField: React.FC<TextFieldProps> = ({ label, name, type, required, error }) => {
+const TextField: React.FC<TextFieldProps> = ({ label, name, type, defaultValue, required, error }) => {
   return (
     <div className='w-full flex flex-col md:flex-row items-center gap-3'>
       <label htmlFor={name} className='w-full md:w-36 text-sm font-semibold'>{label}</label>
@@ -20,6 +21,7 @@ const TextField: React.FC<TextFieldProps> = ({ label, name, type, required, erro
           id={name}
           type={type || 'text'} 
           name={name} 
+          defaultValue={defaultValue}
           required={required} 
         />
         <p className='mt-1 text-xs text-red-600'>

@@ -5,17 +5,6 @@ import Pagination from '@/components/ui/Pagination';
 import ManufacturersTable from '@/components/tables/ManufacturersTable';
 
 
-interface IManufacturer {
-  _id: string;
-  name: string;
-  country: string;
-}
-
-interface IManufacturersData {
-  manufacturers: IManufacturer[];
-}
-
-
 const Manufacturers = async ({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) => {
   const page = searchParams.page || 1;
 

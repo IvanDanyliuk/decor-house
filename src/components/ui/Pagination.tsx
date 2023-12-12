@@ -16,8 +16,8 @@ const Pagination: React.FC<IPagination> = ({ itemsCount }) => {
   const pathname = usePathname();
 
   const page = searchParams.get('page') || '1';
-
   const params = new URLSearchParams(searchParams);
+  
   const hasPrev = (ITEMS_PER_TABLE_PAGE * (+page - 1)) > 0;
   const hasNext = (ITEMS_PER_TABLE_PAGE * (+page - 1) + ITEMS_PER_TABLE_PAGE) < itemsCount;
 
