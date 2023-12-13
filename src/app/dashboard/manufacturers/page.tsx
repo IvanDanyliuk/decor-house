@@ -8,18 +8,19 @@ import ManufacturersTable from '@/components/tables/ManufacturersTable';
 const Manufacturers = async ({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) => {
   const page = searchParams.page || 1;
 
-  const manufacturers = await getManufacturers({ page: +page, itemsPerPage: 10 });
+  const { data } = await getManufacturers({ page: +page, itemsPerPage: 10 });
+  const parsedData = JSON.parse(JSON.stringify(data));
 
   return (
     <div>
       Manufacturers
       <Link href='/create-manufacturer'>New</Link>
-      {manufacturers.data ? (
-        <ManufacturersTable manufacturers={manufacturers.data!.manufacturers} />
+      {parsedData ? (
+        <ManufacturersTable manufacturers={parsedData!.manufacturers} />
       ) : (
         <div>Manufacturers not found</div>
       )}
-      <Pagination itemsCount={manufacturers.data?.count!} />
+      <Pagination itemsCount={parsedData?.count!} />
     </div>
   );
 };

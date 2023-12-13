@@ -34,6 +34,8 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
     message.error('Click on No');
   };
 
+  const tableData = manufacturers.map(item => ({ ...item, key: crypto.randomUUID() }));
+
   const tableColumns: ColumnsType<DataType> = [
     {
       title: 'ID',
@@ -84,7 +86,7 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
     <Table 
       sticky
       columns={tableColumns} 
-      dataSource={manufacturers} 
+      dataSource={tableData} 
       pagination={false} 
     />
   );
