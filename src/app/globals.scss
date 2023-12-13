@@ -69,3 +69,9 @@ main {
 .dashboard-table-action-btn {
   @apply w-8 h-8 rounded bg-gray-light hover:bg-accent-dark text-accent-dark hover:text-white duration-150; 
 }
+
+.ant-popconfirm-buttons {
+  .ant-btn {
+    @apply bg-gray-light hover:bg-accent-dark text-accent-dark border-none;
+  }
+}

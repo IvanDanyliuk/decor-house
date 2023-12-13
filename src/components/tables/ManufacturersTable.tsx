@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
-import { Popconfirm, Table, message } from 'antd';
+import { Popconfirm, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { deleteManufacturer } from '@/lib/actions/manufacturer.actions';
@@ -27,11 +27,6 @@ interface DataType {
 const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) => {
   const confirmDeleting = async (id: string) => {
     await deleteManufacturer({ id, path: '/dashboard/manufacturers' });
-  };
-  
-  const cancelDeleting = (e: React.MouseEvent<HTMLElement> | undefined) => {
-    console.log(e)
-    message.error('Click on No');
   };
 
   const tableData = manufacturers.map(item => ({ ...item, key: crypto.randomUUID() }));
@@ -67,7 +62,6 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
             title='Delete Manufacturer'
             description='Are you sure you want to delete this manufacturer?'
             onConfirm={(e) => confirmDeleting(record._id)}
-            onCancel={cancelDeleting}
             okText='Yes'
             cancelText='No'
           >
