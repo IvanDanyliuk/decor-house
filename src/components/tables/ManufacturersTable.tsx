@@ -58,7 +58,7 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
       render: (_, record) => (
         <div className='flex'>
           <Link 
-            className='mr-3 w-8 h-8 flex justify-center items-center text-center rounded bg-gray-light'
+            className='mr-3 flex justify-center items-center text-center dashboard-table-action-btn'
             href={`/edit-manufacturer/${record._id}`}
           >
             <EditOutlined />
@@ -72,7 +72,7 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
             cancelText='No'
           >
             <button 
-              className='w-8 h-8 rounded bg-gray-light'
+              className='dashboard-table-action-btn'
             >
               <DeleteOutlined />
             </button>

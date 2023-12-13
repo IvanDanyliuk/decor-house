@@ -14,7 +14,9 @@ const Layout: React.FC<IDashboardLayoutProps> = ({ children }) => {
         <h2 className='container mx-auto page-heading-primary'>Dashboard</h2>
       </div>
       <div className='container mx-auto'>
-        <DashboardMenu />
+        <div className='py-1'>
+          <DashboardMenu />
+        </div>
         <div className='py-3'>
           {children}
         </div>

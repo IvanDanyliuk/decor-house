@@ -63,5 +63,9 @@ main {
 }
 
 .dashboard-add-new-btn {
-  @apply px-3 py-2 bg-accent-dark text-white uppercase rounded;
+  @apply px-4 py-2 bg-accent-dark text-white uppercase rounded;
+}
+
+.dashboard-table-action-btn {
+  @apply w-8 h-8 rounded bg-gray-light hover:bg-accent-dark text-accent-dark hover:text-white duration-150; 
 }
