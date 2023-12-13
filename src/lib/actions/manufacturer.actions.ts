@@ -1,9 +1,9 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
 import Manufacturer from '../models/manufacturer.model';
-import { revalidatePath } from 'next/cache';
 
 
 const manufacturerSchema = zod.object({

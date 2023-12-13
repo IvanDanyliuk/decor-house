@@ -35,14 +35,14 @@ const Pagination: React.FC<IPagination> = ({ itemsCount }) => {
         <button 
           disabled={!hasPrev} 
           onClick={() => handleChangePage('prev')}
-          className='w-auto md:w-24 h-8 hover:bg-gray-light rounded duration-500'
+          className='pagination-btn'
         >
           <ArrowLeftOutlined />
         </button>
         <button 
           disabled={!hasNext} 
           onClick={() => handleChangePage('next')}
-          className='w-auto md:w-24 h-8 hover:bg-gray-light rounded duration-500'
+          className='pagination-btn '
         >
           <ArrowRightOutlined />
         </button>

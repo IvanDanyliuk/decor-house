@@ -53,7 +53,7 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
       key: 'country'
     },
     {
-      title: '',
+      title: <Link href='/create-manufacturer' className='dashboard-add-new-btn'>New</Link>,
       key: 'action',
       render: (_, record) => (
         <div className='flex'>
