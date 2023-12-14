@@ -85,7 +85,7 @@ export const createManufacturer = async (prevState: any, formData: FormData) => 
     return {
       data: null,
       error: null,
-      message: 'New Manufacturer has been sucessfully created!'
+      message: 'New Manufacturer has been sucessfully created!',
     };
   } catch (error: any) {
     return {

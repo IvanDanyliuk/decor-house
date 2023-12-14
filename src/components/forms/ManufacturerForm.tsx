@@ -5,7 +5,7 @@ import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { createManufacturer, updateManufacturer } from '@/lib/actions/manufacturer.actions';
 import TextField from '../ui/TextField';
-import SubmitButton from '../ui/SubmitButtom';
+import SubmitButton from '../ui/SubmitButton';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
 
 

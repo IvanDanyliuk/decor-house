@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import TextField from '../ui/TextField';
 import { register } from '@/lib/actions/user.actions';
-import SubmitButton from '../ui/SubmitButtom';
+import SubmitButton from '../ui/SubmitButton';
 import UploadImageButton from '../ui/UploadImageBtn';
 
 
