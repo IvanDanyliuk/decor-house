@@ -62,6 +62,9 @@ export const authOptions: NextAuthOptions = {
       }
     })
   ],
+  pages: {
+    signIn: '/login',
+  }
 };
 
 export const handler = NextAuth(authOptions);

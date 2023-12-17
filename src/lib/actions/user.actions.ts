@@ -5,6 +5,7 @@ import { z as zod } from 'zod';
 import { connectToDB } from '../database';
 import User from '../models/user.model'
 import { utapi } from '../uploadthing';
+import { signIn } from '../auth';
 
 
 const userSchema = zod.object({
@@ -38,7 +39,27 @@ export const getCurrentUser = async (email: string) => {
       message: 'User not found',
     };
   }
-}
+};
+
+export const authenticate = async (prevState: any, formData: FormData) => {
+  const email = formData.get('email');
+  const password = formData.get('password');
+
+  try {
+    const user = await signIn('credentials', { email, password });
+    return {
+      data: user,
+      error: null,
+      message: 'Authenticated',
+    };
+  } catch (error: any) {
+    return { 
+      data: null,
+      error: error.message,
+      message: 'Wrong credentials',
+    };
+  }
+};
 
 export const register = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
