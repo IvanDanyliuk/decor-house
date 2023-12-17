@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { Avatar, Dropdown } from 'antd';
@@ -51,6 +53,8 @@ const adminItems: MenuProps['items'] = [
 
 
 const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
+  if(!user) return null;
+  
   return (
     <Dropdown 
       menu={{ items: user.role === 'admin' ? adminItems : userItems }} 
