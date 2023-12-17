@@ -13,7 +13,7 @@ interface IManufacturerForm {
   manufacturerToUpdate?: IManufacturer;
 }
 
-const initialState1 = {
+const initialEmptyState = {
   name: '',
   country: '',
 };
@@ -21,7 +21,7 @@ const initialState1 = {
 
 const ManufacturerForm: React.FC<IManufacturerForm> = ({ manufacturerToUpdate }) => {
   const action = manufacturerToUpdate ? updateManufacturer : createManufacturer;
-  const initialState = manufacturerToUpdate ? manufacturerToUpdate : initialState1;
+  const initialState = manufacturerToUpdate ? manufacturerToUpdate : initialEmptyState;
   
   const [state, formAction] = useFormState(action, initialState);
   const ref = useRef<HTMLFormElement>(null);

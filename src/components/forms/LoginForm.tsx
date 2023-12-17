@@ -1,76 +1,37 @@
 'use client';
 
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { Input, Form, notification } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-
-
-type FieldType = {
-  email: string;
-  password: string;
-}
+import { useEffect, useRef } from 'react';
+import { useFormState } from 'react-dom';
+import { login } from '@/lib/actions/auth';
+import TextField from '../ui/TextField';
+import SubmitButton from '../ui/SubmitButton';
 
 
 const LoginForm: React.FC = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [state, formAction] = useFormState(login, undefined);
+  const ref = useRef<HTMLFormElement>(null);
 
-  const [api, contextHolder] = notification.useNotification();
-
-  const openNotification = (error: string) => {
-    api.open({
-      message: 'Cannot sign in!',
-      description: error,
-      icon: <ExclamationCircleOutlined style={{ color: '#cf4646' }} />
-    });
-  };
-
-  const onFinish = async (values: any) => {
-    setIsLoading(true);
-
-    try {
-      await signIn('credentials', { email: values.email, password: values.password, callbackUrl: '/' });
-    } catch (error: any) {
-      setIsLoading(false);
-      openNotification(`Cannot sign in. Error: ${error.message}`);
+  useEffect(() => {
+    if(state && !state.error) {
+      ref.current?.reset();
     }
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    const errors: string[] = errorInfo.errorFields.map((error: any) => error.errors[0]);
-    openNotification(`Error: ${errors}`);
-  };
+  }, [state, formAction]);
 
   return (
-    <Form
-      name='signin'
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete='off'
-    >
-      <Form.Item<FieldType> 
-        label='Email'
-        name='email'
-        rules={[{ required: true, message: 'Enter your email!' }]}
-      >
-        <Input style={{ height: '3rem' }} />
-      </Form.Item>
-      <Form.Item<FieldType> 
-        label='Password'
-        name='password'
-        rules={[{ required: true, message: 'Enter your password!' }]}
-      >
-        <Input.Password style={{ height: '3rem' }} />
-      </Form.Item>
-      <button 
-        type='submit' 
-        className='mx-auto w-full h-12 bg-accent-dark text-white uppercase rounded'
-      >
-        {isLoading ? 'Loading...' : 'Sign In'}
-      </button>
-      {contextHolder}
-    </Form>
+    <form action={formAction}>
+      <TextField 
+        name='email' 
+        label='Email' 
+        error={state && state.error && state.error['email']!}
+      />
+      <TextField 
+        name='password' 
+        label='Password' 
+        type='password' 
+        error={state && state.error && state.error['password']!}
+      />
+      <SubmitButton label='Sign In' />
+    </form>
   );
 };
 

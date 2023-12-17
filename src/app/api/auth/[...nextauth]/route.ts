@@ -7,12 +7,6 @@ import { connectToDB } from '@/lib/database';
 import User from '@/lib/models/user.model';
 
 
-//DEPLOYMENT
-//Change the following setting in the Google Dashboard to deploy the app
-//API & Services --> OAuth Consent Screen:
-// - Testing --- press 'Publish App' button
-// - 
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CreadentialsProvider({
@@ -23,8 +17,9 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: any, req) {
-        await connectToDB();
         try {
+          await connectToDB();
+
           const user = await User.findOne({ email: credentials.email });
 
           if(user) {
