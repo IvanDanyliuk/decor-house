@@ -18,7 +18,7 @@ const LoginForm: React.FC = () => {
   }, [state, formAction]);
 
   return (
-    <form action={formAction}>
+    <form action={formAction} className='flex flex-col items-center gap-3'>
       <TextField 
         name='email' 
         label='Email' 
