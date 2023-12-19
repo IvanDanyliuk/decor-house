@@ -54,35 +54,37 @@ export const createCategory = async (prevState: any, formData: FormData) => {
   const types = formData.getAll('types');
   const features = formData.getAll('features');
 
+  console.log('CREATE CATEGORY ACTION', Object.fromEntries(formData))
+
   try {
-    await connectToDB();
+    // await connectToDB();
 
-    const validatedFields = categorySchema.safeParse({
-      name, image, types, features
-    });
+    // const validatedFields = categorySchema.safeParse({
+    //   name, image, types, features
+    // });
 
-    if(!validatedFields.success) {
-      return {
-        error: validatedFields.error.flatten().fieldErrors,
-      };
-    }
+    // if(!validatedFields.success) {
+    //   return {
+    //     error: validatedFields.error.flatten().fieldErrors,
+    //   };
+    // }
 
-    const existingCategory = await Category.findOne({ name });
+    // const existingCategory = await Category.findOne({ name });
 
-    if(existingCategory) return { error: 'Category already exists' };
+    // if(existingCategory) return { error: 'Category already exists' };
 
-    const imageUrl = new Blob(image).size > 0 ? (await utapi.uploadFiles(image))[0].data?.url : null;
+    // const imageUrl = new Blob(image).size > 0 ? (await utapi.uploadFiles(image))[0].data?.url : null;
 
-    if(!imageUrl) return { error: 'Category Image is required' };
+    // if(!imageUrl) return { error: 'Category Image is required' };
 
-    await Category.create({
-      name, 
-      image: imageUrl,
-      types, 
-      features,
-    });
+    // await Category.create({
+    //   name, 
+    //   image: imageUrl,
+    //   types, 
+    //   features,
+    // });
 
-    revalidatePath('/dashboard/categories');
+    // revalidatePath('/dashboard/categories');
 
     return {
       data: null,
