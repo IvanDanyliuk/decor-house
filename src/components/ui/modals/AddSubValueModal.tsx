@@ -9,11 +9,11 @@ import { useFormState } from 'react-dom';
 import { addTypeValue } from '@/lib/actions/common.actions';
 
 
-interface IAddCategoryModal {
-  onAddCategoryType: (type: string) => void;
+interface IAddSubValueModal {
+  onAddNewValue: (type: string) => void;
 }
 
-const AddCategoryModal: React.FC<IAddCategoryModal> = ({ onAddCategoryType }) => {
+const AddSubValueModal: React.FC<IAddSubValueModal> = ({ onAddNewValue }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [state, formAction] = useFormState(addTypeValue, {});
   const ref = useRef<HTMLFormElement>(null)
@@ -24,7 +24,7 @@ const AddCategoryModal: React.FC<IAddCategoryModal> = ({ onAddCategoryType }) =>
 
   useEffect(() => {
     if(state && typeof state === 'string') {
-      onAddCategoryType(state);
+      onAddNewValue(state);
       ref.current?.reset();
     }
   }, [state, formAction]);
@@ -56,4 +56,4 @@ const AddCategoryModal: React.FC<IAddCategoryModal> = ({ onAddCategoryType }) =>
   );
 };
 
-export default AddCategoryModal;
+export default AddSubValueModal;

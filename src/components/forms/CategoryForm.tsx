@@ -7,7 +7,9 @@ import { ICategory } from '@/lib/types/category.types';
 import TextField from '../ui/TextField';
 import UploadImageButton from '../ui/UploadImageBtn';
 import SubmitButton from '../ui/SubmitButton';
-import AddCategoryTypeModal from '../ui/modals/AddCategoryTypeModal';
+import AddSubValueModal from '../ui/modals/AddSubValueModal';
+import { CloseOutlined } from '@ant-design/icons';
+import Chip from '../ui/Chip';
 
 
 interface ICategoryForm {
@@ -62,8 +64,15 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
         <div className='w-full'>
           <div>
             <h6>Types</h6>
-            <AddCategoryTypeModal onAddCategoryType={addNewType} />
+            <AddSubValueModal onAddNewValue={addNewType} />
           </div>
+          <ul className='flex flex-wrap gap-3'>
+            {types.map(type => (
+              <li key={crypto.randomUUID()}>
+                <Chip text={type} onClose={() => deleteType(type)} />
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
