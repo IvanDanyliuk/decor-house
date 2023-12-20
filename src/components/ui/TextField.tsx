@@ -1,17 +1,20 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ChangeEvent } from 'react';
 
 
 interface TextFieldProps {
   label?: string;
   name: string;
   type?: string;
+  value?: string;
   defaultValue?: string;
   required?: boolean;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   error?: string[]
 }
 
 
-const TextField: React.FC<TextFieldProps> = ({ label, name, type, defaultValue, required, error }) => {
+const TextField: React.FC<TextFieldProps> = ({ label, name, type, value, defaultValue, required, onChange, error }) => {
   return (
     <div className='w-full flex flex-col md:flex-row items-center gap-3'>
       {label && (
@@ -28,7 +31,9 @@ const TextField: React.FC<TextFieldProps> = ({ label, name, type, defaultValue, 
           id={name}
           type={type || 'text'} 
           name={name} 
-          defaultValue={defaultValue}
+          value={value}
+          defaultValue={defaultValue} 
+          onChange={onChange}
           required={required} 
         />
         <p className='mt-1 text-xs text-red-600'>

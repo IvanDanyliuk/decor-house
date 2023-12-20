@@ -1,16 +1,15 @@
 'use client';
 
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
+import Link from 'next/link';
 import { createCategory, updateCategory } from '@/lib/actions/category.actions';
 import { ICategory } from '@/lib/types/category.types';
 import TextField from '../ui/TextField';
 import UploadImageButton from '../ui/UploadImageBtn';
 import SubmitButton from '../ui/SubmitButton';
 import AddSubValueModal from '../ui/modals/AddSubValueModal';
-import { CloseOutlined } from '@ant-design/icons';
 import Chip from '../ui/Chip';
-import Link from 'next/link';
 
 
 interface ICategoryForm {
@@ -23,6 +22,7 @@ const initialEmptyState = {
   types: [],
   features: [],
 }
+
 
 const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
   const action = categoryToUpdate ? updateCategory : createCategory;
@@ -52,11 +52,21 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
   useEffect(() => {
     if(state && !state.error) {
       ref.current?.reset();
+      setTypes([]);
+      setFeatures([]);
     }
   }, [state, formAction]);
 
   return (
-    <form ref={ref} action={formAction} className='flex grow flex-1 flex-col justify-between content-between gap-6'>
+    <form 
+      ref={ref} 
+      action={async (formData: FormData) => {
+        formData.append('types', types.join(', '));
+        formData.append('features', features.join(', '));
+        await formAction(formData);
+      }} 
+      className='flex grow flex-1 flex-col justify-between content-between gap-6'
+    >
       <fieldset className='flex flex-col gap-3'>
         <TextField 
           name='name' 
@@ -73,12 +83,15 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
         <div className='w-full mb-6'>
           <div className='mb-3 w-full flex items-center'>
             <h6 className='mr-3 font-semibold text-sm'>Types</h6>
-            <AddSubValueModal onAddNewValue={addNewType} />
+            <AddSubValueModal title='Add new category type' onAddNewValue={addNewType} />
           </div>
           <ul className='flex flex-wrap gap-3'>
             {types.map(type => (
               <li key={crypto.randomUUID()}>
-                <Chip text={type} onClose={() => deleteType(type)} />
+                <Chip 
+                  text={type} 
+                  onClose={() => deleteType(type)} 
+                />
               </li>
             ))}
           </ul>
@@ -86,12 +99,15 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
         <div className='w-full'>
           <div className='mb-3 w-full flex items-center'>
             <h6 className='mr-3 font-semibold text-sm'>Features</h6>
-            <AddSubValueModal onAddNewValue={addNewFeature} />
+            <AddSubValueModal title='Add new category feature' onAddNewValue={addNewFeature} />
           </div>
           <ul className='flex flex-wrap gap-3'>
             {features.map(feature => (
               <li key={crypto.randomUUID()}>
-                <Chip text={feature} onClose={() => deleteType(feature)} />
+                <Chip 
+                  text={feature} 
+                  onClose={() => deleteFeature(feature)} 
+                />
               </li>
             ))}
           </ul>

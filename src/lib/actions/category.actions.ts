@@ -12,10 +12,9 @@ const categorySchema = zod.object({
   name: zod.string().min(1, 'Name is required!'),
   image: zod
     .any()
-    .refine(file => file?.size < MAX_IMAGE_SIZE, 'Max image size is 5Mb')
     .refine(files => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type)),
-  types: zod.array(zod.string()),
-  features: zod.array(zod.string()),
+  types: zod.string(),
+  features: zod.string(),
 });
 
 
@@ -51,40 +50,48 @@ export const getCategories = async ({ page, itemsPerPage }: { page: number, item
 export const createCategory = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
   const image = formData.getAll('image');
-  const types = formData.getAll('types');
-  const features = formData.getAll('features');
+  const types = formData.get('types') as string;
+  const features = formData.get('features') as string;
 
-  console.log('CREATE CATEGORY ACTION', Object.fromEntries(formData))
+  
 
   try {
-    // await connectToDB();
+    await connectToDB();
 
-    // const validatedFields = categorySchema.safeParse({
-    //   name, image, types, features
-    // });
+    const validatedFields = categorySchema.safeParse({
+      name, image, types, features
+    });
 
-    // if(!validatedFields.success) {
-    //   return {
-    //     error: validatedFields.error.flatten().fieldErrors,
-    //   };
-    // }
+    if(!validatedFields.success) {
+      console.log('VALIDATION ERROR', validatedFields.error.flatten().fieldErrors)
+      return {
+        error: validatedFields.error.flatten().fieldErrors,
+      };
+    }
 
-    // const existingCategory = await Category.findOne({ name });
+    console.log('CREATE CATEGORY ACTION', {
+      name,
+      image,
+      types,
+      features,
+    })
 
-    // if(existingCategory) return { error: 'Category already exists' };
+    const existingCategory = await Category.findOne({ name });
 
-    // const imageUrl = new Blob(image).size > 0 ? (await utapi.uploadFiles(image))[0].data?.url : null;
+    if(existingCategory) return { error: 'Category already exists' };
 
-    // if(!imageUrl) return { error: 'Category Image is required' };
+    const imageUrl = new Blob(image).size > 0 ? (await utapi.uploadFiles(image))[0].data?.url : null;
 
-    // await Category.create({
-    //   name, 
-    //   image: imageUrl,
-    //   types, 
-    //   features,
-    // });
+    if(!imageUrl) return { error: 'Category Image is required' };
 
-    // revalidatePath('/dashboard/categories');
+    await Category.create({
+      name, 
+      image: imageUrl,
+      types: types.split(', '), 
+      features: features.split(', '),
+    });
+
+    revalidatePath('/dashboard/categories');
 
     return {
       data: null,
