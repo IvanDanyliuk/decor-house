@@ -10,6 +10,7 @@ import SubmitButton from '../ui/SubmitButton';
 import AddSubValueModal from '../ui/modals/AddSubValueModal';
 import { CloseOutlined } from '@ant-design/icons';
 import Chip from '../ui/Chip';
+import Link from 'next/link';
 
 
 interface ICategoryForm {
@@ -29,6 +30,7 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
 
   const [state, formAction] = useFormState(action, initialState);
   const [types, setTypes] = useState<string[]>([]);
+  const [features, setFeatures] = useState<string[]>([]);
   const ref = useRef<HTMLFormElement>(null);
 
   const addNewType = (type: string) => {
@@ -39,6 +41,14 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
     setTypes(types.filter(item => item !== type));
   };
 
+  const addNewFeature = (feature: string) => {
+    setFeatures([...features, feature]);
+  };
+
+  const deleteFeature = (feature: string) => {
+    setFeatures(features.filter(item => item !== feature));
+  };
+
   useEffect(() => {
     if(state && !state.error) {
       ref.current?.reset();
@@ -46,8 +56,8 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
   }, [state, formAction]);
 
   return (
-    <div className='w-full flex flex-col md:flex-row gap-6'>
-      <form ref={ref} action={formAction} className='grow'>
+    <form ref={ref} action={formAction} className='flex grow flex-1 flex-col justify-between content-between gap-6'>
+      <fieldset className='flex flex-col gap-3'>
         <TextField 
           name='name' 
           label='Name' 
@@ -58,12 +68,11 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
           name='image' 
           label='Image' 
         />
-        <SubmitButton label={categoryToUpdate ? 'Update' : 'Create'} />
-      </form>
-      <div className='relative w-full md:w-1/2'>
-        <div className='w-full'>
-          <div>
-            <h6>Types</h6>
+      </fieldset>
+      <fieldset className='w-full'>
+        <div className='w-full mb-6'>
+          <div className='mb-3 w-full flex items-center'>
+            <h6 className='mr-3 font-semibold text-sm'>Types</h6>
             <AddSubValueModal onAddNewValue={addNewType} />
           </div>
           <ul className='flex flex-wrap gap-3'>
@@ -74,8 +83,30 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
             ))}
           </ul>
         </div>
+        <div className='w-full'>
+          <div className='mb-3 w-full flex items-center'>
+            <h6 className='mr-3 font-semibold text-sm'>Features</h6>
+            <AddSubValueModal onAddNewValue={addNewFeature} />
+          </div>
+          <ul className='flex flex-wrap gap-3'>
+            {features.map(feature => (
+              <li key={crypto.randomUUID()}>
+                <Chip text={feature} onClose={() => deleteType(feature)} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </fieldset>
+      <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
+        <SubmitButton label={categoryToUpdate ? 'Update' : 'Create'} />
+        <Link 
+          href='/dashboard/categories' 
+          className='w-full md:w-72 h-12 link-primary uppercase'
+        >
+          <span>Go back to Dashboard</span>
+        </Link>
       </div>
-    </div>
+    </form>
   );
 };
 

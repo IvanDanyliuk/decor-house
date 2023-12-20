@@ -31,7 +31,10 @@ const AddSubValueModal: React.FC<IAddSubValueModal> = ({ onAddNewValue }) => {
 
   return (
     <>
-      <button onClick={handleModalOpen}>
+      <button 
+        onClick={handleModalOpen} 
+        className='w-8 h-8 flex justify-center items-center rounded-3xl bg-white hover:bg-accent-dark text-accent-dark hover:text-white duration-150'
+      >
         <PlusOutlined />
       </button>
       <Modal

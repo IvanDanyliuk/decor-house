@@ -27,8 +27,8 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required
 
   return (
     <div className='w-full flex items-center gap-3'>
-      <label htmlFor={name} className='w-36 text-sm font-semibold'>{label}</label>
-      <div className='relative grow'>
+      <label htmlFor={name} className='w-full md:w-36 text-sm font-semibold'>{label}</label>
+      <div className='relative w-full md:grow'>
         <div className='w-full flex gap-1 items-center  '>
           <button 
             type='button'
