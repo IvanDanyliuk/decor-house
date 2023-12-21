@@ -77,6 +77,7 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
         <UploadImageButton 
           name='image' 
           label='Image' 
+          error={state && state.error && state.error['image']}
         />
       </fieldset>
       <fieldset className='w-full'>
