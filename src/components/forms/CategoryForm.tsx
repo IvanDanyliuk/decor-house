@@ -10,6 +10,7 @@ import UploadImageButton from '../ui/UploadImageBtn';
 import SubmitButton from '../ui/SubmitButton';
 import AddSubValueModal from '../ui/modals/AddSubValueModal';
 import Chip from '../ui/Chip';
+import { useRouter } from 'next/navigation';
 
 
 interface ICategoryForm {
@@ -28,9 +29,11 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
   const action = categoryToUpdate ? updateCategory : createCategory;
   const initialState = categoryToUpdate ? categoryToUpdate : initialEmptyState;
 
+  const router = useRouter();
+
   const [state, formAction] = useFormState(action, initialState);
-  const [types, setTypes] = useState<string[]>([]);
-  const [features, setFeatures] = useState<string[]>([]);
+  const [types, setTypes] = useState<string[]>(categoryToUpdate?.types || []);
+  const [features, setFeatures] = useState<string[]>(categoryToUpdate?.features || []);
   const ref = useRef<HTMLFormElement>(null);
 
   const addNewType = (type: string) => {
@@ -50,10 +53,14 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
   };
 
   useEffect(() => {
-    if(state && !state.error) {
+    if(state.message) {
       ref.current?.reset();
       setTypes([]);
       setFeatures([]);
+
+      if(categoryToUpdate) {
+        router.push('/dashboard/categories');
+      }
     }
   }, [state, formAction]);
 
@@ -86,32 +93,36 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
             <h6 className='mr-3 font-semibold text-sm'>Types</h6>
             <AddSubValueModal title='Add new category type' onAddNewValue={addNewType} />
           </div>
-          <ul className='flex flex-wrap gap-3'>
-            {types.map(type => (
-              <li key={crypto.randomUUID()}>
-                <Chip 
-                  text={type} 
-                  onClose={() => deleteType(type)} 
-                />
-              </li>
-            ))}
-          </ul>
+          {types.length > 0 && (
+            <ul className='flex flex-wrap gap-3'>
+              {types.map(type => (
+                <li key={crypto.randomUUID()}>
+                  <Chip 
+                    text={type} 
+                    onClose={() => deleteType(type)} 
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         <div className='w-full'>
           <div className='mb-3 w-full flex items-center'>
             <h6 className='mr-3 font-semibold text-sm'>Features</h6>
             <AddSubValueModal title='Add new category feature' onAddNewValue={addNewFeature} />
           </div>
-          <ul className='flex flex-wrap gap-3'>
-            {features.map(feature => (
-              <li key={crypto.randomUUID()}>
-                <Chip 
-                  text={feature} 
-                  onClose={() => deleteFeature(feature)} 
-                />
-              </li>
-            ))}
-          </ul>
+          {features.length > 0 && (
+            <ul className='flex flex-wrap gap-3'>
+              {features.map(feature => (
+                <li key={crypto.randomUUID()}>
+                  <Chip 
+                    text={feature} 
+                    onClose={() => deleteFeature(feature)} 
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </fieldset>
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>

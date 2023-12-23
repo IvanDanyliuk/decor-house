@@ -12,7 +12,8 @@ const categorySchema = zod.object({
   name: zod.string().min(1, 'Name is required!'),
   image: zod
     .any()
-    .refine(files => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type)),
+    .refine(files => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type))
+    .or(zod.any()),
   types: zod.string(),
   features: zod.string(),
 });
@@ -47,13 +48,33 @@ export const getCategories = async ({ page, itemsPerPage }: { page: number, item
   }
 };
 
+export const getCategory = async (id: string) => {
+  try {
+    await connectToDB();
+
+    const category = await Category
+      .findById(id)
+      .select('-__v');
+
+    return {
+      data: category,
+      error: null,
+      message: '',
+    }
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot find a category',
+    };
+  }
+}
+
 export const createCategory = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
   const image = formData.getAll('image');
   const types = formData.get('types') as string;
   const features = formData.get('features') as string;
-
-  
 
   try {
     await connectToDB();
@@ -69,13 +90,6 @@ export const createCategory = async (prevState: any, formData: FormData) => {
       };
     }
 
-    console.log('CREATE CATEGORY ACTION', {
-      name,
-      image,
-      types,
-      features,
-    })
-
     const existingCategory = await Category.findOne({ name });
 
     if(existingCategory) return { error: 'Category already exists' };
@@ -87,8 +101,8 @@ export const createCategory = async (prevState: any, formData: FormData) => {
     await Category.create({
       name, 
       image: imageUrl,
-      types: types.split(', '), 
-      features: features.split(', '),
+      types: types ? types.split(', ') : [], 
+      features: features ? features.split(', ') : [],
     });
 
     revalidatePath('/dashboard/categories');
@@ -110,16 +124,14 @@ export const createCategory = async (prevState: any, formData: FormData) => {
 export const updateCategory = async (prevState: any, formData: FormData) => {
   const id = prevState._id;
   const name = formData.get('name');
-  const image = formData.get('image');
-  const types = formData.getAll('types');
-  const features = formData.getAll('features');
+  const image = formData.getAll('image');
+  const types = formData.get('types') as string;
+  const features = formData.get('features') as string;
 
   try {
     await connectToDB();
 
-    const validatedFields = categorySchema.safeParse({
-      name, image, types, features
-    });
+    const validatedFields = categorySchema.safeParse({ name, image, types, features });
 
     if(!validatedFields.success) {
       return {
@@ -127,7 +139,12 @@ export const updateCategory = async (prevState: any, formData: FormData) => {
       };
     }
 
-    await Category.findByIdAndUpdate(id, { name, image, types, features });
+    await Category.findByIdAndUpdate(id, { 
+      name, 
+      image: new Blob(image).size > 0 ? image : prevState.image, 
+      types: types ? types.split(', ') : [], 
+      features: features ? features.split(', ') : [] 
+    });
 
     revalidatePath('/dashboard/categories');
 

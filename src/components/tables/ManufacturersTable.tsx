@@ -54,7 +54,7 @@ const ManufacturersTable: React.FC<IManufacturersTable> = ({ manufacturers }) =>
         <div className='flex'>
           <Link 
             className='mr-3 flex justify-center items-center text-center dashboard-table-action-btn'
-            href={`/edit-manufacturer/${record._id}`}
+            href={`/dashboard/edit-manufacturer/${record._id}`}
           >
             <EditOutlined />
           </Link>

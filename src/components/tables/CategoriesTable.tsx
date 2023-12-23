@@ -69,7 +69,7 @@ const CategoriesTable: React.FC<ICategoriesTable> = ({ categories }) => {
         <div className='flex'>
           <Link 
             className='mr-3 flex justify-center items-center text-center dashboard-table-action-btn'
-            href={`/edit-category/${record._id}`}
+            href={`/dashboard/edit-category/${record._id}`}
           >
             <EditOutlined />
           </Link>
