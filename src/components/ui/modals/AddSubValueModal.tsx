@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import TextField from '../TextField';
@@ -31,10 +31,15 @@ const AddSubValueModal: React.FC<IAddSubValueModal> = ({ title, onAddNewValue })
       if(error) {
         setError(undefined);
       }
+      setIsOpen(false);
     } else {
-      setError(['Value is required'])
+      setError(['Value is required']);
     }
   };
+
+  useEffect(() => {
+    if(!isOpen) setValue('');
+  }, [isOpen]);
 
   return (
     <>
