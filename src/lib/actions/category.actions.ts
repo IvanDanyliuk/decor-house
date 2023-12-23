@@ -19,7 +19,13 @@ const categorySchema = zod.object({
 });
 
 
-export const getCategories = async ({ page, itemsPerPage }: { page: number, itemsPerPage: number }) => {
+export const getCategories = async ({ 
+  page, 
+  itemsPerPage 
+}: { 
+  page: number, 
+  itemsPerPage: number 
+}) => {
   try {
     await connectToDB();
 
@@ -84,7 +90,6 @@ export const createCategory = async (prevState: any, formData: FormData) => {
     });
 
     if(!validatedFields.success) {
-      console.log('VALIDATION ERROR', validatedFields.error.flatten().fieldErrors)
       return {
         error: validatedFields.error.flatten().fieldErrors,
       };
@@ -94,7 +99,9 @@ export const createCategory = async (prevState: any, formData: FormData) => {
 
     if(existingCategory) return { error: 'Category already exists' };
 
-    const imageUrl = new Blob(image).size > 0 ? (await utapi.uploadFiles(image))[0].data?.url : null;
+    const imageUrl = new Blob(image).size > 0 ? 
+      (await utapi.uploadFiles(image))[0].data?.url : 
+      null;
 
     if(!imageUrl) return { error: 'Category Image is required' };
 
@@ -139,9 +146,18 @@ export const updateCategory = async (prevState: any, formData: FormData) => {
       };
     }
 
+    const imageUrl = new Blob(image).size > 0 ? 
+      (await utapi.uploadFiles(image))[0].data?.url : 
+      prevState.image;
+
+    if(new Blob(image).size > 0) {
+      const url = prevState.image.substring(prevState.image.lastIndexOf('/') + 1);
+      await utapi.deleteFiles(url);
+    }
+
     await Category.findByIdAndUpdate(id, { 
       name, 
-      image: new Blob(image).size > 0 ? image : prevState.image, 
+      image: imageUrl, 
       types: types ? types.split(', ') : [], 
       features: features ? features.split(', ') : [] 
     });
@@ -165,6 +181,10 @@ export const updateCategory = async (prevState: any, formData: FormData) => {
 export const deleteCategory = async ({ id, path }: { id: string, path: string }) => {
   try {
     await connectToDB();
+
+    const category = await Category.findById(id);
+    const imageUrl = category.image.substring(category.image.lastIndexOf('/') + 1);
+    await utapi.deleteFiles(imageUrl);
 
     await Category.findByIdAndDelete(id);
 
