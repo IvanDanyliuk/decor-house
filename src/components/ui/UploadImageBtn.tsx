@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import Image from 'next/image';
 
 
 interface IUploadImageButton {
@@ -9,11 +10,12 @@ interface IUploadImageButton {
   name: string;
   required?: boolean;
   multiple?: boolean;
+  value?: string | string[];
   error?: string[]
 }
 
 
-const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required, multiple, error }) => {
+const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required, multiple, value, error }) => {
   const [selectedFiles, setSelectedFiles] = useState<any>([])
   const ref = useRef<HTMLInputElement>(null);
 
@@ -24,6 +26,8 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFiles(Array.from(e.target.files ?? []));
   };
+
+  console.log('SELECTED FILES', selectedFiles)
 
   return (
     <div className='w-full flex items-center gap-3'>
@@ -37,22 +41,38 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({ name, label, required
           >
             Upload
           </button>
-          <ul className='flex gap-3 text-xs'>
-            {selectedFiles.map((file: any) => (
-              <li key={crypto.randomUUID()}>{file.name}</li>
-            ))}
-          </ul>
+          {value && selectedFiles.length === 0 ? (
+            <>
+              {Array.isArray(value) ? (
+                <ul className='flex gap-3 text-xs'>
+                  {value.map((image: string) => (
+                    <li key={crypto.randomUUID()}>
+                      <Image src={image} alt='Image' width={50} height={50} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Image src={value} alt='Image' width={50} height={50} />
+              )}
+            </>
+          ) : (
+            <ul className='flex gap-3 text-xs'>
+              {selectedFiles.map((file: any) => (
+                <li key={crypto.randomUUID()}>{file.name}</li>
+              ))}
+            </ul>
+            )}
         </div>
         <input 
-            ref={ref}
-            className={`hidden h-10 w-full text-sm `}
-            id={name}
-            type='file'
-            name={name} 
-            required={required} 
-            multiple={multiple}
-            onChange={handleChange}
-          />
+          ref={ref}
+          className={`hidden h-10 w-full text-sm `}
+          id={name}
+          type='file'
+          name={name} 
+          required={required} 
+          multiple={multiple}
+          onChange={handleChange}
+        />
         <p className='mt-1 text-xs text-red-600'>
           {error && (
             <>

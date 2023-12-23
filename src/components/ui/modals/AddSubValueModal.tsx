@@ -11,6 +11,7 @@ interface IAddSubValueModal {
   onAddNewValue: (type: string) => void;
 }
 
+
 const AddSubValueModal: React.FC<IAddSubValueModal> = ({ title, onAddNewValue }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
