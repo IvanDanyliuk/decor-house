@@ -5,6 +5,7 @@ import GitHubProvider from 'next-auth/providers/github';
 import bcrypt from 'bcryptjs';
 import { connectToDB } from '@/lib/database';
 import User from '@/lib/models/user.model';
+import { JWT } from 'next-auth/jwt';
 
 
 export const authOptions: NextAuthOptions = {
@@ -59,7 +60,19 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: {
     signIn: '/login',
-  }
+  },
+  callbacks: {
+    async jwt({ token, user }: { token: JWT, user: any }) {
+      if (user) token.role = user.role;
+      if(user) console.log('JWT', { token, user })
+      return token;
+    },
+    async session({ session, token }: any) {
+      if (session?.user) session.user.role = token.role;
+      if(session) console.log('SESSION', { session, token });
+      return session;
+    },
+  },
 };
 
 export const handler = NextAuth(authOptions);
