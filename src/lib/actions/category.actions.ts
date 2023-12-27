@@ -23,17 +23,21 @@ export const getCategories = async ({
   page, 
   itemsPerPage 
 }: { 
-  page: number, 
-  itemsPerPage: number 
+  page?: number, 
+  itemsPerPage?: number 
 }) => {
   try {
     await connectToDB();
 
-    const categories = await Category
-      .find({})
-      .limit(itemsPerPage)
-      .skip((page - 1) * itemsPerPage)
-      .select('-__v');
+    const categories = (page && itemsPerPage) ? 
+      await Category
+        .find({})
+        .limit(itemsPerPage)
+        .skip((page - 1) * itemsPerPage)
+        .select('-__v') :
+      await Category
+        .find({})
+        .select('-__v');
 
     const count = await Category.countDocuments();
 
@@ -74,7 +78,7 @@ export const getCategory = async (id: string) => {
       message: 'Cannot find a category',
     };
   }
-}
+};
 
 export const createCategory = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
