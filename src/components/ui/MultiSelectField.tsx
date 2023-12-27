@@ -50,67 +50,57 @@ const SelectField: React.FC<ISelectField> = ({ label, name, title, options, requ
   }, [selectedOptions])
 
   return (
-    <>
-      {/* {isOpen && (
-        <div 
-          className={`absolute top-0 bottom-0 left-0 right-0 bg-accent-dark opacity-50 z-10`} 
+    <div className='relative w-full flex flex-col md:flex-row items-center gap-3 z-50'>
+      {label && (
+        <label 
+          htmlFor={name} 
+          className='w-full md:w-36 text-sm font-semibold'
+        >
+          {label}
+        </label>
+      )}
+      <div className='relative w-full md:grow'>  
+        <button 
+          type='button' 
           onClick={handleMenuOpen} 
-        />
-      )} */}
-      <div className='relative w-full flex flex-col md:flex-row items-center gap-3 z-50'>
-        {label && (
-          <label 
-            htmlFor={name} 
-            className='w-full md:w-36 text-sm font-semibold'
-          >
-            {label}
-          </label>
-        )}
-        <div className='relative w-full md:grow'>  
-          
-          <button 
-            type='button' 
-            onClick={handleMenuOpen} 
-            className='w-full h-10 flex items-center gap-3'
-          >
-            <span>{title}</span>
-            {isOpen ? <UpOutlined className='text-sm' /> : <DownOutlined className='text-sm' />}
-          </button>
-          {isOpen && (
-            <ul className='absolute top-10 w-full bg-white'>
+          className='w-full h-10 flex items-center gap-3'
+        >
+          <span>{title}</span>
+          {isOpen ? <UpOutlined className='text-sm' /> : <DownOutlined className='text-sm' />}
+        </button>
+        {isOpen && (
+          <ul className='absolute top-10 w-full bg-white'>
+            <li key={crypto.randomUUID()} className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'>
+              <input 
+                type='checkbox' 
+                checked={options.every(item => selectedOptions.includes(item.value))}
+                onChange={handleSelectAllOptions} 
+              />
+              <label>All</label>
+            </li>
+            {options.map(option => (
               <li key={crypto.randomUUID()} className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'>
                 <input 
                   type='checkbox' 
-                  checked={options.every(item => selectedOptions.includes(item.value))}
-                  onChange={handleSelectAllOptions} 
+                  value={option.value} 
+                  checked={selectedOptions.includes(option.value)}
+                  onChange={handleSelectOptions} 
                 />
-                <label>All</label>
+                <label>{option.label}</label>
               </li>
-              {options.map(option => (
-                <li key={crypto.randomUUID()} className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'>
-                  <input 
-                    type='checkbox' 
-                    value={option.value} 
-                    checked={selectedOptions.includes(option.value)}
-                    onChange={handleSelectOptions} 
-                  />
-                  <label>{option.label}</label>
-                </li>
-              ))}
-            </ul>
+            ))}
+          </ul>
+        )}
+        <p className='mt-1 text-xs text-red-600'>
+          {error && (
+            <>
+              <ExclamationCircleOutlined />
+              <span className='ml-1'>{error.join(' ')}</span>
+            </>
           )}
-
-          <p className='mt-1 text-xs text-red-600'>
-            {error && (
-              <>
-                <ExclamationCircleOutlined />
-                <span className='ml-1'>{error.join(' ')}</span>
-              </>
-            )}
-          </p>
-        </div>
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 
