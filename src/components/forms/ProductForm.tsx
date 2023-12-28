@@ -13,6 +13,7 @@ import { IManufacturer } from '@/lib/types/manufacturer.types';
 import { IProduct } from '@/lib/types/products.types';
 import MultiSelectField from '../ui/MultiSelectField';
 import { createProduct } from '@/lib/actions/product.actions';
+import SelectField from '../ui/SelectField';
 
 
 interface IProductForm {
@@ -49,37 +50,11 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const router = useRouter();
 
   const [state, formAction] = useFormState(action, initialState);
-  // const [types, setTypes] = useState<string[]>(categoryToUpdate?.types || []);
-  // const [features, setFeatures] = useState<string[]>(categoryToUpdate?.features || []);
   const ref = useRef<HTMLFormElement>(null);
 
-  // const addNewType = (type: string) => {
-  //   setTypes([...types, type]);
-  // };
-
-  // const deleteType = (type: string) => {
-  //   setTypes(types.filter(item => item !== type));
-  // };
-
-  // const addNewFeature = (feature: string) => {
-  //   setFeatures([...features, feature]);
-  // };
-
-  // const deleteFeature = (feature: string) => {
-  //   setFeatures(features.filter(item => item !== feature));
-  // };
-
-  // useEffect(() => {
-  //   if(state.message) {
-  //     ref.current?.reset();
-  //     setTypes([]);
-  //     setFeatures([]);
-
-  //     if(categoryToUpdate) {
-  //       router.push('/dashboard/categories');
-  //     }
-  //   }
-  // }, [state, formAction]);
+  const [category, setCategory] = useState<string>('');
+  const [type, setType] = useState<string>('');
+  const [features, setFeatures] = useState<string[]>([]);
 
   return (
     <form 
@@ -88,12 +63,18 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
       className='flex grow flex-1 flex-col justify-between content-between gap-6'
     >
       <fieldset className='flex flex-col gap-3'>
-        <MultiSelectField 
+        <SelectField 
+          name='category'
+          label='Category'
+          title='Select a category' 
+          options={categoriesData}
+        />
+        {/* <MultiSelectField 
           label='Category'
           name='category'
           title='Select a product category'
           options={categoriesData}
-        />
+        /> */}
       </fieldset>
       
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>

@@ -17,7 +17,16 @@ interface ISelectField {
   error?: string[];
 }
 
-const SelectField: React.FC<ISelectField> = ({ label, name, title, options, required, onChange, error }) => {
+
+const SelectField: React.FC<ISelectField> = ({ 
+  label, 
+  name, 
+  title, 
+  options, 
+  required, 
+  onChange, 
+  error 
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
