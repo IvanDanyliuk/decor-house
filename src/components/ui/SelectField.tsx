@@ -29,6 +29,10 @@ const SelectField: React.FC<ISelectField> = ({ name, label, title, options, onCh
     const option = options.find(item => item.value === value);
     const isValueExist = options.find(item => item.label === valueToShow);
 
+    console.log('SELECT FIELD', {
+      options, value, valueToShow
+    })
+
     setValueToShow(option?.label!);
 
     if(onChange) {
@@ -56,7 +60,7 @@ const SelectField: React.FC<ISelectField> = ({ name, label, title, options, onCh
             <DownOutlined className='text-sm' />
           </div>
           <div className='absolute top-10 w-full border border-gray-100 border-t-0 bg-white transition-opacity opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto z-10'>
-            <ul className='w-full bg-white'>
+            <ul className='w-full max-h-56 overflow-y-scroll bg-white'>
               {options.map(option => (
                 <li 
                   key={crypto.randomUUID()} 

@@ -14,6 +14,7 @@ import { IProduct } from '@/lib/types/products.types';
 import MultiSelectField from '../ui/MultiSelectField';
 import { createProduct } from '@/lib/actions/product.actions';
 import SelectField from '../ui/SelectField';
+import TextareaField from '../ui/TextareaField';
 
 
 interface IProductForm {
@@ -47,10 +48,10 @@ const initialEmptyState = {
 
 const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, productToUpdate }) => {
   const action = productToUpdate ? updateCategory : createProduct;
-  const initialState = productToUpdate ? productToUpdate : initialEmptyState;
+  const initialState = productToUpdate ? initialEmptyState : initialEmptyState;
 
   const categoriesData = categories.map(category => ({ label: category.name!, value: category._id! }));
-  const manufacturersData = manufacturers.map(manufacturer => ({ label: manufacturer.name }));
+  const manufacturersData = manufacturers.map(manufacturer => ({ label: manufacturer.name, value: manufacturer._id }));
 
   const router = useRouter();
 
@@ -60,6 +61,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [selectedManufacturer, setSelectedManufacturer] = useState<string>('');
 
   const [types, setTypes] = useState<SelectOption[]>([]);
   const [features, setFeatures] = useState<SelectOption[]>([]);
@@ -70,7 +72,19 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
     const features = data?.features.map(feature => ({ label: feature, value: feature }));
     setTypes(types || []);
     setFeatures(features || []);
-  }, [selectedCategory])
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    if(state.message) {
+      ref.current?.reset();
+      setTypes([]);
+      setFeatures([]);
+
+      if(productToUpdate) {
+        router.push('/dashboard/products');
+      }
+    }
+  }, [state, formAction]);
 
   return (
     <form 
@@ -81,9 +95,9 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
         formData.append('features', selectedFeatures.join(', '));
         await formAction(formData);
       }} 
-      className='flex grow flex-1 flex-col justify-between content-between gap-6'
+      className='flex grow flex-1 flex-wrap md:gap-10'
     >
-      <fieldset className='flex flex-col gap-3'>
+      <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
         <SelectField 
           name='category'
           label='Category'
@@ -105,8 +119,76 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           options={features}
           onChange={setSelectedFeatures}
         />
+        <TextField 
+          name='name'
+          label='Product Name'
+          defaultValue={state.name}
+          error={state && state.error && state.error['name']!}
+        />
+        <TextareaField 
+          name='description'
+          label='Description'
+          defaultValue={state.description}
+          error={state && state.error && state.error['description']!}
+        />
       </fieldset>
-      
+      <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
+        <TextField 
+          name='width'
+          label='Width'
+          type='number'
+          defaultValue={state.width}
+          error={state && state.error && state.error['width']!}
+        />
+        <TextField 
+          name='height'
+          label='Height'
+          type='number'
+          defaultValue={productToUpdate && state.height}
+          error={state && state.error && state.error['height']!}
+        />
+        <TextField 
+          name='depth'
+          label='Depth'
+          type='number'
+          defaultValue={state.depth}
+          error={state && state.error && state.error['depth']!}
+        />
+        <SelectField 
+          name='manufacturer'
+          label='Manufacturer'
+          title='Select a manufacturer' 
+          options={manufacturersData}
+          onChange={setSelectedManufacturer}
+        />
+        <TextareaField 
+          name='characteristics'
+          label='Characteristics'
+          defaultValue={state.characteristics}
+          error={state && state.error && state.error['characteristics']!}
+        />
+      </fieldset>
+      <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
+        <TextField 
+          name='price'
+          label='Price'
+          type='number'
+          defaultValue={state.price}
+          error={state && state.error && state.error['price']!}
+        />
+        <TextField 
+          name='sale'
+          label='Sale'
+          type='number'
+          defaultValue={state.sale}
+          error={state && state.error && state.error['sale']!}
+        />
+        <UploadImageButton 
+          name='images'
+          label='Images'
+          multiple
+        />
+      </fieldset>
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
         <SubmitButton label={productToUpdate ? 'Update' : 'Create'} />
         <Link 
