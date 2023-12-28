@@ -22,6 +22,11 @@ interface IProductForm {
   productToUpdate?: IProduct;
 }
 
+type SelectOption = {
+  label: string,
+  value: string,
+}
+
 const initialEmptyState = {
   category: '',
   type: '',
@@ -52,14 +57,30 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const [state, formAction] = useFormState(action, initialState);
   const ref = useRef<HTMLFormElement>(null);
 
-  const [category, setCategory] = useState<string>('');
-  const [type, setType] = useState<string>('');
-  const [features, setFeatures] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<string>('');
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+
+  const [types, setTypes] = useState<SelectOption[]>([]);
+  const [features, setFeatures] = useState<SelectOption[]>([]);
+
+  useEffect(() => { 
+    const data = categories.find(category => category._id === selectedCategory);
+    const types = data?.types.map(type => ({ label: type, value: type }));
+    const features = data?.features.map(feature => ({ label: feature, value: feature }));
+    setTypes(types || []);
+    setFeatures(features || []);
+  }, [selectedCategory])
 
   return (
     <form 
       ref={ref} 
-      action={formAction} 
+      action={async (formData: FormData) => {
+        formData.append('category', selectedCategory);
+        formData.append('type', selectedType);
+        formData.append('features', selectedFeatures.join(', '));
+        await formAction(formData);
+      }} 
       className='flex grow flex-1 flex-col justify-between content-between gap-6'
     >
       <fieldset className='flex flex-col gap-3'>
@@ -68,13 +89,22 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           label='Category'
           title='Select a category' 
           options={categoriesData}
+          onChange={setSelectedCategory}
         />
-        {/* <MultiSelectField 
-          label='Category'
-          name='category'
-          title='Select a product category'
-          options={categoriesData}
-        /> */}
+        <SelectField 
+          name='type'
+          label='Type'
+          title='Select a product type' 
+          options={types}
+          onChange={setSelectedType}
+        />
+        <MultiSelectField 
+          name='features'
+          label='Features'
+          title='Select product features'
+          options={features}
+          onChange={setSelectedFeatures}
+        />
       </fieldset>
       
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
