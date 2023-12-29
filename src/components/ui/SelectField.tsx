@@ -8,6 +8,7 @@ interface ISelectField {
   name: string;
   label: string;
   title?: string;
+  disabled?: boolean;
   options: {
     label: string;
     value: string;
@@ -17,7 +18,7 @@ interface ISelectField {
 }
 
 
-const SelectField: React.FC<ISelectField> = ({ name, label, title, options, onChange, error }) => {
+const SelectField: React.FC<ISelectField> = ({ name, label, title, disabled, options, onChange, error }) => {
   const [value, setValue] = useState<string>('');
   const [valueToShow, setValueToShow] = useState<string>('');
 
@@ -59,26 +60,28 @@ const SelectField: React.FC<ISelectField> = ({ name, label, title, options, onCh
             <span className='text-sm'>{valueToShow ? valueToShow : title}</span>
             <DownOutlined className='text-sm' />
           </div>
-          <div className='absolute top-10 w-full border border-gray-100 border-t-0 bg-white transition-opacity opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto z-10'>
-            <ul className='w-full max-h-56 overflow-y-scroll bg-white'>
-              {options.map(option => (
-                <li 
-                  key={crypto.randomUUID()} 
-                  onClick={() => handleValueChange(option.value)} 
-                  className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'
-                >
-                  <input 
-                    name={name}
-                    type='checkbox' 
-                    value={option.value} 
-                    checked={value === option.value}
-                    onChange={() => handleValueChange(option.value)} 
-                  />
-                  <label>{option.label}</label>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div className='absolute top-10 w-full border border-gray-100 border-t-0 bg-white transition-opacity opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto z-10'>
+              {!disabled && options.length > 0 && (
+                <ul className='w-full max-h-56 overflow-y-scroll bg-white'>
+                  {options.map(option => (
+                    <li 
+                      key={crypto.randomUUID()} 
+                      onClick={() => handleValueChange(option.value)} 
+                      className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'
+                    >
+                      <input 
+                        name={name}
+                        type='checkbox' 
+                        value={option.value} 
+                        checked={value === option.value}
+                        onChange={() => handleValueChange(option.value)} 
+                      />
+                      <label>{option.label}</label>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
         </label>
         <p className='mt-1 text-xs text-red-600'>
           {error && (

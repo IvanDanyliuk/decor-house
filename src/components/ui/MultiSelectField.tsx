@@ -8,6 +8,7 @@ interface ISelectField {
   label: string;
   name: string;
   title: string;
+  disabled?: boolean;
   options: {
     label: string;
     value: string;
@@ -22,6 +23,7 @@ const SelectField: React.FC<ISelectField> = ({
   label, 
   name, 
   title, 
+  disabled, 
   options, 
   required, 
   onChange, 
@@ -72,7 +74,7 @@ const SelectField: React.FC<ISelectField> = ({
       )}
       <div className='relative w-full md:grow'>  
         <label className='relative'>
-          <input type='checkbox' className='hidden peer' />
+          <input type='checkbox' className={`hidden ${!disabled && options.length && 'peer'}`} />
           <div className='w-full h-10 flex justify-between items-center cursor-pointer border rounded px-3'>
             <span className='text-sm'>
               {selectedOptionsToShow.length > 0 ? selectedOptionsToShow.join(', ') : title}
