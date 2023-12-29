@@ -66,13 +66,13 @@ const SelectField: React.FC<ISelectField> = ({
   }, [selectedOptions])
 
   return (
-    <div className='relative w-full flex flex-col md:flex-row items-center gap-3'>
+    <div className='w-full flex flex-col md:flex-row items-center gap-3'>
       {label && (
         <div className='w-full md:w-36 text-sm font-semibold'>
           {label}
         </div>
       )}
-      <div className='relative w-full md:grow'>  
+      <div className='w-full md:grow'>  
         <label className='relative'>
           <input type='checkbox' className={`hidden ${!disabled && options.length && 'peer'}`} />
           <div className='w-full h-10 flex justify-between items-center cursor-pointer border rounded px-3'>

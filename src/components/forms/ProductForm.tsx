@@ -15,6 +15,7 @@ import MultiSelectField from '../ui/MultiSelectField';
 import { createProduct } from '@/lib/actions/product.actions';
 import SelectField from '../ui/SelectField';
 import TextareaField from '../ui/TextareaField';
+import Select from '../ui/Select';
 
 
 interface IProductForm {
@@ -60,7 +61,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [selectedFeatures, setSelectedFeatures] = useState<string>('');
   const [selectedManufacturer, setSelectedManufacturer] = useState<string>('');
 
   const [types, setTypes] = useState<SelectOption[]>([]);
@@ -74,17 +75,17 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
     setFeatures(features || []);
   }, [selectedCategory]);
 
-  useEffect(() => {
-    if(state.message) {
-      ref.current?.reset();
-      setTypes([]);
-      setFeatures([]);
+  // useEffect(() => {
+  //   if(state.message) {
+  //     ref.current?.reset();
+  //     setTypes([]);
+  //     setFeatures([]);
 
-      if(productToUpdate) {
-        router.push('/dashboard/products');
-      }
-    }
-  }, [state, formAction]);
+  //     if(productToUpdate) {
+  //       router.push('/dashboard/products');
+  //     }
+  //   }
+  // }, [state, formAction]);
 
   return (
     <form 
@@ -92,13 +93,35 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
       action={async (formData: FormData) => {
         formData.append('category', selectedCategory);
         formData.append('type', selectedType);
-        formData.append('features', selectedFeatures.join(', '));
+        formData.append('features', selectedFeatures);
         await formAction(formData);
       }} 
       className='flex grow flex-1 flex-wrap md:gap-10'
     >
       <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
-        <SelectField 
+        <Select 
+          name='category'
+          label='Category'
+          title='Select a category'
+          options={categoriesData}
+          onChange={setSelectedCategory}
+        />
+        <Select 
+          name='type'
+          label='Type'
+          title='Select a type'
+          options={types}
+          onChange={setSelectedType}
+        />
+        <Select 
+          name='features'
+          label='Features'
+          title='Select features'
+          options={features}
+          multiple
+          onChange={setSelectedFeatures}
+        />
+        {/* <SelectField 
           name='category'
           label='Category'
           title='Select a category' 
@@ -130,10 +153,10 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           label='Description'
           defaultValue={state.description}
           error={state && state.error && state.error['description']!}
-        />
+        /> */}
       </fieldset>
       <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
-        <TextField 
+        {/* <TextField 
           name='width'
           label='Width'
           type='number'
@@ -166,21 +189,21 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           label='Characteristics'
           defaultValue={state.characteristics}
           error={state && state.error && state.error['characteristics']!}
-        />
+        /> */}
       </fieldset>
       <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
         <TextField 
           name='price'
           label='Price'
           type='number'
-          defaultValue={state.price}
+          // defaultValue={state.price}
           error={state && state.error && state.error['price']!}
         />
         <TextField 
           name='sale'
           label='Sale'
           type='number'
-          defaultValue={state.sale}
+          // defaultValue={state.sale}
           error={state && state.error && state.error['sale']!}
         />
         <UploadImageButton 

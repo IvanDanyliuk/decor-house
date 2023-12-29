@@ -30,10 +30,6 @@ const SelectField: React.FC<ISelectField> = ({ name, label, title, disabled, opt
     const option = options.find(item => item.value === value);
     const isValueExist = options.find(item => item.label === valueToShow);
 
-    console.log('SELECT FIELD', {
-      options, value, valueToShow
-    })
-
     setValueToShow(option?.label!);
 
     if(onChange) {
