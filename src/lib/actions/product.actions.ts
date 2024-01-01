@@ -35,52 +35,52 @@ const productSchema = zod.object({
 
 export const createProduct = async (prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
-  console.log('CREATE PRODUCT ACTION', data)
-  // try {
-  //   await connectToDB();
 
-  //   console.log('CREATE PRODUCT ACTION', data)
+  try {
+    await connectToDB();
 
-  //   // const validatedFields = productSchema.safeParse(data);
+    console.log('CREATE PRODUCT ACTION', data)
+    
+    const validatedFields = productSchema.safeParse(data);
 
-  //   // if(!validatedFields.success) {
-  //   //   return {
-  //   //     error: validatedFields.error.flatten().fieldErrors,
-  //   //   }
-  //   // }
+    if(!validatedFields.success) {
+      return {
+        error: validatedFields.error.flatten().fieldErrors,
+      }
+    }
 
-  //   // const existingProduct = await Product.findOne({ name });
+    const existingProduct = await Product.findOne({ name });
 
-  //   // if(existingProduct) return { error: 'Product already exists' };
+    if(existingProduct) return { error: 'Product already exists' };
 
-  //   // const imageUrls = [''];
+    const imageUrls = [''];
 
-  //   // if(imageUrls.length === 0) return { error: 'Product card should contain at least 1 image' };
+    if(imageUrls.length === 0) return { error: 'Product card should contain at least 1 image' };
 
-  //   // await Product.create({
-  //   //   ...data,
-  //   //   size: {
-  //   //     width: data.width,
-  //   //     height: data.height,
-  //   //     depth: data.depth,
-  //   //   },
-  //   //   images: imageUrls
-  //   // });
+    await Product.create({
+      ...data,
+      size: {
+        width: data.width,
+        height: data.height,
+        depth: data.depth,
+      },
+      images: imageUrls
+    });
 
-  //   // console.log('CREATE PRODUCT ACTION', data)
+    // console.log('CREATE PRODUCT ACTION', data)
 
-  //   revalidatePath('/dashboard/products');
+    revalidatePath('/dashboard/products');
 
-  //   return {
-  //     data: null,
-  //     error: null,
-  //     message: 'A new product has been successfully created',
-  //   };
-  // } catch (error: any) {
-  //   return {
-  //     data: null,
-  //     error: error.message,
-  //     message: 'Cannot create a new product',
-  //   }
-  // }
+    return {
+      data: null,
+      error: null,
+      message: 'A new product has been successfully created',
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot create a new product',
+    }
+  }
 };
