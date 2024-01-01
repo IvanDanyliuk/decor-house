@@ -75,17 +75,20 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
     setFeatures(features || []);
   }, [selectedCategory]);
 
-  // useEffect(() => {
-  //   if(state.message) {
-  //     ref.current?.reset();
-  //     setTypes([]);
-  //     setFeatures([]);
+  useEffect(() => {
+    if(state?.message) {
+      ref.current?.reset();
+      setTypes([]);
+      setFeatures([]);
+      setSelectedCategory('');
+      setSelectedType('');
+      setSelectedFeatures('');
 
-  //     if(productToUpdate) {
-  //       router.push('/dashboard/products');
-  //     }
-  //   }
-  // }, [state, formAction]);
+      if(productToUpdate) {
+        router.push('/dashboard/products');
+      }
+    }
+  }, [state, formAction]);
 
   return (
     <form 
@@ -121,75 +124,54 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           multiple
           onChange={setSelectedFeatures}
         />
-        {/* <SelectField 
-          name='category'
-          label='Category'
-          title='Select a category' 
-          options={categoriesData}
-          onChange={setSelectedCategory}
-        />
-        <SelectField 
-          name='type'
-          label='Type'
-          title='Select a product type' 
-          options={types}
-          onChange={setSelectedType}
-        />
-        <MultiSelectField 
-          name='features'
-          label='Features'
-          title='Select product features'
-          options={features}
-          onChange={setSelectedFeatures}
-        />
         <TextField 
           name='name'
           label='Product Name'
-          defaultValue={state.name}
+          // defaultValue={state.name}
           error={state && state.error && state.error['name']!}
         />
         <TextareaField 
           name='description'
           label='Description'
-          defaultValue={state.description}
+          // defaultValue={state.description}
           error={state && state.error && state.error['description']!}
-        /> */}
+        />
       </fieldset>
       <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
-        {/* <TextField 
+        <TextField 
           name='width'
           label='Width'
           type='number'
-          defaultValue={state.width}
+          // defaultValue={state.width}
           error={state && state.error && state.error['width']!}
         />
         <TextField 
           name='height'
           label='Height'
           type='number'
-          defaultValue={productToUpdate && state.height}
+          // defaultValue={productToUpdate && state.height}
           error={state && state.error && state.error['height']!}
         />
         <TextField 
           name='depth'
           label='Depth'
           type='number'
-          defaultValue={state.depth}
+          // defaultValue={state.depth}
           error={state && state.error && state.error['depth']!}
         />
-        <SelectField 
+        <Select 
           name='manufacturer'
           label='Manufacturer'
-          title='Select a manufacturer' 
+          title='Select a manufacturer'
           options={manufacturersData}
           onChange={setSelectedManufacturer}
         />
         <TextareaField 
           name='characteristics'
           label='Characteristics'
-          defaultValue={state.characteristics}
+          // defaultValue={state.characteristics}
           error={state && state.error && state.error['characteristics']!}
-        /> */}
+        />
       </fieldset>
       <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
         <TextField 

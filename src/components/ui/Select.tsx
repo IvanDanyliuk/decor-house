@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 
-type Option = {
+interface Option {
   label: string;
   value: string;
 }
@@ -22,17 +22,21 @@ interface ISelect {
 
 
 const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = false, options, onChange, error }) => {
-  const initialState = multiple ? [] : { label: '', value: '' };
+  const notMultiple: Option = { label: '', value: '' };
+  
+  const initialState = multiple ? [] : notMultiple;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [data, setData] = useState<Option | Option[]>(initialState);
-  const [selectedValues, setSelectedValues] = useState<string>(title || 'Select')
+  const [selectedValues, setSelectedValues] = useState<string>('')
+
+  const isInstanceOfOption = (option: any): option is Option => !!option.value;
 
   const isOptionChecked = (value: string) => {
-    if(multiple && Array.isArray(data)) {
+    if(multiple && !isInstanceOfOption(data)) {
       const res = data.find(item => item.value === value);
       return Boolean(res);
     } 
-    if(!multiple && data instanceof Option) {
+    if(!multiple && isInstanceOfOption(data)) {
       return data.value === value;
     }
     return false;
@@ -40,10 +44,10 @@ const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = fa
 
   const handleSelectOpen = () => {
     setIsOpen(prevState => !prevState);
-  }
+  };
 
   const handleValueChange = (option: Option) => {
-    if(multiple && Array.isArray(data)) {
+    if(multiple && !isInstanceOfOption(data)) {
       const isOptionSelected = data.find(item => item.value === option.value);
       if(isOptionSelected) {
         const newState = data.filter(item => item.value !== option.value)
@@ -64,6 +68,11 @@ const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = fa
     }
   };
 
+  useEffect(() => {
+    console.log('CLEAR SELECTED OPTIONS')
+    
+  }, [options]);
+
   return (
     <div className='w-full flex flex-col md:flex-row items-center gap-3'>
       {label && (
@@ -81,9 +90,9 @@ const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = fa
           className='w-full h-10 flex justify-between items-center cursor-pointer border rounded px-3 bg-white'
         >
           <span>
-            {selectedValues}
+            {selectedValues || title}
           </span>
-          <DownOutlined className='text-sm' />
+          <DownOutlined className='text-xs' />
         </button>
         {isOpen && options.length > 0 && (
           <ul className='w-full absolute top-10 bg-white rounded z-10'>
