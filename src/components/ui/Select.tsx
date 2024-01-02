@@ -101,7 +101,13 @@ const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = fa
           className='w-full h-10 flex justify-between items-center cursor-pointer border rounded px-3 bg-white'
         >
           <span>
-            {selectedValues || title}
+            {
+              selectedValues ? 
+                multiple ? 
+                  `Selected ${selectedValues.split(', ').length} ${name}s` : 
+                  selectedValues : 
+                title
+              }
           </span>
           <DownOutlined className='text-xs' />
         </button>
