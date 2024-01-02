@@ -16,65 +16,76 @@ interface ISelect {
   disabled?: boolean;
   multiple?: boolean;
   options: Option[];
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   error?: string[];
 }
 
 
 const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = false, options, onChange, error }) => {
-  const notMultiple: Option = { label: '', value: '' };
-  
-  const initialState = multiple ? [] : notMultiple;
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [data, setData] = useState<Option | Option[]>(initialState);
+  const [data, setData] = useState<string>('');
   const [selectedValues, setSelectedValues] = useState<string>('')
-
-  const isInstanceOfOption = (option: any): option is Option => !!option.value;
-
-  const isOptionChecked = (value: string) => {
-    if(multiple && !isInstanceOfOption(data)) {
-      const res = data.find(item => item.value === value);
-      return Boolean(res);
-    } 
-    if(!multiple && isInstanceOfOption(data)) {
-      return data.value === value;
-    }
-    return false;
-  };
 
   const handleSelectOpen = () => {
     setIsOpen(prevState => !prevState);
   };
 
+  const handleSelectAllOptions = () => {
+    const optionValues = options.map(item => item.value);
+    const isAllSelected = data.split(', ').every(item => optionValues.includes(item));
+    if(!isAllSelected) {
+      const allData = optionValues.join(', ');
+      const allSelectedValues = options.map(item => item.label).join(', ');
+      setData(allData);
+      setSelectedValues(allSelectedValues);
+    } else {
+      setData('');
+      setSelectedValues('');
+    }
+  };
+
   const handleValueChange = (option: Option) => {
-    if(multiple && !isInstanceOfOption(data)) {
-      const isOptionSelected = data.find(item => item.value === option.value);
+    if(multiple) {
+      const splittedData = data.split(', ');
+      const isOptionSelected = splittedData.includes(option.value);
       if(isOptionSelected) {
-        const newState = data.filter(item => item.value !== option.value)
-        setData(newState);
-        setSelectedValues(newState.map(item => item.label).join(', '));
-        onChange(option.value);
+        const newData = splittedData.filter(item => item !== option.value).join(', ');
+        const newSelectedValues = selectedValues.split(', ').filter(item => item !== option.label).join(', ');
+        setData(newData);
+        setSelectedValues(newSelectedValues);
       } else {
-        const newState = [...data, option];
-        setData(newState);
-        setSelectedValues(newState.map(item => item.label).join(', '));
-        onChange(newState.map(item => item.value).join(', '));
+        const newData = data + `${data ? ', ' + option.value : option.value}`;
+        const newSelectedValues = selectedValues + `${selectedValues ? ', ' + option.label : option.label}`;
+        setData(newData);
+        setSelectedValues(newSelectedValues);
       }
     } else {
-      setData(option);
+      setData(option.value);
       setSelectedValues(option.label);
-      onChange(option.value);
       setIsOpen(false);
     }
   };
 
   useEffect(() => {
-    console.log('CLEAR SELECTED OPTIONS')
-    
+    if(onChange) {
+      onChange(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if(data && selectedValues) {
+      const optionValues = options.map(item => item.value);
+      const isDataActual = data.split(', ').every(item => optionValues.includes(item));
+      if(!isDataActual) {
+        setSelectedValues('')
+        setData('')
+      }
+    }
   }, [options]);
 
   return (
     <div className='w-full flex flex-col md:flex-row items-center gap-3'>
+      <input name={name} type='text' defaultValue={data} className='hidden' />
       {label && (
         <div className='w-full md:w-36 text-sm font-semibold'>
           {label}
@@ -96,6 +107,21 @@ const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = fa
         </button>
         {isOpen && options.length > 0 && (
           <ul className='w-full absolute top-10 bg-white rounded z-10'>
+            {multiple && (
+              <li 
+                onClick={handleSelectAllOptions} 
+                className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'
+              >
+                <input 
+                  id='All'
+                  type='checkbox' 
+                  // value={option.value} 
+                  checked={options.every(item => selectedValues.includes(item.value))}
+                  onChange={handleSelectAllOptions} 
+                />
+                <label>All</label>
+              </li>
+            )}
             {options.map(option => (
               <li 
                 key={crypto.randomUUID()} 
@@ -103,10 +129,10 @@ const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = fa
                 className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'
               >
                 <input 
-                  name={name}
+                  id={name}
                   type='checkbox' 
                   value={option.value} 
-                  checked={isOptionChecked(option.value)}
+                  checked={data.includes(option.value)}
                   onChange={() => handleValueChange(option)} 
                 />
                 <label>{option.label}</label>

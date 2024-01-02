@@ -11,9 +11,7 @@ import UploadImageButton from '../ui/UploadImageBtn';
 import SubmitButton from '../ui/SubmitButton';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
 import { IProduct } from '@/lib/types/products.types';
-import MultiSelectField from '../ui/MultiSelectField';
 import { createProduct } from '@/lib/actions/product.actions';
-import SelectField from '../ui/SelectField';
 import TextareaField from '../ui/TextareaField';
 import Select from '../ui/Select';
 
@@ -60,8 +58,6 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const ref = useRef<HTMLFormElement>(null);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedType, setSelectedType] = useState<string>('');
-  const [selectedFeatures, setSelectedFeatures] = useState<string>('');
   const [selectedManufacturer, setSelectedManufacturer] = useState<string>('');
 
   const [types, setTypes] = useState<SelectOption[]>([]);
@@ -81,8 +77,6 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
       setTypes([]);
       setFeatures([]);
       setSelectedCategory('');
-      setSelectedType('');
-      setSelectedFeatures('');
 
       if(productToUpdate) {
         router.push('/dashboard/products');
@@ -93,12 +87,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   return (
     <form 
       ref={ref} 
-      action={async (formData: FormData) => {
-        formData.append('category', selectedCategory);
-        formData.append('type', selectedType);
-        formData.append('features', selectedFeatures);
-        await formAction(formData);
-      }} 
+      action={formAction} 
       className='flex grow flex-1 flex-wrap md:gap-10'
     >
       <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
@@ -114,7 +103,6 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           label='Type'
           title='Select a type'
           options={types}
-          onChange={setSelectedType}
         />
         <Select 
           name='features'
@@ -122,7 +110,6 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           title='Select features'
           options={features}
           multiple
-          onChange={setSelectedFeatures}
         />
         <TextField 
           name='name'
