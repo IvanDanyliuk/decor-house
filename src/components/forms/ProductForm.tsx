@@ -14,6 +14,7 @@ import { IProduct } from '@/lib/types/products.types';
 import { createProduct } from '@/lib/actions/product.actions';
 import TextareaField from '../ui/TextareaField';
 import Select from '../ui/Select';
+import ColorPicker from '../ui/ColorPicker';
 
 
 interface IProductForm {
@@ -58,7 +59,6 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const ref = useRef<HTMLFormElement>(null);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedManufacturer, setSelectedManufacturer] = useState<string>('');
 
   const [types, setTypes] = useState<SelectOption[]>([]);
   const [features, setFeatures] = useState<SelectOption[]>([]);
@@ -114,13 +114,13 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
         <TextField 
           name='name'
           label='Product Name'
-          // defaultValue={state.name}
+          defaultValue={state.name}
           error={state && state.error && state.error['name']!}
         />
         <TextareaField 
           name='description'
           label='Description'
-          // defaultValue={state.description}
+          defaultValue={state.description}
           error={state && state.error && state.error['description']!}
         />
       </fieldset>
@@ -129,21 +129,21 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           name='width'
           label='Width'
           type='number'
-          // defaultValue={state.width}
+          defaultValue={state.width}
           error={state && state.error && state.error['width']!}
         />
         <TextField 
           name='height'
           label='Height'
           type='number'
-          // defaultValue={productToUpdate && state.height}
+          defaultValue={productToUpdate && state.height}
           error={state && state.error && state.error['height']!}
         />
         <TextField 
           name='depth'
           label='Depth'
           type='number'
-          // defaultValue={state.depth}
+          defaultValue={state.depth}
           error={state && state.error && state.error['depth']!}
         />
         <Select 
@@ -151,12 +151,11 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           label='Manufacturer'
           title='Select a manufacturer'
           options={manufacturersData}
-          onChange={setSelectedManufacturer}
         />
         <TextareaField 
           name='characteristics'
           label='Characteristics'
-          // defaultValue={state.characteristics}
+          defaultValue={state.characteristics}
           error={state && state.error && state.error['characteristics']!}
         />
       </fieldset>
@@ -165,20 +164,26 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           name='price'
           label='Price'
           type='number'
-          // defaultValue={state.price}
+          defaultValue={state.price}
           error={state && state.error && state.error['price']!}
         />
         <TextField 
           name='sale'
           label='Sale'
           type='number'
-          // defaultValue={state.sale}
+          defaultValue={state.sale}
           error={state && state.error && state.error['sale']!}
         />
         <UploadImageButton 
           name='images'
           label='Images'
           multiple
+        />
+        <ColorPicker 
+          name='color' 
+          label='Colors' 
+          title='Select colors' 
+          multiple 
         />
       </fieldset>
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>

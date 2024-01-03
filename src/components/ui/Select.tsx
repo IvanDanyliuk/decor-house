@@ -121,7 +121,6 @@ const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = fa
                 <input 
                   id='All'
                   type='checkbox' 
-                  // value={option.value} 
                   checked={options.every(item => selectedValues.includes(item.value))}
                   onChange={handleSelectAllOptions} 
                 />
