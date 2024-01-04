@@ -72,11 +72,12 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   }, [selectedCategory]);
 
   useEffect(() => {
-    if(state?.message) {
+    if(!state.error && state.message) {
       ref.current?.reset();
       setTypes([]);
       setFeatures([]);
       setSelectedCategory('');
+      router.push('/dashboard/products');
 
       if(productToUpdate) {
         router.push('/dashboard/products');
@@ -180,7 +181,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           multiple
         />
         <ColorPicker 
-          name='color' 
+          name='colors' 
           label='Colors' 
           title='Select colors' 
           multiple 
@@ -189,7 +190,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
         <SubmitButton label={productToUpdate ? 'Update' : 'Create'} />
         <Link 
-          href='/dashboard/categories' 
+          href='/dashboard/products' 
           className='w-full md:w-72 h-12 link-primary uppercase'
         >
           <span>Go back to Dashboard</span>

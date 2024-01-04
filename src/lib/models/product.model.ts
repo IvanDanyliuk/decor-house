@@ -7,13 +7,13 @@ const productSchema = new mongoose.Schema({
   colors: [{ type: String, required: true }],
   features: [{ type: String }],
   manufacturer: { type: mongoose.Schema.Types.ObjectId, ref: 'Manufacturer' },
-  price: { type: Number, required: true },
+  price: { type: String, required: true },
   size: {
     width: { type: String, required: true },
     height: { type: String, required: true },
     depth: { type: String, required: true },
   },
-  sale: { type: Number },
+  sale: { type: String },
   description: { type: String, required: true },
   characteristics: { type: String, required: true },
   images: [{
