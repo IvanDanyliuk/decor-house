@@ -90,7 +90,7 @@ export const createManufacturer = async (prevState: any, formData: FormData) => 
 
     await Manufacturer.create({ name, country });
 
-    revalidatePath('/dashboard/menufacturers');
+    revalidatePath('/dashboard/manufacturers');
 
     return {
       data: null,

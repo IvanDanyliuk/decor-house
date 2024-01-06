@@ -35,17 +35,25 @@ export const getProducts = async ({
 }) => {
   try {
     await connectToDB();
-
+    
     const products = (page && itemsPerPage) ? 
       await Product
         .find({})
         .limit(itemsPerPage)
         .skip((page - 1) * itemsPerPage)
+        .populate([
+          { path: 'category', select: 'name' },
+          { path: 'manufacturer' }
+        ])
         .select('-__v') :
       await Product
         .find({})
+        .populate([
+          { path: 'category', select: 'name' },
+          { path: 'manufacturer' }
+        ])
         .select('-__v');
-
+        
     const count = await Product.countDocuments();
 
     return {
@@ -119,3 +127,25 @@ export const createProduct = async (prevState: any, formData: FormData) => {
     }
   }
 };
+
+export const deleteProduct = async ({ id, path }: { id: string, path: string }) => {
+  try {
+    await connectToDB();
+
+    await Product.findByIdAndDelete(id);
+
+    revalidatePath(path);
+
+    return {
+      data: null,
+      error: null,
+      message: `Product with ID: ${id} has been successfully deleted`,
+    }
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot delete a product',
+    }
+  }
+}

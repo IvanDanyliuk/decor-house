@@ -2,8 +2,6 @@ import CategoryForm from '@/components/forms/CategoryForm';
 import React from 'react';
 
 
-
-
 const CreateCategory: React.FC = () => {
   return (
     <>
