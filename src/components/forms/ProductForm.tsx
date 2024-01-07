@@ -11,7 +11,7 @@ import UploadImageButton from '../ui/UploadImageBtn';
 import SubmitButton from '../ui/SubmitButton';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
 import { IProduct } from '@/lib/types/products.types';
-import { createProduct } from '@/lib/actions/product.actions';
+import { createProduct, updateProduct } from '@/lib/actions/product.actions';
 import TextareaField from '../ui/TextareaField';
 import Select from '../ui/Select';
 import ColorPicker from '../ui/ColorPicker';
@@ -47,8 +47,27 @@ const initialEmptyState = {
 
 
 const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, productToUpdate }) => {
-  const action = productToUpdate ? updateCategory : createProduct;
-  const initialState = productToUpdate ? initialEmptyState : initialEmptyState;
+  const action = productToUpdate ? updateProduct : createProduct;
+  const initialState = productToUpdate ? 
+    { 
+      ...productToUpdate, 
+      width: productToUpdate.size.width, 
+      height: productToUpdate.size.height, 
+      depth: productToUpdate.size.depth 
+    } : 
+    initialEmptyState;
+
+  const typesInitialValue = productToUpdate ? 
+    categories
+      .find(category => category._id === productToUpdate.category)?.types
+      .map(category => ({ label: category, value: category })) : 
+    [];
+  
+  const featuresInitialState = productToUpdate ? 
+    categories
+      .find(feature => feature._id === productToUpdate.category)?.features
+      .map(feature => ({ label: feature, value: feature })) : 
+    [];
 
   const categoriesData = categories.map(category => ({ label: category.name!, value: category._id! }));
   const manufacturersData = manufacturers.map(manufacturer => ({ label: manufacturer.name, value: manufacturer._id }));
@@ -58,12 +77,17 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const [state, formAction] = useFormState(action, initialState);
   const ref = useRef<HTMLFormElement>(null);
 
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>(productToUpdate ? productToUpdate.category : '');
 
-  const [types, setTypes] = useState<SelectOption[]>([]);
-  const [features, setFeatures] = useState<SelectOption[]>([]);
+  const [types, setTypes] = useState<SelectOption[]>(typesInitialValue!);
+  const [features, setFeatures] = useState<SelectOption[]>(featuresInitialState!);
+
+  console.log('PRODUCT FORM: UPDATE', {productToUpdate, selectedCategory})
 
   useEffect(() => { 
+    // if(productToUpdate) {
+    //   setSelectedCategory(productToUpdate.category);
+    // } 
     const data = categories.find(category => category._id === selectedCategory);
     const types = data?.types.map(type => ({ label: type, value: type }));
     const features = data?.features.map(feature => ({ label: feature, value: feature }));
@@ -96,6 +120,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           name='category'
           label='Category'
           title='Select a category'
+          defaultValue={productToUpdate?.category}
           options={categoriesData}
           onChange={setSelectedCategory}
         />
@@ -103,12 +128,14 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           name='type'
           label='Type'
           title='Select a type'
+          defaultValue={productToUpdate?.type}
           options={types}
         />
         <Select 
           name='features'
           label='Features'
           title='Select features'
+          defaultValue={productToUpdate?.features.join(', ')}
           options={features}
           multiple
         />

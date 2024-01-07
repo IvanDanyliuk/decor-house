@@ -71,7 +71,29 @@ export const getProducts = async ({
       message: 'Cannot find products',
     };
   }
-}
+};
+
+export const getProduct = async (id: string) => {
+  try {
+    await connectToDB();
+
+    const product = await Product
+      .findById(id)
+      .select('-__v');
+
+    return {
+      data: product,
+      error: null,
+      message: null,
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: `Cannot find the product with ID: ${id}`,
+    };
+  }
+};
 
 export const createProduct = async (prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
@@ -125,6 +147,34 @@ export const createProduct = async (prevState: any, formData: FormData) => {
       error: error.message,
       message: 'Cannot create a new product',
     }
+  }
+};
+
+export const updateProduct = async (prevState: any, formData: FormData) => {
+  const id = prevState._id;
+
+  try {
+    await connectToDB();
+
+    console.log('UPDATE PRODUCT ACTION', {
+      prevState, formData: Object.fromEntries(formData)
+    })
+
+    // const validatedFields = productSchema.safeParse(data);
+
+    // if(!validatedFields.success) {
+    //   return {
+    //     error: validatedFields.error.flatten().fieldErrors,
+    //   }
+    // }
+
+
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: `Cannot update ${prevState.name}`,
+    };
   }
 };
 

@@ -15,16 +15,35 @@ interface ISelect {
   title?: string;
   disabled?: boolean;
   multiple?: boolean;
+  defaultValue?: string;
   options: Option[];
   onChange?: (value: string) => void;
   error?: string[];
 }
 
 
-const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = false, options, onChange, error }) => {
+const Select: React.FC<ISelect> = ({ 
+  name, 
+  label, 
+  title, 
+  disabled, 
+  multiple = false, 
+  defaultValue, 
+  options, 
+  onChange, 
+  error 
+}) => {
+  const dataInitialState = defaultValue ? defaultValue : '';
+  const selectedValuesIntialState = defaultValue ? 
+    options
+      .filter(option => defaultValue.includes(option.value))
+      .map(option => option.label)
+      .join(', ') : 
+    '';
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [data, setData] = useState<string>('');
-  const [selectedValues, setSelectedValues] = useState<string>('')
+  const [data, setData] = useState<string>(dataInitialState);
+  const [selectedValues, setSelectedValues] = useState<string>(selectedValuesIntialState)
 
   const handleSelectOpen = () => {
     setIsOpen(prevState => !prevState);
@@ -73,6 +92,11 @@ const Select: React.FC<ISelect> = ({ name, label, title, disabled, multiple = fa
   }, [data]);
 
   useEffect(() => {
+    // if(defaultValue) {
+    //   setData(defaultValue);
+    //   setSelectedValues(options.filter(option => defaultValue.includes(option.value)).map(option => option.label).join(', '))
+    // }
+
     if(data && selectedValues) {
       const optionValues = options.map(item => item.value);
       const isDataActual = data.split(', ').every(item => optionValues.includes(item));

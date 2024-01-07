@@ -5,9 +5,11 @@ export interface IProduct {
   features: string[];
   name: string;
   description: string;
-  width: string;
-  height: string;
-  depth: string;
+  size: {
+    width: string;
+    height: string;
+    depth: string;
+  };
   manufacturer: string;
   characteristics: string;
   price: string;

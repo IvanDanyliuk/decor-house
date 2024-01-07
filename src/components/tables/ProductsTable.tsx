@@ -130,7 +130,7 @@ const ProductsTable: React.FC<IProductsTable> = ({ products }) => {
         <div className='flex'>
           <Link 
             className='mr-3 flex justify-center items-center text-center dashboard-table-action-btn'
-            href={`/dashboard/edit-category/${record._id}`}
+            href={`/dashboard/edit-product/${record._id}`}
           >
             <EditOutlined />
           </Link>
