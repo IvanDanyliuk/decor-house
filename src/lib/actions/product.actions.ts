@@ -6,6 +6,8 @@ import { connectToDB } from '../database';
 import { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_SIZE } from '../constants';
 import { utapi } from '../uploadthing';
 import Product from '../models/product.model';
+import Category from '../models/category.model';
+import Manufacturer from '../models/manufacturer.model';
 
 
 const productSchema = zod.object({
@@ -42,15 +44,15 @@ export const getProducts = async ({
         .limit(itemsPerPage)
         .skip((page - 1) * itemsPerPage)
         .populate([
-          { path: 'category', select: 'name' },
-          { path: 'manufacturer' }
+          { path: 'category', select: 'name', model: Category },
+          { path: 'manufacturer', model: Manufacturer }
         ])
         .select('-__v') :
       await Product
         .find({})
         .populate([
-          { path: 'category', select: 'name' },
-          { path: 'manufacturer' }
+          { path: 'category', select: 'name', model: Category },
+          { path: 'manufacturer', model: Manufacturer }
         ])
         .select('-__v');
         
