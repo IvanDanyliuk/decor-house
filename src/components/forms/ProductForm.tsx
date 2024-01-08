@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { createCategory, updateCategory } from '@/lib/actions/category.actions';
 import { ICategory } from '@/lib/types/category.types';
 import TextField from '../ui/TextField';
 import UploadImageButton from '../ui/UploadImageBtn';
@@ -82,12 +81,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const [types, setTypes] = useState<SelectOption[]>(typesInitialValue!);
   const [features, setFeatures] = useState<SelectOption[]>(featuresInitialState!);
 
-  console.log('PRODUCT FORM: UPDATE', {productToUpdate, selectedCategory})
-
   useEffect(() => { 
-    // if(productToUpdate) {
-    //   setSelectedCategory(productToUpdate.category);
-    // } 
     const data = categories.find(category => category._id === selectedCategory);
     const types = data?.types.map(type => ({ label: type, value: type }));
     const features = data?.features.map(feature => ({ label: feature, value: feature }));
@@ -177,7 +171,8 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
         <Select 
           name='manufacturer'
           label='Manufacturer'
-          title='Select a manufacturer'
+          title='Select a manufacturer' 
+          defaultValue={productToUpdate?.manufacturer}
           options={manufacturersData}
         />
         <TextareaField 
@@ -204,7 +199,8 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
         />
         <UploadImageButton 
           name='images'
-          label='Images'
+          label='Images' 
+          defaultValue={productToUpdate?.images}
           multiple
         />
         <ColorPicker 

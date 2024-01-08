@@ -15,8 +15,6 @@ const Products = async ({
   const { data } = await getProducts({ page: +page, itemsPerPage: 10 });
   const parsedData = JSON.parse(JSON.stringify(data));
 
-  console.log('PRODUCTS TAB', parsedData)
-
   return (
     <>
       {parsedData ? (
