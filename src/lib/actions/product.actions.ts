@@ -103,15 +103,15 @@ export const createProduct = async (prevState: any, formData: FormData) => {
   const colors = formData.get('colors') as string;
   const images = formData.get('images') as any;
 
-  const filesString = images.split('|-| ');
-  const imageFiles = await Promise.all(filesString.map(async (item: any) => {
-    const fetched = await fetch(item);
-    const blob = await fetched.blob();
-    return blob;
-  }));
-
   try {
     await connectToDB();
+
+    const filesString = images.split('|-| ');
+    const imageFiles = await Promise.all(filesString.map(async (item: any) => {
+      const fetched = await fetch(item);
+      const blob = await fetched.blob();
+      return blob;
+    }));
     
     const validatedFields = productSchema.safeParse(data);
 
@@ -128,7 +128,6 @@ export const createProduct = async (prevState: any, formData: FormData) => {
     const imageUrls = new Blob(imageFiles).size > 0 ? 
       await utapi.uploadFiles(imageFiles) : 
       null;
-
 
     if(!imageUrls || imageUrls.length === 0) return { error: 'Product card should contain at least 1 image' };
 
@@ -169,26 +168,44 @@ export const updateProduct = async (prevState: any, formData: FormData) => {
   try {
     await connectToDB();
 
-    // console.log('UPDATE PRODUCT ACTION', {
-    //   formData, imageUrls
-    // })
+    const validatedFields = productSchema.safeParse(data);
 
-    // const validatedFields = productSchema.safeParse(data);
+    if(!validatedFields.success) {
+      return {
+        error: validatedFields.error.flatten().fieldErrors,
+      }
+    }
 
-    // if(!validatedFields.success) {
-    //   return {
-    //     error: validatedFields.error.flatten().fieldErrors,
-    //   }
-    // }
-
-    // if(!imageUrls || imageUrls.length === 0) return { error: 'Product card should contain at least 1 image' };
+    if(!imageUrls || imageUrls.length === 0) return { error: 'Product card should contain at least 1 image' };
 
     const images = imageUrls.split('|-| ');
-    const existingImageUrls = images.filter(item => prevState.images.includes(item))
+    const existingImageUrls = images.filter(item => prevState.images.includes(item));
     const newFiles = images.filter(item => !prevState.images.includes(item));
-    const imagesToDelete = prevState.images.filter((item: string) => !existingImageUrls.includes(item))
+    const imagesToDelete = prevState.images.filter((item: string) => !existingImageUrls.includes(item));
 
-    console.log('UPDATE PRODUCT ACTION', {newFiles , existingImageUrls, imagesToDelete})
+    const newFilesToUpload = await Promise.all(newFiles.map(async (item: any) => {
+      const fetched = await fetch(item);
+      const blob = await fetched.blob();
+      return blob;
+    }));
+
+    const newFilesUrls = new Blob(newFilesToUpload).size > 0 ? 
+      await utapi.uploadFiles(newFilesToUpload) : 
+      null;
+
+    const newImageUrls = newFilesUrls?.map(item => item.data?.url);
+
+    if(imagesToDelete.length > 0) {
+      const imagesToDeleteUrls = imagesToDelete.map((url: string) => url.substring(url.lastIndexOf('/') + 1))
+      await utapi.deleteFiles(imagesToDeleteUrls);
+    }
+    
+    await Product.findByIdAndUpdate(prevState._id, {
+      ...data,
+      images: [...existingImageUrls, ...newImageUrls!],
+    });
+
+    revalidatePath('/dashboard/products');
 
     return {
       data: null,
