@@ -193,16 +193,16 @@ export const updateProduct = async (prevState: any, formData: FormData) => {
       await utapi.uploadFiles(newFilesToUpload) : 
       null;
 
-    const newImageUrls = newFilesUrls?.map(item => item.data?.url);
+    const newImageUrls = newFilesUrls && newFilesUrls.length > 0 ? newFilesUrls?.map(item => item.data?.url) : [];
 
     if(imagesToDelete.length > 0) {
-      const imagesToDeleteUrls = imagesToDelete.map((url: string) => url.substring(url.lastIndexOf('/') + 1))
+      const imagesToDeleteUrls = imagesToDelete!.map((url: string) => url.substring(url.lastIndexOf('/') + 1));
       await utapi.deleteFiles(imagesToDeleteUrls);
     }
     
     await Product.findByIdAndUpdate(prevState._id, {
       ...data,
-      images: [...existingImageUrls, ...newImageUrls!],
+      images: [...existingImageUrls, ...newImageUrls],
     });
 
     revalidatePath('/dashboard/products');
