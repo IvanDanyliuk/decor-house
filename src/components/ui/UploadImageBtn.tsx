@@ -72,47 +72,25 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({
           >
             Upload
           </button>
-          {defaultValue ? (
-            <ul className='flex gap-3 text-xs'>
-              {selectedFiles.map((url: any) => (
-                <li key={crypto.randomUUID()} className='relative'>
-                  <Image 
-                    src={typeof url === 'string' ? url : URL.createObjectURL(url)} 
-                    alt='Image' 
-                    width={50} 
-                    height={50} 
-                  />
-                  <button 
-                    type='button' 
-                    onClick={() => handleImageDelete(url)}
-                    className='absolute top-0 right-0 w-5 h-5 flex justify-center items-center text-xs bg-white'
-                  >
-                    <CloseOutlined />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <ul className='flex gap-3 text-xs'>
-              {selectedFiles.map((file: any) => (
-                <li key={crypto.randomUUID()} className='relative'>
-                  <Image 
-                    src={file} 
-                    alt='Image' 
-                    width={50} 
-                    height={50} 
-                  />
-                  <button 
-                    type='button' 
-                    onClick={() => handleImageDelete(file.name)}
-                    className='absolute top-0 right-0 w-5 h-5 flex justify-center items-center text-xs bg-white'
-                  >
-                    <CloseOutlined />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul className='flex gap-3 text-xs'>
+            {selectedFiles.map((url: any) => (
+              <li key={crypto.randomUUID()} className='relative'>
+                <Image 
+                  src={typeof url === 'string' ? url : URL.createObjectURL(url)} 
+                  alt='Image' 
+                  width={50} 
+                  height={50} 
+                />
+                <button 
+                  type='button' 
+                  onClick={() => handleImageDelete(url)}
+                  className='absolute top-0 right-0 w-5 h-5 flex justify-center items-center text-xs bg-white'
+                >
+                  <CloseOutlined />
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
         <input 
           ref={ref}
