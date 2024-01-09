@@ -208,6 +208,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           label='Colors' 
           title='Select colors' 
           multiple 
+          defaultValue={productToUpdate?.colors}
         />
       </fieldset>
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>

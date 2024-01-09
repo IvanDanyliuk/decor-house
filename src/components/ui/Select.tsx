@@ -92,11 +92,6 @@ const Select: React.FC<ISelect> = ({
   }, [data]);
 
   useEffect(() => {
-    // if(defaultValue) {
-    //   setData(defaultValue);
-    //   setSelectedValues(options.filter(option => defaultValue.includes(option.value)).map(option => option.label).join(', '))
-    // }
-
     if(data && selectedValues) {
       const optionValues = options.map(item => item.value);
       const isDataActual = data.split(', ').every(item => optionValues.includes(item));

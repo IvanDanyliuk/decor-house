@@ -163,6 +163,7 @@ export const createProduct = async (prevState: any, formData: FormData) => {
 export const updateProduct = async (prevState: any, formData: FormData) => {
   const id = prevState._id;
   const data = Object.fromEntries(formData);
+  const colors = formData.get('colors') as string;
   const imageUrls = formData.get('images') as string;
 
   try {
@@ -202,6 +203,7 @@ export const updateProduct = async (prevState: any, formData: FormData) => {
     
     await Product.findByIdAndUpdate(prevState._id, {
       ...data,
+      colors: colors.split(', '),
       images: [...existingImageUrls, ...newImageUrls],
     });
 

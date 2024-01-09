@@ -1,15 +1,14 @@
-import { CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { ColorPicker as Picker, Tag } from 'antd';
 import { Color, ColorPickerProps } from 'antd/es/color-picker';
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import { CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 
 interface IColorPicker {
   label?: string;
   name: string;
   title?:string;
-  value?: string[];
-  defaultValue?: string;
+  defaultValue?: string[];
   multiple?: boolean;
   required?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -17,10 +16,10 @@ interface IColorPicker {
 }
 
 
-const ColorPicker: React.FC<IColorPicker> = ({ name, label, title, value, defaultValue, required, multiple = false, onChange, error }) => {
+const ColorPicker: React.FC<IColorPicker> = ({ name, label, title, defaultValue, required, multiple = false, onChange, error }) => {
   const [color, setColor] = useState<Color | null>(null);
   const [format, setFormat] = useState<ColorPickerProps['format']>('hex');
-  const [selectedColors, setSelectedColors] = useState<string>('');
+  const [selectedColors, setSelectedColors] = useState<string>(defaultValue ? defaultValue.join(', ') : '');
 
   const handlePickedColorDelete = (value: string) => {
     const splittedColors = selectedColors.split(', ');
@@ -42,11 +41,17 @@ const ColorPicker: React.FC<IColorPicker> = ({ name, label, title, value, defaul
         setSelectedColors(color.toHexString().slice(0, 7));
       }
     }
-  }, [color])
+  }, [color]);
 
   return (
     <div className='w-full flex flex-col md:flex-row items-start gap-3'>
-      <input type='text' name={name} defaultValue={selectedColors} className='hidden' />
+      <input 
+        type='text' 
+        name={name} 
+        value={selectedColors} 
+        onChange={() => {}} 
+        className='hidden' 
+      />
       {label && (
         <label 
           htmlFor={name} 
@@ -71,7 +76,11 @@ const ColorPicker: React.FC<IColorPicker> = ({ name, label, title, value, defaul
             </button>
           </Picker>
           {selectedColors && (
-            <button type='button' onClick={clearSelectedColors} className='px-3 py-1 text-sm text-gray-dark border rounded'>
+            <button 
+              type='button' 
+              onClick={clearSelectedColors} 
+              className='px-3 py-1 text-sm text-gray-dark border rounded'
+            >
               Clear colors
             </button>
           )}
