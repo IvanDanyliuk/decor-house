@@ -52,11 +52,8 @@ export const register = async (prevState: any, formData: FormData) => {
   try {
     await connectToDB();
 
-    const photoFile = await fetch(rawPhoto);
-    const photo = await photoFile.blob();
-
     const validatedFields = userSchema.safeParse({
-      name, phone, address, photo, email, password, confirmPassword
+      name, phone, address, photo: rawPhoto, email, password, confirmPassword
     });
 
     if(!validatedFields.success) {
@@ -64,6 +61,9 @@ export const register = async (prevState: any, formData: FormData) => {
         error: validatedFields.error.flatten().fieldErrors,
       };
     }
+
+    const photoFile = await fetch(rawPhoto);
+    const photo = await photoFile.blob();
     
     const existingUser = await User.findOne({ email });
 

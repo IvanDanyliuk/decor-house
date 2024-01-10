@@ -57,6 +57,7 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
       ref.current?.reset();
       setTypes([]);
       setFeatures([]);
+      router.push('/dashboard/categories');
 
       if(categoryToUpdate) {
         router.push('/dashboard/categories');
@@ -84,7 +85,7 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
         <UploadImageButton 
           name='image' 
           label='Image' 
-          value={categoryToUpdate && categoryToUpdate.image || ''}
+          defaultValue={categoryToUpdate?.image!}
           error={state && state.error && state.error['image']}
         />
       </fieldset>

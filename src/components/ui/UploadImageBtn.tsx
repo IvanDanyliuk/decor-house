@@ -23,7 +23,8 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({
   defaultValue,
   error 
 }) => {
-  const [selectedFiles, setSelectedFiles] = useState<any>(defaultValue || [])
+  const selectedFilesIntialValue = defaultValue && (multiple ? defaultValue : [defaultValue]) || [];
+  const [selectedFiles, setSelectedFiles] = useState<any>(selectedFilesIntialValue);
   const ref = useRef<HTMLInputElement>(null);
 
   const convertFileToString = (file: any) => {
@@ -52,12 +53,18 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({
       const url = await convertFileToString(item);
       return url;
     }));
-    setSelectedFiles([...selectedFiles, ...pickedFiles]);
+    if(multiple) {
+      setSelectedFiles([...selectedFiles, ...pickedFiles]);
+    } else {
+      setSelectedFiles([...pickedFiles])
+    }
   };
 
   const handleImageDelete = (value: any) => {
     setSelectedFiles((prevState: any[]) => prevState.filter(url => typeof url === 'string' ? url !== value : url.name !== value.name));
   };
+
+  console.log('SELECTED FILES', selectedFiles)
 
   return (
     <div className='w-full flex items-center gap-3'>

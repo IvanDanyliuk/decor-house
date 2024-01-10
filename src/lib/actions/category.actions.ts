@@ -10,10 +10,7 @@ import { utapi } from '../uploadthing';
 
 const categorySchema = zod.object({
   name: zod.string().min(1, 'Name is required!'),
-  image: zod
-    .any()
-    .refine(files => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type))
-    .or(zod.any()),
+  image: zod.string().min(1, 'Category image is required'),
   types: zod.string(),
   features: zod.string(),
 });
@@ -82,7 +79,7 @@ export const getCategory = async (id: string) => {
 
 export const createCategory = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
-  const image = formData.getAll('image');
+  const rawImage = formData.get('image') as string;
   const types = formData.get('types') as string;
   const features = formData.get('features') as string;
 
@@ -90,7 +87,7 @@ export const createCategory = async (prevState: any, formData: FormData) => {
     await connectToDB();
 
     const validatedFields = categorySchema.safeParse({
-      name, image, types, features
+      name, image: rawImage, types, features
     });
 
     if(!validatedFields.success) {
@@ -99,12 +96,15 @@ export const createCategory = async (prevState: any, formData: FormData) => {
       };
     }
 
+    const imageFile = await fetch(rawImage);
+    const image = await imageFile.blob();
+
     const existingCategory = await Category.findOne({ name });
 
     if(existingCategory) return { error: 'Category already exists' };
 
-    const imageUrl = new Blob(image).size > 0 ? 
-      (await utapi.uploadFiles(image))[0].data?.url : 
+    const imageUrl = new Blob([image]).size > 0 ? 
+      (await utapi.uploadFiles([image]))[0].data?.url : 
       null;
 
     if(!imageUrl) return { error: 'Category Image is required' };
@@ -135,14 +135,14 @@ export const createCategory = async (prevState: any, formData: FormData) => {
 export const updateCategory = async (prevState: any, formData: FormData) => {
   const id = prevState._id;
   const name = formData.get('name');
-  const image = formData.getAll('image');
+  const rawImage = formData.get('image') as string;
   const types = formData.get('types') as string;
   const features = formData.get('features') as string;
 
   try {
     await connectToDB();
 
-    const validatedFields = categorySchema.safeParse({ name, image, types, features });
+    const validatedFields = categorySchema.safeParse({ name, image: rawImage, types, features });
 
     if(!validatedFields.success) {
       return {
@@ -150,14 +150,15 @@ export const updateCategory = async (prevState: any, formData: FormData) => {
       };
     }
 
-    const imageUrl = new Blob(image).size > 0 ? 
-      (await utapi.uploadFiles(image))[0].data?.url : 
+    const imageFile = await fetch(rawImage);
+    const image = await imageFile.blob();
+
+    const imageUrl = new Blob([image]).size > 0 ? 
+      (await utapi.uploadFiles([image]))[0].data?.url : 
       prevState.image;
 
-    if(new Blob(image).size > 0) {
-      const url = prevState.image.substring(prevState.image.lastIndexOf('/') + 1);
-      await utapi.deleteFiles(url);
-    }
+    const imageToDelete = prevState.image.substring(prevState.image.lastIndexOf('/') + 1);
+    await utapi.deleteFiles(imageToDelete);
 
     await Category.findByIdAndUpdate(id, { 
       name, 
