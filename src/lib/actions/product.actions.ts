@@ -3,11 +3,11 @@
 import { revalidatePath } from 'next/cache';
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
-import { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_SIZE } from '../constants';
 import { utapi } from '../uploadthing';
 import Product from '../models/product.model';
 import Category from '../models/category.model';
 import Manufacturer from '../models/manufacturer.model';
+import { ACCEPTED_IMAGE_TYPES } from '../constants';
 
 
 const productSchema = zod.object({
@@ -16,7 +16,7 @@ const productSchema = zod.object({
   type: zod.string().min(1, 'A product should have a type'),
   features: zod.string(),
   manufacturer: zod.string(),
-  colors: zod.string(),
+  colors: zod.string().min(7, 'Select color'),
   price: zod.string(),
   sale: zod.string(),
   width: zod.string(),
@@ -24,7 +24,7 @@ const productSchema = zod.object({
   depth: zod.string(),
   description: zod.string(),
   characteristics: zod.string(),
-  images: zod.any()
+  images: zod.string().min(1, 'Product must have at least one image'),
 });
 
 
@@ -101,10 +101,18 @@ export const createProduct = async (prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
   const features = formData.get('features') as string;
   const colors = formData.get('colors') as string;
-  const images = formData.get('images') as any;
+  const images = formData.get('images') as string;
 
   try {
     await connectToDB();
+
+    const validatedFields = productSchema.safeParse(data);
+
+    if(!validatedFields.success) {
+      return {
+        error: validatedFields.error.flatten().fieldErrors,
+      }
+    }
 
     const filesString = images.split('|-| ');
     const imageFiles = await Promise.all(filesString.map(async (item: any) => {
@@ -112,12 +120,14 @@ export const createProduct = async (prevState: any, formData: FormData) => {
       const blob = await fetched.blob();
       return blob;
     }));
-    
-    const validatedFields = productSchema.safeParse(data);
 
-    if(!validatedFields.success) {
+    const isImageFormatsValid = (images: Blob[]) => {
+      return images.every(image => ACCEPTED_IMAGE_TYPES.includes(image.type));
+    };
+
+    if(!isImageFormatsValid(imageFiles)) {
       return {
-        error: validatedFields.error.flatten().fieldErrors,
+        error: 'Invalid image format'
       }
     }
 
@@ -142,7 +152,6 @@ export const createProduct = async (prevState: any, formData: FormData) => {
       colors: colors.split(', '),
       images: imageUrls.map(item => item.data?.url)
     });
-    
 
     revalidatePath('/dashboard/create-product');
 
@@ -156,7 +165,7 @@ export const createProduct = async (prevState: any, formData: FormData) => {
       data: null,
       error: error.message,
       message: 'Cannot create a new product',
-    }
+    };
   }
 };
 

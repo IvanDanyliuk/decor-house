@@ -15,7 +15,7 @@ const SubmitButton: React.FC<ISubmitButton> = ({ label }) => {
     <button 
       type='submit' 
       disabled={pending}
-      className='w-full md:w-72 h-12 bg-accent-dark text-white uppercase rounded'
+      className='w-full md:w-72 h-12 bg-accent-dark text-white uppercase rounded disabled:bg-gray-600'
     >
       {pending ? 'Loading...' : `${label}`}
     </button>

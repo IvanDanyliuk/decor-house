@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ICategory } from '@/lib/types/category.types';
@@ -74,6 +74,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const router = useRouter();
 
   const [state, formAction] = useFormState(action, initialState);
+  const status = useFormStatus();
   const ref = useRef<HTMLFormElement>(null);
 
   const [selectedCategory, setSelectedCategory] = useState<string>(productToUpdate ? productToUpdate.category : '');
@@ -102,6 +103,10 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
       }
     }
   }, [state, formAction]);
+
+  useEffect(() => {
+    console.log('FORM STATUS', status)
+  }, [status])
 
   return (
     <form 
@@ -202,13 +207,15 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           label='Images' 
           defaultValue={productToUpdate?.images}
           multiple
+          error={state && state.error && state.error['images']}
         />
         <ColorPicker 
           name='colors' 
           label='Colors' 
           title='Select colors' 
           multiple 
-          defaultValue={productToUpdate?.colors}
+          defaultValue={productToUpdate?.colors} 
+          error={state && state.error && state.error['colors']}
         />
       </fieldset>
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
