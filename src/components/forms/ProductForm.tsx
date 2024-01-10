@@ -104,10 +104,6 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
     }
   }, [state, formAction]);
 
-  useEffect(() => {
-    console.log('FORM STATUS', status)
-  }, [status])
-
   return (
     <form 
       ref={ref} 

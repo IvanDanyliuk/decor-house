@@ -44,13 +44,16 @@ export const register = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
   const phone = formData.get('phone');
   const address = formData.get('address');
-  const photo = formData.getAll('photo');
+  const rawPhoto = formData.get('photo') as string;
   const email = formData.get('email');
   const password = formData.get('password') as string;
   const confirmPassword = formData.get('confirmPassword');
 
   try {
     await connectToDB();
+
+    const photoFile = await fetch(rawPhoto);
+    const photo = await photoFile.blob();
 
     const validatedFields = userSchema.safeParse({
       name, phone, address, photo, email, password, confirmPassword
@@ -67,7 +70,7 @@ export const register = async (prevState: any, formData: FormData) => {
     if(existingUser) return { error: 'User already exists' };
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const imageUrl = new Blob(photo).size > 0 ? (await utapi.uploadFiles(photo))[0].data?.url : '';
+    const imageUrl = new Blob([photo]).size > 0 ? (await utapi.uploadFiles([photo]))[0].data?.url : '';
 
     const newUser = await User.create({
       name,
