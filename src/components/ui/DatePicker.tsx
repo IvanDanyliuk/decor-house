@@ -34,7 +34,11 @@ const DatePicker: React.FC<IDatePicker> = ({ name, label, defaultValue, error })
       )}
       <div className='relative w-full md:grow'>
         <div className='flex gap-3'>
-          <Picker defaultValue={dayjs(defaultValue)} onChange={setDate} />
+          <Picker 
+            defaultValue={dayjs(defaultValue)} 
+            format='DD-MM-YYYY'
+            onChange={setDate} 
+          />
         </div>
         <p className='mt-1 text-xs text-red-600'>
           {error && (

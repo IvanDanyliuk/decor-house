@@ -9,6 +9,8 @@ import SubmitButton from '../ui/SubmitButton';
 import Link from 'next/link';
 import TextField from '../ui/TextField';
 import DatePicker from '../ui/DatePicker';
+import UploadImageButton from '../ui/UploadImageBtn';
+import TextareaField from '../ui/TextareaField';
 
 
 interface IPromotionForm {
@@ -59,6 +61,19 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
           label='Period To'
           defaultValue={promotionToUpdate?.periodTo}
           error={state && state.error && state.error['periodTo']}
+        />
+        <UploadImageButton 
+          name='image'
+          label='Image'
+          defaultValue={promotionToUpdate?.image}
+          error={state && state.error && state.error['image']}
+        />
+        <TextareaField 
+          name='description'
+          label='Description'
+          defaultValue={promotionToUpdate?.description}
+          rows={6}
+          error={state && state.error && state.error['description']}
         />
       </fieldset>
       <fieldset className='w-full'>
