@@ -7,6 +7,7 @@ import { createManufacturer, updateManufacturer } from '@/lib/actions/manufactur
 import TextField from '../ui/TextField';
 import SubmitButton from '../ui/SubmitButton';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
+import { useRouter } from 'next/navigation';
 
 
 interface IManufacturerForm {
@@ -25,10 +26,16 @@ const ManufacturerForm: React.FC<IManufacturerForm> = ({ manufacturerToUpdate })
   
   const [state, formAction] = useFormState(action, initialState);
   const ref = useRef<HTMLFormElement>(null);
+  const router = useRouter();
   
   useEffect(() => {
-    if(state && !state.error) {
+    if(state.message) {
       ref.current?.reset();
+      router.push('/dashboard/manufacturers');
+
+      if(manufacturerToUpdate) {
+        router.push('/dashboard/manufacturers');
+      }
     }
   }, [state, formAction]);
 
