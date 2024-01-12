@@ -1,13 +1,17 @@
 import ProductForm from '@/components/forms/ProductForm';
 import { getCategories } from '@/lib/actions/category.actions';
-import { getManufacturers } from '@/lib/actions/manufacturer.actions';
+import { getManufacturers } from '@/lib/queries/manufacturers.queries';
+// import { getManufacturers } from '@/lib/actions/manufacturer.actions';
+
 import { ICategory } from '@/lib/types/category.types';
-import React from 'react';
 
 
 const CreateProduct: React.FC = async () => {
   const categories = await getCategories({});
+  // const manufacturers = await getManufacturers({});
   const manufacturers = await getManufacturers({});
+
+  console.log('CREATE PAGE MANUFACTURERS', manufacturers)
 
   return (
     <>

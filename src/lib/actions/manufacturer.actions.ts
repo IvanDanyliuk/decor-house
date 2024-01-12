@@ -12,44 +12,44 @@ const manufacturerSchema = zod.object({
 });
 
 
-export const getManufacturers = async ({ 
-  page, 
-  itemsPerPage 
-}: { 
-  page?: number, 
-  itemsPerPage?: number 
-}) => {
-  try {
-    await connectToDB();
+// export const getManufacturers = async ({ 
+//   page, 
+//   itemsPerPage 
+// }: { 
+//   page?: number, 
+//   itemsPerPage?: number 
+// }) => {
+//   try {
+//     await connectToDB();
 
-    const manufacturers = (page && itemsPerPage) ? 
-      await Manufacturer
-        .find({})
-        .limit(itemsPerPage)
-        .skip((page - 1) * itemsPerPage)
-        .select('-__v') : 
-      await Manufacturer
-        .find({})
-        .select('-__v');
+//     const manufacturers = (page && itemsPerPage) ? 
+//       await Manufacturer
+//         .find({})
+//         .limit(itemsPerPage)
+//         .skip((page - 1) * itemsPerPage)
+//         .select('-__v') : 
+//       await Manufacturer
+//         .find({})
+//         .select('-__v');
 
-    const count = await Manufacturer.countDocuments();
+//     const count = await Manufacturer.countDocuments();
 
-    return {
-      data: {
-        manufacturers,
-        count, 
-      },
-      error: null,
-      message: '',
-    };
-  } catch (error: any) {
-    return {
-      data: null,
-      error: error.message,
-      message: 'Cannot find manufacturers',
-    };
-  }
-};
+//     return {
+//       data: {
+//         manufacturers,
+//         count, 
+//       },
+//       error: null,
+//       message: '',
+//     };
+//   } catch (error: any) {
+//     return {
+//       data: null,
+//       error: error.message,
+//       message: 'Cannot find manufacturers',
+//     };
+//   }
+// };
 
 export const getManufacturer = async (id: string) => {
   try {

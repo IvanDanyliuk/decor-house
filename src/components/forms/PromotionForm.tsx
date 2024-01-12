@@ -11,6 +11,7 @@ import TextField from '../ui/TextField';
 import DatePicker from '../ui/DatePicker';
 import UploadImageButton from '../ui/UploadImageBtn';
 import TextareaField from '../ui/TextareaField';
+import ProductSelect from '../ui/ProductSelect';
 
 
 interface IPromotionForm {
@@ -40,9 +41,9 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
     <form 
       ref={ref} 
       action={formAction} 
-      className='flex grow flex-1 flex-col justify-between content-between gap-6'
+      className='flex grow flex-1 flex-wrap justify-between content-between gap-6'
     >
-      <fieldset className='flex flex-col gap-3'>
+      <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
         <TextField 
           name='title'
           label='Title'
@@ -76,8 +77,8 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
           error={state && state.error && state.error['description']}
         />
       </fieldset>
-      <fieldset className='w-full'>
-        
+      <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
+        <ProductSelect category='65881bc36009bbfaae701a89' onChange={() => {}} />
       </fieldset>
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
         <SubmitButton label={promotionToUpdate ? 'Update' : 'Create'} />

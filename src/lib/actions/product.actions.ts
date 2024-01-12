@@ -30,17 +30,23 @@ const productSchema = zod.object({
 
 export const getProducts = async ({ 
   page, 
-  itemsPerPage 
+  itemsPerPage, 
+  params = {}
 }: { 
   page?: number, 
-  itemsPerPage?: number 
+  itemsPerPage?: number, 
+  params?: {
+    category?: string;
+    manufacturer?: string;
+  }  
 }) => {
+  'use server'
   try {
     await connectToDB();
     
     const products = (page && itemsPerPage) ? 
       await Product
-        .find({})
+        .find(params)
         .limit(itemsPerPage)
         .skip((page - 1) * itemsPerPage)
         .populate([
@@ -49,7 +55,7 @@ export const getProducts = async ({
         ])
         .select('-__v') :
       await Product
-        .find({})
+        .find(params)
         .populate([
           { path: 'category', select: 'name', model: Category },
           { path: 'manufacturer', model: Manufacturer }

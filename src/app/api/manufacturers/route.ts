@@ -1,38 +1,41 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { connectToDB } from '@/lib/database';
 import Manufacturer from '@/lib/models/manufacturer.model';
 
 
-export const GET = async (req: Request) => {
+export const GET = async (req: NextRequest) => {
   try {
-    // const params = await req.json();
+    const url = new URL(req.url);
+
+    const page = url.searchParams.get('page');
+    const itemsPerPage = url.searchParams.get('itemsPerPage');
+
+    console.log('GET MANUFACTURERS REQUEST', {
+      page, itemsPerPage
+    })
 
     await connectToDB();
 
-    const manufacturers = await Manufacturer.find({});
-    return NextResponse.json(manufacturers);
+    const manufacturers = (page && itemsPerPage) ? 
+      await Manufacturer
+        .find({})
+        .limit(+itemsPerPage)
+        .skip((+page - 1) * +itemsPerPage)
+        .select('-__v') : 
+      await Manufacturer
+        .find({})
+        .select('-__v');
 
-    // if(params.id) {
-    //   const manufacturer = await Manufacturer.findById(params.id);
-    //   return NextResponse.json(manufacturer);
-    // } else {
-    //   const manufacturers = await Manufacturer.find({});
-    //   return NextResponse.json(manufacturers);
-    // }
-  } catch (error: any) {
-    return new NextResponse(error, { status: 500 });
-  }
-};
+    const count = await Manufacturer.countDocuments();
 
-export const POST = async (req: Request) => {
-  try {
-    const { name, country } = await req.json();
-
-    await connectToDB();
-
-    await Manufacturer.create({ name, country });
-
-    return new NextResponse('Manufacturer has been created successfully!', { status: 200 });
+    return NextResponse.json({
+      data: {
+        manufacturers,
+        count, 
+      },
+      error: null,
+      message: '',
+    });
   } catch (error: any) {
     return new NextResponse(error, { status: 500 });
   }

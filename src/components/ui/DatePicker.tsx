@@ -16,7 +16,7 @@ const DatePicker: React.FC<IDatePicker> = ({ name, label, defaultValue, error })
   const [date, setDate] = useState<any>(dayjs(new Date().toUTCString()))
 
   return (
-    <div className='w-full flex flex-col md:flex-row items-start gap-3'>
+    <div className='w-full flex flex-col md:flex-row items-start gap-3 box-content'>
       <input 
         type='text' 
         name={name} 
@@ -29,7 +29,7 @@ const DatePicker: React.FC<IDatePicker> = ({ name, label, defaultValue, error })
           htmlFor={name} 
           className='w-full md:w-36 h-10 flex items-center text-sm font-semibold'
         >
-          <span>{label}</span>
+          <span className='w-full'>{label}</span>
         </label>
       )}
       <div className='relative w-full md:grow'>
