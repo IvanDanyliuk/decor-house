@@ -1,6 +1,7 @@
 import ProductForm from '@/components/forms/ProductForm';
 import { getCategories } from '@/lib/queries/category.queries';
-import { getProduct } from '@/lib/actions/product.actions';
+// import { getProduct } from '@/lib/actions/product.actions';
+import { getProduct } from '@/lib/queries/product.queries';
 import { getManufacturers } from '@/lib/queries/manufacturers.queries';
 
 
@@ -11,8 +12,8 @@ const UpdateProduct = async ({ params }: { params: { id: string } }) => {
 
   const manufacturers = await getManufacturers({});
 
-  const productData = await getProduct(id);
-  const product = JSON.parse(JSON.stringify(productData.data));
+  const product = await getProduct(id);
+  // const product = JSON.parse(JSON.stringify(productData.data));
   
   return (
     <>
@@ -20,7 +21,7 @@ const UpdateProduct = async ({ params }: { params: { id: string } }) => {
         <h2 className='container mx-auto page-heading-primary'>Update Product</h2>
       </section>
       <section className='container mx-auto py-10 box-border'>
-        {categories.data && manufacturers.data && productData && (
+        {categories.data && manufacturers.data && product && (
           <ProductForm 
             categories={categories.data.categories} 
             manufacturers={manufacturers.data.manufacturers} 

@@ -1,8 +1,7 @@
 import React from 'react';
-import Link from 'next/link';
-import { getProducts } from '@/lib/actions/product.actions';
 import ProductsTable from '@/components/tables/ProductsTable';
 import Pagination from '@/components/ui/Pagination';
+import { getProducts } from '@/lib/queries/product.queries';
 
 
 const Products = async ({ 
@@ -10,17 +9,15 @@ const Products = async ({
 }: { 
   searchParams: { [key: string]: string | string[] | undefined } 
 }) => {
-  const page = searchParams.page || 1;
-
-  const { data } = await getProducts({ page: +page, itemsPerPage: 10 });
-  const parsedData = JSON.parse(JSON.stringify(data));
+  const page = +searchParams.page! || 1;
+  const { data } = await getProducts({ page, itemsPerPage: 10 });
 
   return (
     <>
-      {parsedData ? (
+      {data ? (
         <>
-          <ProductsTable products={parsedData.products} />
-          <Pagination itemsCount={parsedData.count} />
+          <ProductsTable products={data.products} />
+          <Pagination itemsCount={data.count} />
         </>
       ) : (
         <div>Products not found</div>

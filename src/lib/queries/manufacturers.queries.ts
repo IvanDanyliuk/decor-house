@@ -8,8 +8,8 @@ export const getManufacturers = async ({
   const searchParams = page && itemsPerPage ? `?page=${page}&itemsPerPage=${itemsPerPage}` : '';
   const data = await fetch(
     `${process.env.BASE_URL}/api/manufacturers${searchParams}`, 
-    { cache: 'no-store' 
-  });
+    { cache: 'no-store' }
+  );
   return data.json();
 };
 

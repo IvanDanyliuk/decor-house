@@ -40,7 +40,6 @@ export const getProducts = async ({
     manufacturer?: string;
   }  
 }) => {
-  'use server'
   try {
     await connectToDB();
     
