@@ -1,6 +1,6 @@
 import CategoriesTable from '@/components/tables/CategoriesTable';
 import Pagination from '@/components/ui/Pagination';
-import { getCategories } from '@/lib/actions/category.actions';
+import { getCategories } from '@/lib/queries/category.queries';
 
 
 const Categories = async ({ 

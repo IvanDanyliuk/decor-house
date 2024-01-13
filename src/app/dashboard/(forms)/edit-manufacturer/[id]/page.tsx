@@ -4,10 +4,7 @@ import { getManufacturer } from '@/lib/queries/manufacturers.queries';
 
 const UpdateManufacturer = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
-
   const manufacturer = await getManufacturer(id);
-
-  console.log('MANUFACTURER TO UPDATE', manufacturer)
 
   return (
     <>

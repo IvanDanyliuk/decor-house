@@ -12,67 +12,6 @@ const manufacturerSchema = zod.object({
 });
 
 
-// export const getManufacturers = async ({ 
-//   page, 
-//   itemsPerPage 
-// }: { 
-//   page?: number, 
-//   itemsPerPage?: number 
-// }) => {
-//   try {
-//     await connectToDB();
-
-//     const manufacturers = (page && itemsPerPage) ? 
-//       await Manufacturer
-//         .find({})
-//         .limit(itemsPerPage)
-//         .skip((page - 1) * itemsPerPage)
-//         .select('-__v') : 
-//       await Manufacturer
-//         .find({})
-//         .select('-__v');
-
-//     const count = await Manufacturer.countDocuments();
-
-//     return {
-//       data: {
-//         manufacturers,
-//         count, 
-//       },
-//       error: null,
-//       message: '',
-//     };
-//   } catch (error: any) {
-//     return {
-//       data: null,
-//       error: error.message,
-//       message: 'Cannot find manufacturers',
-//     };
-//   }
-// };
-
-export const getManufacturer = async (id: string) => {
-  try {
-    await connectToDB();
-
-    const manufacturer = await Manufacturer
-      .findById(id)
-      .select('-__v');
-
-    return {
-      data: manufacturer,
-      error: null,
-      message: null,
-    };
-  } catch (error: any) {
-    return {
-      data: null,
-      error: error.message,
-      message: 'Cannot find the manufacturer',
-    };
-  }
-}
-
 export const createManufacturer = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
   const country = formData.get('country');

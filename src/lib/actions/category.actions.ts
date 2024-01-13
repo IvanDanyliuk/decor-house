@@ -16,67 +16,6 @@ const categorySchema = zod.object({
 });
 
 
-export const getCategories = async ({ 
-  page, 
-  itemsPerPage 
-}: { 
-  page?: number, 
-  itemsPerPage?: number 
-}) => {
-  try {
-    await connectToDB();
-
-    const categories = (page && itemsPerPage) ? 
-      await Category
-        .find({})
-        .limit(itemsPerPage)
-        .skip((page - 1) * itemsPerPage)
-        .select('-__v') :
-      await Category
-        .find({})
-        .select('-__v');
-
-    const count = await Category.countDocuments();
-
-    return {
-      data: {
-        categories, 
-        count
-      },
-      error: null,
-      message: '',
-    };
-  } catch (error: any) {
-    return {
-      data: null,
-      error: error.message,
-      message: 'Cannot find categories',
-    };
-  }
-};
-
-export const getCategory = async (id: string) => {
-  try {
-    await connectToDB();
-
-    const category = await Category
-      .findById(id)
-      .select('-__v');
-
-    return {
-      data: category,
-      error: null,
-      message: '',
-    }
-  } catch (error: any) {
-    return {
-      data: null,
-      error: error.message,
-      message: 'Cannot find a category',
-    };
-  }
-};
-
 export const createCategory = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
   const rawImage = formData.get('image') as string;

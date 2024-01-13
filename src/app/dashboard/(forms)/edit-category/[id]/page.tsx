@@ -1,12 +1,10 @@
 import CategoryForm from '@/components/forms/CategoryForm';
-import { getCategory } from '@/lib/actions/category.actions';
+import { getCategory } from '@/lib/queries/category.queries';
 
 
 const UpdateCategory = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
-
   const { data } = await getCategory(id);
-  const parsedData = JSON.parse(JSON.stringify(data));
 
   return (
     <>
@@ -15,7 +13,7 @@ const UpdateCategory = async ({ params }: { params: { id: string } }) => {
       </section>
       <section className='container mx-auto py-10 box-border'>
         {data && (
-          <CategoryForm categoryToUpdate={parsedData} />
+          <CategoryForm categoryToUpdate={data} />
         )}
       </section>
     </>
