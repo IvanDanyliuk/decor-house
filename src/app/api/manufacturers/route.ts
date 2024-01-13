@@ -6,13 +6,8 @@ import Manufacturer from '@/lib/models/manufacturer.model';
 export const GET = async (req: NextRequest) => {
   try {
     const url = new URL(req.url);
-
     const page = url.searchParams.get('page');
     const itemsPerPage = url.searchParams.get('itemsPerPage');
-
-    console.log('GET MANUFACTURERS REQUEST', {
-      page, itemsPerPage
-    })
 
     await connectToDB();
 

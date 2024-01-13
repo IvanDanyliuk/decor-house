@@ -1,21 +1,13 @@
 import ManufacturerForm from '@/components/forms/ManufacturerForm';
-import { getManufacturer } from '@/lib/actions/manufacturer.actions';
-
-
-const fetchManufacturer = async (id: string) => {
-  const data = await fetch(`${process.env.BASE_URL}/api/manufacturers/${id}`);
-  return data.json();
-}
+import { getManufacturer } from '@/lib/queries/manufacturers.queries';
 
 
 const UpdateManufacturer = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
-  const manufacturer = await fetchManufacturer(id);
+  const manufacturer = await getManufacturer(id);
 
-  // const { data } = await getManufacturer(id);
-  // const parsedData = JSON.parse(JSON.stringify(data));
-  console.log('MANUFACTURER TO UPDATE RESPONSE', manufacturer)
+  console.log('MANUFACTURER TO UPDATE', manufacturer)
 
   return (
     <>
@@ -23,9 +15,9 @@ const UpdateManufacturer = async ({ params }: { params: { id: string } }) => {
         <h2 className='container mx-auto page-heading-primary'>Update Manufacturer</h2>
       </section>
       <section className='container mx-auto py-10 box-border'>
-        {/* {data && (
-          <ManufacturerForm manufacturerToUpdate={parsedData} />
-        )} */}
+        {manufacturer.data && (
+          <ManufacturerForm manufacturerToUpdate={manufacturer.data} />
+        )}
       </section>
     </>
   );

@@ -3,36 +3,19 @@ import { connectToDB } from '@/lib/database';
 import Manufacturer from '@/lib/models/manufacturer.model';
 
 
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    // const url = new URL(req.url);
-
-    // const page = url.searchParams.get('page');
-    // const itemsPerPage = url.searchParams.get('itemsPerPage');
-
     await connectToDB();
 
-    // const manufacturers = (page && itemsPerPage) ? 
-    //   await Manufacturer
-    //     .find({})
-    //     .limit(+itemsPerPage)
-    //     .skip((+page - 1) * +itemsPerPage)
-    //     .select('-__v') : 
-    //   await Manufacturer
-    //     .find({})
-    //     .select('-__v');
+    const manufacturer = await Manufacturer
+        .findById(params.id)
+        .select('-__v');
 
-    // const count = await Manufacturer.countDocuments();
-
-    // return NextResponse.json({
-    //   data: {
-    //     manufacturers,
-    //     count, 
-    //   },
-    //   error: null,
-    //   message: '',
-    // });
-    return NextResponse.json({ message: 'That is so fine!', sadf: 'asdfsafsdaf' })
+    return NextResponse.json({
+      data: manufacturer,
+      error: null,
+      message: '',
+    });
   } catch (error: any) {
     return new NextResponse(error, { status: 500 });
   }
