@@ -10,7 +10,7 @@ interface Option {
 }
 
 interface ISelect {
-  name: string;
+  name?: string;
   label: string;
   title?: string;
   disabled?: boolean;

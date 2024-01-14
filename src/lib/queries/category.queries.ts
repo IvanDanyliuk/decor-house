@@ -1,4 +1,4 @@
-import { AXIOS } from "../axios";
+import { AXIOS } from '../axios';
 
 export const getCategories = async ({ 
   page, 

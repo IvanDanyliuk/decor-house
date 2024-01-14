@@ -4,18 +4,17 @@ import { AXIOS } from '../axios';
 export const getProducts = async ({ 
   page, 
   itemsPerPage, 
-  searchParams,
+  category,
+  manufacturer
 }: { 
   page?: number, 
   itemsPerPage?: number, 
-  searchParams?: {
-    category?: string;
-    manufacturer?: string; 
-  }
+  category?: string;
+  manufacturer?: string;
 }) => {
   const { data } = await AXIOS.get(
     '/api/products', 
-    { params: { page, itemsPerPage, searchParams } }
+    { params: { page, itemsPerPage, category, manufacturer } }
   );
   return data;
 };

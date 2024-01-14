@@ -1,6 +1,8 @@
+import { ICategory } from "./category.types";
+
 export interface IProduct {
   _id?: string;
-  category: string;
+  category: string | ICategory;
   type: string;
   features: string[];
   name: string;
