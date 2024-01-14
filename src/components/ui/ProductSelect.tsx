@@ -11,21 +11,34 @@ interface IProductSelect {
 }
 
 const ProductSelect: React.FC<IProductSelect> = ({ category, onChange }) => {
-  // const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
 
   const findProducts = useCallback(async (categoryId: string) => {
-    const data = await getProducts({ category: categoryId });
+    const data = await getProducts({ searchParams: { category: categoryId } });
     // setProducts(data.data?.products!);
-    return data
+    // return data
+    setProducts(data);
   }, [category]);
 
-  const products = findProducts(category)
+  const fetchProducts = () => {
+    getProducts({ searchParams: { category } }).then(res => {
+      setProducts(res.data.products)
+    })
+  }
 
-  // useEffect(() => {
-  //   const data = findProducts(category);
-  //   console.log(data)
-  // }, [category]);
+  // const products = findProducts(category)
 
+  useEffect(() => {
+    // getProducts({ category, client: true }).then(res => {
+    //   setProducts(res.data.products)
+    // });
+    fetchProducts()
+  }, [category]);
+
+
+  useEffect(() => {
+    findProducts(category);
+  }, [category])
 
   useEffect(() => {
     console.log('PRODUCTS SELECT', products)

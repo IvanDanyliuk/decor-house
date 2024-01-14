@@ -8,18 +8,17 @@ import Category from '@/lib/models/category.model';
 export const GET = async (req: NextRequest) => {
   try {
     const url = new URL(req.url);
-    const page = url.searchParams.get('page');
-    const itemsPerPage = url.searchParams.get('itemsPerPage');
-    const category = url.searchParams.get('category');
-    const manufacturer = url.searchParams.get('manufacturer');
+    const page = req.nextUrl.searchParams.get('page');
+    const itemsPerPage = req.nextUrl.searchParams.get('itemsPerPage');
+    const params = req.nextUrl.searchParams.get('params') || {};
 
-    console.log('GET PRODUCTS QUERY', req.json())
+    console.log('GET PRODUCTS QUERY', req.nextUrl)
 
     await connectToDB();
 
     const products = (page && itemsPerPage) ? 
       await Product
-        .find({})
+        .find(params)
         .limit(+itemsPerPage)
         .skip((+page - 1) * +itemsPerPage)
         .populate([
@@ -28,7 +27,7 @@ export const GET = async (req: NextRequest) => {
         ])
         .select('-__v') :
       await Product
-        .find({})
+        .find(params)
         .populate([
           { path: 'category', select: 'name', model: Category },
           { path: 'manufacturer', model: Manufacturer }

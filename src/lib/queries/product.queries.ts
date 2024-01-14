@@ -1,26 +1,26 @@
+import { AXIOS } from '../axios';
+
+
 export const getProducts = async ({ 
   page, 
   itemsPerPage, 
-  category,
-  manufacturer
+  searchParams,
 }: { 
   page?: number, 
   itemsPerPage?: number, 
-  category?: string;
-  manufacturer?: string; 
+  searchParams?: {
+    category?: string;
+    manufacturer?: string; 
+  }
 }) => {
-  const searchParams = page && itemsPerPage ? `?page=${page}&itemsPerPage=${itemsPerPage}` : '';
-  const data = await fetch(
-    `${process.env.BASE_URL}/api/products${searchParams}${category && '&category=' + category}${manufacturer && '&manufacturer=' + manufacturer}`, 
-    { cache: 'no-store' }
+  const { data } = await AXIOS.get(
+    '/api/products', 
+    { params: { page, itemsPerPage, searchParams } }
   );
-  return data.json();
+  return data;
 };
 
 export const getProduct = async (id: string) => {
-  const data = await fetch(
-    `${process.env.BASE_URL}/api/products/${id}`, 
-    { cache: 'no-store' }
-  );
-  return data.json();
+  const { data } = await AXIOS.get(`/api/products/${id}`);
+  return data;
 };

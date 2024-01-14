@@ -1,3 +1,5 @@
+import { AXIOS } from "../axios";
+
 export const getCategories = async ({ 
   page, 
   itemsPerPage 
@@ -5,18 +7,14 @@ export const getCategories = async ({
   page?: number, 
   itemsPerPage?: number 
 }) => {
-  const searchParams = page && itemsPerPage ? `?page=${page}&itemsPerPage=${itemsPerPage}` : '';
-  const data = await fetch(
-    `${process.env.BASE_URL}/api/categories${searchParams}`, 
-    { cache: 'no-store' 
-  });
-  return data.json();
+  const { data } = await AXIOS.get(
+    '/api/categories', 
+    { params: { page, itemsPerPage } }
+  );
+  return data;
 };
 
 export const getCategory = async (id: string) => {
-  const data = await fetch(
-    `${process.env.BASE_URL}/api/categories/${id}`, 
-    { cache: 'no-store' }
-  );
-  return data.json();
+  const { data } = await AXIOS.get(`/api/categories/${id}`);
+  return data;
 };

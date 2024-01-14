@@ -1,3 +1,5 @@
+import { AXIOS } from "../axios";
+
 export const getManufacturers = async ({ 
   page, 
   itemsPerPage 
@@ -5,18 +7,14 @@ export const getManufacturers = async ({
   page?: number, 
   itemsPerPage?: number 
 }) => {
-  const searchParams = page && itemsPerPage ? `?page=${page}&itemsPerPage=${itemsPerPage}` : '';
-  const data = await fetch(
-    `${process.env.BASE_URL}/api/manufacturers${searchParams}`, 
-    { cache: 'no-store' }
+  const { data } = await AXIOS.get(
+    '/api/manufacturers', 
+    { params: { page, itemsPerPage } }
   );
-  return data.json();
+  return data;
 };
 
 export const getManufacturer = async (id: string) => {
-  const data = await fetch(
-    `${process.env.BASE_URL}/api/manufacturers/${id}`, 
-    { cache: 'no-store' }
-  );
-  return data.json();
+  const { data } = await AXIOS.get(`/api/manufacturers/${id}`);
+  return data;
 };

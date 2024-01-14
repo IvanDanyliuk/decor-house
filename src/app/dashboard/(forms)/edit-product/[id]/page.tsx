@@ -1,6 +1,5 @@
 import ProductForm from '@/components/forms/ProductForm';
 import { getCategories } from '@/lib/queries/category.queries';
-// import { getProduct } from '@/lib/actions/product.actions';
 import { getProduct } from '@/lib/queries/product.queries';
 import { getManufacturers } from '@/lib/queries/manufacturers.queries';
 
@@ -9,11 +8,8 @@ const UpdateProduct = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
   const categories = await getCategories({});
-
   const manufacturers = await getManufacturers({});
-
   const product = await getProduct(id);
-  // const product = JSON.parse(JSON.stringify(productData.data));
   
   return (
     <>
