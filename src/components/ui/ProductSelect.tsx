@@ -1,23 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Modal } from 'antd';
 import { IProduct } from '@/lib/types/products.types';
+import { CloseOutlined } from '@ant-design/icons';
 
 
 interface IProductSelect {
   products: IProduct[];
-  onChange: () => void;
+  onChange: (ids: string[]) => void;
 }
+
 
 const ProductSelect: React.FC<IProductSelect> = ({ products, onChange }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<IProduct[]>([]);
 
   const handleProductSelectModalOpen = () => {
     setIsOpen(prevState => !prevState);
   };
+
+  const isChecked = (id: string) => {
+    return Boolean(selectedProducts.find(item => item._id === id));
+  };
+
+  const handleProductSelect = (product: IProduct) => {
+    const isSelected = isChecked(product._id!)
+    if(isSelected) {
+      setSelectedProducts(prevState => prevState.filter(item => item._id !== product._id));
+    } else {
+      setSelectedProducts([...selectedProducts, product]);
+    }
+  };
+
+  const handleProductDelete = (id: string) => {
+    setSelectedProducts(prevState => prevState.filter(product => product._id !== id));
+  };
+
+  useEffect(() => {
+    const productIds = selectedProducts.map(product => product._id!);
+    onChange(productIds);
+  }, [selectedProducts])
 
   return (
     <>
@@ -25,6 +49,7 @@ const ProductSelect: React.FC<IProductSelect> = ({ products, onChange }) => {
         type='button'
         disabled={products.length === 0}
         onClick={handleProductSelectModalOpen}
+        className='w-full md:w-44 dashboard-add-new-btn'
       >
         Add Products
       </button>
@@ -39,8 +64,16 @@ const ProductSelect: React.FC<IProductSelect> = ({ products, onChange }) => {
       >
         <ul className='grid grid-cols-2 md:grid-cols-4 gap-6'>
           {products.map(product => (
-            <li key={crypto.randomUUID()} className='relative p-3 flex items-center gap-6 border border-gray-medium rounded'>
-              <input type='checkbox' className='absolute top-3 right-3' />
+            <li 
+              key={crypto.randomUUID()} 
+              onClick={() => handleProductSelect(product)}
+              className='relative p-3 flex items-center gap-6 border border-gray-medium rounded'
+            >
+              <input 
+                type='checkbox' 
+                defaultChecked={isChecked(product._id!)}
+                className='absolute top-3 right-3' 
+              />
               <div>
                 <Image 
                   src={product.images[0]} 
@@ -58,6 +91,27 @@ const ProductSelect: React.FC<IProductSelect> = ({ products, onChange }) => {
           ))}
         </ul>
       </Modal>
+      <ul className='relative w-full'>
+        {selectedProducts.map((product) => (
+          <li 
+            key={crypto.randomUUID()}
+            className='my-1 flex justify-between items-center'
+          >
+            <div className='w-full flex gap-6 items-center'>
+              <Image 
+                src={product.images[0]} 
+                alt={product.name} 
+                width={50} 
+                height={50} 
+              />
+              <span className='w-36'>{product.name}</span>
+              <span className='w-36'>{typeof product.category !== 'string' && product.category.name}</span>
+              <span className='w-36'>&euro;{product.price}</span>
+            </div>
+            <CloseOutlined onClick={() => handleProductDelete(product._id!)} />
+          </li>
+        ))}
+      </ul>
     </>
   );
 };

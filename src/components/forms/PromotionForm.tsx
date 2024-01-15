@@ -100,7 +100,7 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
           error={state && state.error && state.error['description']}
         />
       </fieldset>
-      <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
+      <fieldset className='w-full md:w-auto md:max-w-2xl grow flex flex-col gap-3'>
         <Select label='Product Category' options={categories} onChange={setSelectedCategory} />
         <ProductSelect products={products} onChange={() => {}} />
       </fieldset>
