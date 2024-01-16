@@ -17,75 +17,73 @@ const promotionSchema = zod.object({
 });
 
 
-export const getPromotions = async ({ 
-  page, 
-  itemsPerPage 
-}: { 
-  page?: number, 
-  itemsPerPage?: number 
-}) => {
-  try {
-    await connectToDB();
+// export const getPromotions = async ({ 
+//   page, 
+//   itemsPerPage 
+// }: { 
+//   page?: number, 
+//   itemsPerPage?: number 
+// }) => {
+//   try {
+//     await connectToDB();
 
-    const promotions = (page && itemsPerPage) ? 
-      await Promotion
-        .find({})
-        .limit(itemsPerPage)
-        .skip((page - 1) * itemsPerPage)
-        .populate('products')
-        .select('-__v') :
-      await Promotion
-        .find({})
-        .populate('products')
-        .select('-__v');
+//     const promotions = (page && itemsPerPage) ? 
+//       await Promotion
+//         .find({})
+//         .limit(itemsPerPage)
+//         .skip((page - 1) * itemsPerPage)
+//         .populate('products')
+//         .select('-__v') :
+//       await Promotion
+//         .find({})
+//         .populate('products')
+//         .select('-__v');
 
-    const count = await Promotion.countDocuments();
+//     const count = await Promotion.countDocuments();
 
-    return {
-      data: {
-        promotions,
-        count
-      },
-      error: null,
-      message: '',
-    };
-  } catch (error: any) {
-    return {
-      data: null,
-      error: error.message,
-      message: 'Cannot find promotions',
-    };
-  }
-};
+//     return {
+//       data: {
+//         promotions,
+//         count
+//       },
+//       error: null,
+//       message: '',
+//     };
+//   } catch (error: any) {
+//     return {
+//       data: null,
+//       error: error.message,
+//       message: 'Cannot find promotions',
+//     };
+//   }
+// };
 
-export const getPromotion = async (id: string) => {
-  try {
-    await connectToDB();
+// export const getPromotion = async (id: string) => {
+//   try {
+//     await connectToDB();
 
-    const promotion = await Promotion
-      .findById(id)
-      .populate('products')
-      .select('-__v');
+//     const promotion = await Promotion
+//       .findById(id)
+//       .populate('products')
+//       .select('-__v');
 
-    return {
-      data: promotion,
-      error: null,
-      message: '',
-    };
-  } catch (error: any) {
-    return {
-      data: null,
-      error: error.message,
-      message: `Cannot find the promotion with ID: ${id}`,
-    };
-  }
-};
+//     return {
+//       data: promotion,
+//       error: null,
+//       message: '',
+//     };
+//   } catch (error: any) {
+//     return {
+//       data: null,
+//       error: error.message,
+//       message: `Cannot find the promotion with ID: ${id}`,
+//     };
+//   }
+// };
 
 export const createPromotion = async (prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
   const products = formData.get('products') as string;
-
-  console.log('CREATE PROMOTION', data)
 
   try {
     await connectToDB();
@@ -107,17 +105,13 @@ export const createPromotion = async (prevState: any, formData: FormData) => {
 
     if(!imageUrl) return { error: 'Promotion Image is required' };
 
-    console.log('PROMOTION DATA', {
-      ...data, 
-      products: products.split(', '),
-      image: imageUrl,
-    })
-
     await Promotion.create({
       ...data, 
       products: products.split(', '),
       image: imageUrl,
     });
+
+    revalidatePath('/dashboard/promotions');
 
     return {
       data: null,
@@ -141,6 +135,28 @@ export const updatePromotion = async (prevState: any, formData: FormData) => {
   }
 };
 
-export const deletePromotion = async () => {
+export const deletePromotion = async ({ id, path }: { id: string, path: string }) => {
+  try {
+    await connectToDB();
 
+    const promotion = await Promotion.findById(id);
+    const imageUrl = promotion.image.substring(promotion.image.lastIndexOf('/') + 1);
+    await utapi.deleteFiles(imageUrl);
+
+    await Promotion.findByIdAndDelete(id);
+
+    revalidatePath(path);
+
+    return {
+      data: null,
+      error: null,
+      message: 'Promotion has been successfully deleted!',
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Unable to delete the promotion',
+    };
+  }
 };

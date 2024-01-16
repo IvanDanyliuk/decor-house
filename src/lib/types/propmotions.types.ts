@@ -1,3 +1,5 @@
+import { IProduct } from './products.types';
+
 export interface IPromotion {
   _id?: string;
   title: string;
@@ -5,4 +7,5 @@ export interface IPromotion {
   periodFrom: string;
   periodTo: string;
   description: string;
+  products: IProduct[]
 }
