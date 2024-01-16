@@ -77,7 +77,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const status = useFormStatus();
   const ref = useRef<HTMLFormElement>(null);
 
-  const [selectedCategory, setSelectedCategory] = useState<string>(productToUpdate ? productToUpdate.category : '');
+  const [selectedCategory, setSelectedCategory] = useState<string>(productToUpdate && typeof productToUpdate.category === 'string' ? productToUpdate.category : '');
 
   const [types, setTypes] = useState<SelectOption[]>(typesInitialValue!);
   const [features, setFeatures] = useState<SelectOption[]>(featuresInitialState!);
@@ -115,7 +115,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           name='category'
           label='Category'
           title='Select a category'
-          defaultValue={productToUpdate?.category}
+          defaultValue={typeof productToUpdate?.category === 'string' ? productToUpdate?.category : ''}
           options={categoriesData}
           onChange={setSelectedCategory}
         />

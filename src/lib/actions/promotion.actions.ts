@@ -13,6 +13,7 @@ const promotionSchema = zod.object({
   periodFrom: zod.string(),
   periodTo: zod.string(),
   description: zod.string(),
+  products: zod.any(),
 });
 
 
@@ -82,7 +83,7 @@ export const getPromotion = async (id: string) => {
 
 export const createPromotion = async (prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
-  // const rawImage = formData.get('image') as string;
+  const products = formData.get('products') as string;
 
   console.log('CREATE PROMOTION', data)
 
@@ -106,10 +107,17 @@ export const createPromotion = async (prevState: any, formData: FormData) => {
 
     if(!imageUrl) return { error: 'Promotion Image is required' };
 
-    // await Promotion.create({
-    //   ...data, 
-    //   image: imageUrl,
-    // });
+    console.log('PROMOTION DATA', {
+      ...data, 
+      products: products.split(', '),
+      image: imageUrl,
+    })
+
+    await Promotion.create({
+      ...data, 
+      products: products.split(', '),
+      image: imageUrl,
+    });
 
     return {
       data: null,

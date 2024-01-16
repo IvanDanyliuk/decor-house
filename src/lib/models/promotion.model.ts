@@ -7,6 +7,7 @@ const promotionSchema = new mongoose.Schema({
   periodFrom: { type: String, required: true },
   periodTo: { type: String, required: true },
   description: { type: String, required: true },
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
 });
 
 const Promotion = models.Promotion || mongoose.model('Promotion', promotionSchema);

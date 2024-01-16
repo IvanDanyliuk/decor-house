@@ -8,12 +8,13 @@ import { CloseOutlined } from '@ant-design/icons';
 
 
 interface IProductSelect {
+  label: string;
   products: IProduct[];
   onChange: (ids: string[]) => void;
 }
 
 
-const ProductSelect: React.FC<IProductSelect> = ({ products, onChange }) => {
+const ProductSelect: React.FC<IProductSelect> = ({ label, products, onChange }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedProducts, setSelectedProducts] = useState<IProduct[]>([]);
 
@@ -51,7 +52,7 @@ const ProductSelect: React.FC<IProductSelect> = ({ products, onChange }) => {
         onClick={handleProductSelectModalOpen}
         className='w-full md:w-44 dashboard-add-new-btn'
       >
-        Add Products
+        {label}
       </button>
       <Modal
         open={isOpen}
@@ -62,7 +63,7 @@ const ProductSelect: React.FC<IProductSelect> = ({ products, onChange }) => {
         cancelButtonProps={{ style: { display: 'none' } }}
         onCancel={handleProductSelectModalOpen}
       >
-        <ul className='grid grid-cols-2 md:grid-cols-4 gap-6'>
+        <ul className='pt-8 grid grid-cols-2 md:grid-cols-4 gap-6'>
           {products.map(product => (
             <li 
               key={crypto.randomUUID()} 
@@ -91,11 +92,11 @@ const ProductSelect: React.FC<IProductSelect> = ({ products, onChange }) => {
           ))}
         </ul>
       </Modal>
-      <ul className='relative w-full'>
+      <ul className='relative w-full flex-1 overflow-y-scroll'>
         {selectedProducts.map((product) => (
           <li 
             key={crypto.randomUUID()}
-            className='my-1 flex justify-between items-center'
+            className='my-1 pr-3 flex justify-between items-center'
           >
             <div className='w-full flex gap-6 items-center'>
               <Image 

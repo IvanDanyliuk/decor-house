@@ -2,11 +2,11 @@
 
 import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { createPromotion, updatePromotion } from '@/lib/actions/promotion.actions';
 import { IPromotion } from '@/lib/types/propmotions.types';
 import { useEffect, useRef, useState } from 'react';
 import SubmitButton from '../ui/SubmitButton';
-import Link from 'next/link';
 import TextField from '../ui/TextField';
 import DatePicker from '../ui/DatePicker';
 import UploadImageButton from '../ui/UploadImageBtn';
@@ -40,10 +40,11 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
   const [state, formAction] = useFormState(action, initialState);
   const ref = useRef<HTMLFormElement>(null);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<{ label: string, value: string }[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [products, setProducts] = useState<IProduct[]>([]);
-
+  const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
 
   useEffect(() => {
     getCategories({}).then(res => {
@@ -54,16 +55,35 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
 
   useEffect(() => {
     if(selectedCategory) {
+      setIsLoading(true);
       getProducts({ category: selectedCategory }).then(res => {
-        setProducts(res.data.products)
+        setProducts(res.data.products);
+        setIsLoading(false);
       });
     }
   }, [selectedCategory]);
 
+  useEffect(() => {
+    if(!state.error && state.message) {
+      ref.current?.reset();
+      setSelectedCategory('');
+      setProducts([]);
+      setSelectedProductIds([])
+      router.push('/dashboard/promotions');
+
+      if(promotionToUpdate) {
+        router.push('/dashboard/promotions');
+      }
+    }
+  }, [state, formAction]);
+
   return (
     <form 
       ref={ref} 
-      action={formAction} 
+      action={async (formData: FormData) => {
+        formData.append('products', selectedProductIds.join(', '));
+        await formAction(formData)
+      }} 
       className='flex grow flex-1 flex-wrap justify-between content-between gap-6'
     >
       <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
@@ -100,9 +120,17 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
           error={state && state.error && state.error['description']}
         />
       </fieldset>
-      <fieldset className='w-full md:w-auto md:max-w-2xl grow flex flex-col gap-3'>
-        <Select label='Product Category' options={categories} onChange={setSelectedCategory} />
-        <ProductSelect products={products} onChange={() => {}} />
+      <fieldset className='w-full md:w-auto md:max-w-2xl grow flex flex-col gap-3 h-full max-h-full'>
+        <Select 
+          label='Product Category' 
+          options={categories} 
+          onChange={setSelectedCategory} 
+        />
+        <ProductSelect 
+          label={isLoading ? 'Loading...' : 'Add Products'}
+          products={products} 
+          onChange={setSelectedProductIds} 
+        />
       </fieldset>
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
         <SubmitButton label={promotionToUpdate ? 'Update' : 'Create'} />
