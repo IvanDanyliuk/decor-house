@@ -92,12 +92,14 @@ export const updateCategory = async (prevState: any, formData: FormData) => {
     const imageFile = await fetch(rawImage);
     const image = await imageFile.blob();
 
-    const imageUrl = new Blob([image]).size > 0 ? 
+    const imageUrl = new Blob([image]).size > 0 && rawImage !== prevState.image ? 
       (await utapi.uploadFiles([image]))[0].data?.url : 
       prevState.image;
 
-    const imageToDelete = prevState.image.substring(prevState.image.lastIndexOf('/') + 1);
-    await utapi.deleteFiles(imageToDelete);
+    if(rawImage !== prevState.image) {
+      const imageToDelete = prevState.image.substring(prevState.image.lastIndexOf('/') + 1);
+      await utapi.deleteFiles(imageToDelete);
+    }
 
     await Category.findByIdAndUpdate(id, { 
       name, 
@@ -128,6 +130,7 @@ export const deleteCategory = async ({ id, path }: { id: string, path: string })
 
     const category = await Category.findById(id);
     const imageUrl = category.image.substring(category.image.lastIndexOf('/') + 1);
+
     await utapi.deleteFiles(imageUrl);
 
     await Category.findByIdAndDelete(id);
