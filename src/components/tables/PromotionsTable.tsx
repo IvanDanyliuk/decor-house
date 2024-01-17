@@ -6,7 +6,6 @@ import { Popconfirm, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { IProduct } from '@/lib/types/products.types';
 import { IPromotion } from '@/lib/types/propmotions.types'
 import { deletePromotion } from '@/lib/actions/promotion.actions';
 
@@ -16,13 +15,12 @@ interface IPromotionsTable {
 }
 
 interface DataType {
-  _id: string;
+  _id?: string;
   title: string;
   image: string;
   periodFrom: string;
   periodTo: string;
-  description: string;
-  products: IProduct[]
+  products: any
 }
 
 
@@ -49,7 +47,7 @@ const PromotionsTable: React.FC<IPromotionsTable> = ({ promotions }) => {
       dataIndex: 'image',
       key: 'image',
       render: (_, record) => (
-        <Image src={record.image} alt={record._id} width={50} height={50} />
+        <Image src={record.image} alt={record._id!} width={50} height={50} />
       ),
     },
     {
@@ -86,7 +84,7 @@ const PromotionsTable: React.FC<IPromotionsTable> = ({ promotions }) => {
           <Popconfirm
             title='Delete Promotion'
             description='Are you sure you want to delete this promotion?'
-            onConfirm={(e) => confirmDeleting(record._id)}
+            onConfirm={(e) => confirmDeleting(record._id!)}
             okText='Yes'
             cancelText='No'
           >
