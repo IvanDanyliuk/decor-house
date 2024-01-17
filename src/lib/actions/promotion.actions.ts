@@ -17,70 +17,6 @@ const promotionSchema = zod.object({
 });
 
 
-// export const getPromotions = async ({ 
-//   page, 
-//   itemsPerPage 
-// }: { 
-//   page?: number, 
-//   itemsPerPage?: number 
-// }) => {
-//   try {
-//     await connectToDB();
-
-//     const promotions = (page && itemsPerPage) ? 
-//       await Promotion
-//         .find({})
-//         .limit(itemsPerPage)
-//         .skip((page - 1) * itemsPerPage)
-//         .populate('products')
-//         .select('-__v') :
-//       await Promotion
-//         .find({})
-//         .populate('products')
-//         .select('-__v');
-
-//     const count = await Promotion.countDocuments();
-
-//     return {
-//       data: {
-//         promotions,
-//         count
-//       },
-//       error: null,
-//       message: '',
-//     };
-//   } catch (error: any) {
-//     return {
-//       data: null,
-//       error: error.message,
-//       message: 'Cannot find promotions',
-//     };
-//   }
-// };
-
-// export const getPromotion = async (id: string) => {
-//   try {
-//     await connectToDB();
-
-//     const promotion = await Promotion
-//       .findById(id)
-//       .populate('products')
-//       .select('-__v');
-
-//     return {
-//       data: promotion,
-//       error: null,
-//       message: '',
-//     };
-//   } catch (error: any) {
-//     return {
-//       data: null,
-//       error: error.message,
-//       message: `Cannot find the promotion with ID: ${id}`,
-//     };
-//   }
-// };
-
 export const createPromotion = async (prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
   const products = formData.get('products') as string;
@@ -128,10 +64,53 @@ export const createPromotion = async (prevState: any, formData: FormData) => {
 };
 
 export const updatePromotion = async (prevState: any, formData: FormData) => {
+  const id = prevState._id;
+  const data = Object.fromEntries(formData);
+  const rawImage = formData.get('image') as string;
+  const products = formData.get('products') as string;
+
   try {
-    
+    await connectToDB();
+
+    const validatedFields = promotionSchema.safeParse(data);
+
+    if(!validatedFields.success) {
+      return {
+        error: validatedFields.error.flatten().fieldErrors,
+      };
+    }
+
+    const imageFile = await fetch(rawImage);
+    const image = await imageFile.blob();
+
+    const imageUrl = new Blob([image]).size > 0 ? 
+      (await utapi.uploadFiles([image]))[0].data?.url : 
+      prevState.image;
+
+    const imageToDelete = prevState.image.substring(prevState.image.lastIndexOf('/') + 1);
+    await utapi.deleteFiles(imageToDelete);
+
+    console.log('UPDATE PROMOTION', data)
+
+    await Promotion.findByIdAndUpdate(id, {
+      ...data,
+      image: imageUrl,
+      products: products.split(', '),
+    });
+
+    revalidatePath('/dashboard/promotions');
+
+    return {
+      data: null,
+      error: null,
+      message: 'Promotion has been successfully updated',
+    };
   } catch (error: any) {
-    
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot update the promotion',
+    };
   }
 };
 

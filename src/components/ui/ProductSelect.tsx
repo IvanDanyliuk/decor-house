@@ -10,13 +10,14 @@ import { CloseOutlined } from '@ant-design/icons';
 interface IProductSelect {
   label: string;
   products: IProduct[];
+  defaultValue?: IProduct[];
   onChange: (ids: string[]) => void;
 }
 
 
-const ProductSelect: React.FC<IProductSelect> = ({ label, products, onChange }) => {
+const ProductSelect: React.FC<IProductSelect> = ({ label, products, defaultValue, onChange }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedProducts, setSelectedProducts] = useState<IProduct[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<IProduct[]>(defaultValue || []);
 
   const handleProductSelectModalOpen = () => {
     setIsOpen(prevState => !prevState);

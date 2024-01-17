@@ -1,4 +1,5 @@
 import PromotionsTable from '@/components/tables/PromotionsTable';
+import Pagination from '@/components/ui/Pagination';
 import { getPromotions } from '@/lib/queries/promotion.queries';
 import React from 'react';
 
@@ -13,7 +14,16 @@ const Promotions = async ({
   const { data } = await getPromotions({ page: +page, itemsPerPage: 10 });
 
   return (
-    <PromotionsTable promotions={data.promotions!} />
+    <>
+      {data ? (
+        <>
+          <PromotionsTable promotions={data.promotions!} />
+          <Pagination itemsCount={data.count!} />
+        </>
+      ) : (
+        <div>Promotions not found</div>
+      )}
+    </>
   );
 };
 

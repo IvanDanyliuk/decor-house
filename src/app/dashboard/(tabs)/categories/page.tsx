@@ -11,14 +11,13 @@ const Categories = async ({
   const page = searchParams.page || 1;
 
   const { data } = await getCategories({ page: +page, itemsPerPage: 10 });
-  const parsedData = JSON.parse(JSON.stringify(data));
 
   return (
     <>
-      {parsedData ? (
+      {data ? (
         <>
-          <CategoriesTable categories={parsedData!.categories} />
-          <Pagination itemsCount={parsedData?.count!} />
+          <CategoriesTable categories={data.categories} />
+          <Pagination itemsCount={data.count  } />
         </>
       ) : (
         <div>Categories not found</div>

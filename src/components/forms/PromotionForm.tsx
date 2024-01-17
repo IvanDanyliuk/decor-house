@@ -129,13 +129,14 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
         <ProductSelect 
           label={isLoading ? 'Loading...' : 'Add Products'}
           products={products} 
+          defaultValue={promotionToUpdate?.products}
           onChange={setSelectedProductIds} 
         />
       </fieldset>
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
         <SubmitButton label={promotionToUpdate ? 'Update' : 'Create'} />
         <Link 
-          href='/dashboard/categories' 
+          href='/dashboard/promotions' 
           className='w-full md:w-72 h-12 link-primary uppercase'
         >
           <span>Go back to Dashboard</span>
