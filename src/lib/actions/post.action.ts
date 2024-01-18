@@ -11,7 +11,7 @@ const postSchema = zod.object({
   title: zod.string().min(1, 'Title is reqiured!'),
   image: zod.string().min(1, 'Post image is required!'),
   publicationDate: zod.string().min(1, 'Publication date is required!'),
-  tags: zod.string(),
+  tags: zod.any(),
   content: zod.string().min(1, 'Content is required!'),
 });
 

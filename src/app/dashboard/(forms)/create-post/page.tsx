@@ -1,3 +1,4 @@
+import PostForm from '@/components/forms/PostForm';
 import React from 'react';
 
 
@@ -8,7 +9,7 @@ const CreatePost: React.FC = () => {
         <h2 className='container mx-auto page-heading-primary'>New Post</h2>
       </section>
       <section className='container mx-auto py-10 flex-1 box-border'>
-        {/* <PostForm /> */}
+        <PostForm />
       </section>
     </>
   );
