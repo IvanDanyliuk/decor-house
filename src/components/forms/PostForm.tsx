@@ -1,22 +1,22 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
-import { createPost, updatePost } from '@/lib/actions/post.action';
+import Link from 'next/link';
+import { createPost, updatePost } from '@/lib/actions/post.actions';
 import { IPost } from '@/lib/types/post.types';
 import TextField from '../ui/TextField';
 import UploadImageButton from '../ui/UploadImageBtn';
 import DatePicker from '../ui/DatePicker';
 import Select from '../ui/Select';
 import { ICategory } from '@/lib/types/category.types';
-import { getCategories } from '@/lib/queries/category.queries';
 import TextareaField from '../ui/TextareaField';
 import SubmitButton from '../ui/SubmitButton';
-import Link from 'next/link';
 
 
 interface IPostForm {
+  categories: ICategory[];
   postToUpdate?: IPost;
 }
 
@@ -28,25 +28,14 @@ const initialEmptyState = {
   content: '',
 }
 
-const PostForm: React.FC<IPostForm> = ({ postToUpdate }) => {
+const PostForm: React.FC<IPostForm> = ({ categories, postToUpdate }) => {
   const action = postToUpdate ? updatePost : createPost;
   const initialState = postToUpdate ? postToUpdate : initialEmptyState;
+  const categoriesData = categories.map(category => ({ label: category.name, value: category._id! }));
 
   const router = useRouter();
-
   const [state, formAction] = useFormState(action, initialState);
-  const [categories, setCategories] = useState<{label: string, value: string}[]>([]);
   const ref = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    getCategories({}).then(res => {
-      const data = res.data.categories.map((category: ICategory) => ({ 
-        label: category.name, 
-        value: category._id 
-      }));
-      setCategories(data);
-    });
-  }, []);
 
   useEffect(() => {
     if(state.message) {
@@ -83,9 +72,10 @@ const PostForm: React.FC<IPostForm> = ({ postToUpdate }) => {
       <Select 
         name='tags' 
         label='Tags' 
-        options={categories} 
+        title='Select a category'
+        options={categoriesData} 
         multiple
-        defaultValue={typeof postToUpdate?.tags === 'string' ? postToUpdate?.tags : ''} 
+        defaultValue={postToUpdate?.tags.map((item: any) => item._id!).join(', ')} 
       />
       <TextareaField 
         name='content' 

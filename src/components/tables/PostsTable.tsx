@@ -6,7 +6,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Popconfirm, Table } from 'antd';
 import dayjs from 'dayjs';
-import { deletePost } from "@/lib/actions/post.action";
+import { deletePost } from "@/lib/actions/post.actions";
 import { IPost } from "@/lib/types/post.types"
 
 
