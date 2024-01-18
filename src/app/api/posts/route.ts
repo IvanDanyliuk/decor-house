@@ -17,11 +17,11 @@ export const GET = async (req: NextRequest) => {
         .find({})
         .limit(+itemsPerPage)
         .skip((+page -1) * +itemsPerPage)
-        .populate({ path: 'tags', model: Category })
+        .populate({ path: 'tags', select: '-__v', model: Category })
         .select('-__v') : 
       await Post
         .find({})
-        .populate({ path: 'tags', model: Category })
+        .populate({ path: 'tags', select: '-__v', model: Category })
         .select('-__v');
 
     const count = await Post.countDocuments();
