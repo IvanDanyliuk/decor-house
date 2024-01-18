@@ -17,7 +17,7 @@ const Categories = async ({
       {data ? (
         <>
           <CategoriesTable categories={data.categories} />
-          <Pagination itemsCount={data.count  } />
+          <Pagination itemsCount={data.count} />
         </>
       ) : (
         <div>Categories not found</div>
