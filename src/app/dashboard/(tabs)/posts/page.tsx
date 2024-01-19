@@ -12,8 +12,6 @@ const Posts = async ({
 
   const { data } = await getPosts({ page: +page, itemsPerPage: 10 });
 
-  console.log('POSTS TAB', data)
-
   return (
     <>
       {data ? (

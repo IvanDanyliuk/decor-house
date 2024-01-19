@@ -29,13 +29,9 @@ const ManufacturerForm: React.FC<IManufacturerForm> = ({ manufacturerToUpdate })
   const router = useRouter();
   
   useEffect(() => {
-    if(state.message) {
+    if(!state.error && state.message) {
       ref.current?.reset();
       router.push('/dashboard/manufacturers');
-
-      if(manufacturerToUpdate) {
-        router.push('/dashboard/manufacturers');
-      }
     }
   }, [state, formAction]);
 

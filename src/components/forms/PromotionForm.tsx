@@ -70,10 +70,6 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
       setProducts([]);
       setSelectedProductIds([])
       router.push('/dashboard/promotions');
-
-      if(promotionToUpdate) {
-        router.push('/dashboard/promotions');
-      }
     }
   }, [state, formAction]);
 

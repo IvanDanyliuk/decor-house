@@ -38,13 +38,9 @@ const PostForm: React.FC<IPostForm> = ({ categories, postToUpdate }) => {
   const ref = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    if(state.message) {
+    if(!state.error && state.message) {
       ref.current?.reset();
       router.push('/dashboard/posts');
-
-      if(postToUpdate) {
-        router.push('/dashboard/posts');
-      }
     }
   }, [state, formAction]);
 
@@ -75,7 +71,7 @@ const PostForm: React.FC<IPostForm> = ({ categories, postToUpdate }) => {
         title='Select a category'
         options={categoriesData} 
         multiple
-        defaultValue={postToUpdate?.tags.map((item: any) => item._id!).join(', ')} 
+        defaultValue={postToUpdate?.tags.map((item: any) => item._id!).join(', ')!} 
       />
       <TextareaField 
         name='content' 

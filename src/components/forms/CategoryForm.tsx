@@ -53,15 +53,11 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
   };
 
   useEffect(() => {
-    if(state.message) {
+    if(!state.error && state.message) {
       ref.current?.reset();
       setTypes([]);
       setFeatures([]);
       router.push('/dashboard/categories');
-
-      if(categoryToUpdate) {
-        router.push('/dashboard/categories');
-      }
     }
   }, [state, formAction]);
 

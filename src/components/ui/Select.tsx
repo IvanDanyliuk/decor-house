@@ -104,7 +104,7 @@ const Select: React.FC<ISelect> = ({
 
   return (
     <div className='w-full flex flex-col md:flex-row items-center gap-3'>
-      <input name={name} type='text' defaultValue={data} className='hidden' />
+      <input name={name} type='text' value={data} onChange={() => {}} className='hidden' />
       {label && (
         <div className='w-full md:w-36 text-sm font-semibold'>
           {label}

@@ -97,10 +97,6 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
       setFeatures([]);
       setSelectedCategory('');
       router.push('/dashboard/products');
-
-      if(productToUpdate) {
-        router.push('/dashboard/products');
-      }
     }
   }, [state, formAction]);
 

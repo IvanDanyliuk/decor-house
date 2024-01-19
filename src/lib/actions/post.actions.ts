@@ -39,7 +39,7 @@ export const createPost = async (prevState: any, formData: FormData) => {
 
     const imageUrl = new Blob([image]).size > 0 ? 
       (await utapi.uploadFiles([image]))[0].data?.url : 
-      null;
+      prevState.image;
 
     if(!imageUrl) return { error: 'Post Image is required' };
 
@@ -71,6 +71,8 @@ export const updatePost = async (prevState: any, formData: FormData) => {
   const rawImage = formData.get('image') as string;
   const tags = formData.get('tags') as string;
 
+  console.log('UPDATE POST', tags)
+
   try {
     await connectToDB();
 
@@ -89,7 +91,7 @@ export const updatePost = async (prevState: any, formData: FormData) => {
 
     const imageUrl = new Blob([image]).size > 0 && rawImage !== prevState.image ? 
       (await utapi.uploadFiles([image]))[0].data?.url : 
-      null;
+      prevState.image;
 
     if(!imageUrl) return { error: 'Post Image is required' };
 
