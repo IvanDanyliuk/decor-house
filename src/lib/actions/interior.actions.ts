@@ -4,28 +4,27 @@ import { revalidatePath } from 'next/cache';
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
 import { utapi } from '../uploadthing';
-import Post from '../models/post.model';
+import Interior from '../models/interior.model';
 
 
-const postSchema = zod.object({
-  title: zod.string().min(1, 'Title is reqiured!'),
-  image: zod.string().min(1, 'Post image is required!'),
-  publicationDate: zod.string().min(1, 'Publication date is required!'),
-  tags: zod.any(),
-  content: zod.string().min(1, 'Content is required!'),
+const interiorSchema = zod.object({
+  title: zod.string().min(1, 'Title is required!'),
+  description: zod.string().min(1, 'Description is required'),
+  image: zod.string().min(1, 'Interior image is required!'),
+  products: zod.any(),
 });
 
 
-export const createPost = async (prevState: any, formData: FormData) => {
+export const createInterior = async (prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
   const rawImage = formData.get('image') as string;
-  const tags = formData.get('tags') as string;
+  const products = formData.get('products') as string;
 
   try {
     await connectToDB();
 
-    const validatedFields = postSchema.safeParse({
-      ...data, image: rawImage, tags: tags.split(', ')
+    const validatedFields = interiorSchema.safeParse({
+      ...data, image: rawImage, products: products.split(', ')
     });
 
     if(!validatedFields.success) {
@@ -34,6 +33,8 @@ export const createPost = async (prevState: any, formData: FormData) => {
       };
     }
 
+    console.log('CREATE INTERIOR ACTION', data)
+
     const imageFile = await fetch(rawImage);
     const image = await imageFile.blob();
 
@@ -41,41 +42,41 @@ export const createPost = async (prevState: any, formData: FormData) => {
       (await utapi.uploadFiles([image]))[0].data?.url : 
       prevState.image;
 
-    if(!imageUrl) return { error: 'Post Image is required' };
+    if(!imageUrl) return { error: 'Interior Image is required' };
 
-    await Post.create({
+    await Interior.create({
       ...data,
       image: imageUrl,
-      tags: tags ? tags.split(', ') : [],
+      products: products ? products.split(', ') : [],
     });
 
-    revalidatePath('/dashboard/posts');
+    revalidatePath('/dashboard/interiors');
 
     return {
-      data: null,
+      data: {},
       error: null,
-      message: 'New Post has been successfully created!',
+      message: 'New Interior has been created!',
     };
   } catch (error: any) {
     return {
       data: null,
       error: error.message,
-      message: 'Cannot create a new post',
+      message: 'Cannot create a new interior',
     };
   }
 };
 
-export const updatePost = async (prevState: any, formData: FormData) => {
+export const updateInterior = async (prevState: any, formData: FormData) => {
   const id = prevState._id;
   const data = Object.fromEntries(formData);
   const rawImage = formData.get('image') as string;
-  const tags = formData.get('tags') as string;
+  const products = formData.get('products') as string;
 
   try {
     await connectToDB();
 
-    const validatedFields = postSchema.safeParse({
-      ...data, image: rawImage, tags: tags.split(', ')
+    const validatedFields = interiorSchema.safeParse({
+      ...data, image: rawImage, products: products.split(', ')
     });
 
     if(!validatedFields.success) {
@@ -91,58 +92,58 @@ export const updatePost = async (prevState: any, formData: FormData) => {
       (await utapi.uploadFiles([image]))[0].data?.url : 
       prevState.image;
 
-    if(!imageUrl) return { error: 'Post Image is required' };
+    if(!imageUrl) return { error: 'Interior Image is required' };
 
     if(rawImage !== prevState.image) {
       const imageToDelete = prevState.image.substring(prevState.image.lastIndexOf('/') + 1);
       await utapi.deleteFiles(imageToDelete);
     }
 
-    await Post.findByIdAndUpdate(id, {
+    await Interior.findByIdAndUpdate(id, {
       ...data,
       image: imageUrl,
-      tags: tags ? tags.split(', ') : [],
+      products: products ? products.split(', ') : [],
     });
-
-    revalidatePath('/dashboard/posts');
+    
+    revalidatePath('/dashboard/interiors');
 
     return {
       data: null,
       error: null,
-      message: 'Post has been successfully updated!',
+      message: 'Interior has been successfully updated!',
     };
   } catch (error: any) {
     return {
       data: null,
       error: error.message,
-      message: 'Cannot update a post',
+      message: 'Cannot update an interior',
     };
   }
 };
 
-export const deletePost = async ({ id, path }: { id: string, path: string }) => {
+export const deleteInterior = async ({ id, path }: { id: string, path: string }) => {
   try {
     await connectToDB();
 
-    const post = await Post.findById(id);
-    const imageUrl = post.image.substring(post.image.lastIndexOf('/') + 1);
+    const interior = await Interior.findById(id);
+    const imageUrl = interior.image.substring(interior.image.lastIndexOf('/') + 1);
 
     await utapi.deleteFiles(imageUrl);
 
-    await Post.findByIdAndDelete(id);
+    await Interior.findByIdAndDelete(id);
 
     revalidatePath(path);
 
     return {
       data: null,
       error: null,
-      message: 'Post has been successfully deleted!',
+      message: 'Interior has been successfyllt deleted!',
     };
   } catch (error: any) {
     return {
       data: null,
       error: error.message,
-      message: 'Cannot delete a post',
+      message: 'Cannot delete an interior',
     };
   }
 };

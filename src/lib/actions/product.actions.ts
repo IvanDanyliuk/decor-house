@@ -5,8 +5,6 @@ import { z as zod } from 'zod';
 import { connectToDB } from '../database';
 import { utapi } from '../uploadthing';
 import Product from '../models/product.model';
-import Category from '../models/category.model';
-import Manufacturer from '../models/manufacturer.model';
 import { ACCEPTED_IMAGE_TYPES } from '../constants';
 
 
@@ -27,80 +25,6 @@ const productSchema = zod.object({
   images: zod.string().min(1, 'Product must have at least one image'),
 });
 
-
-export const getProducts = async ({ 
-  page, 
-  itemsPerPage, 
-  params = {}
-}: { 
-  page?: number, 
-  itemsPerPage?: number, 
-  params?: {
-    category?: string;
-    manufacturer?: string;
-  }  
-}) => {
-  try {
-    await connectToDB();
-    
-    const products = (page && itemsPerPage) ? 
-      await Product
-        .find(params)
-        .limit(itemsPerPage)
-        .skip((page - 1) * itemsPerPage)
-        .populate([
-          { path: 'category', select: 'name', model: Category },
-          { path: 'manufacturer', model: Manufacturer }
-        ])
-        .select('-__v') :
-      await Product
-        .find(params)
-        .populate([
-          { path: 'category', select: 'name', model: Category },
-          { path: 'manufacturer', model: Manufacturer }
-        ])
-        .select('-__v');
-        
-    const count = await Product.countDocuments();
-
-    return {
-      data: {
-        products, 
-        count
-      },
-      error: null,
-      message: '',
-    };
-  } catch (error: any) {
-    return {
-      data: null,
-      error: error.message,
-      message: 'Cannot find products',
-    };
-  }
-};
-
-export const getProduct = async (id: string) => {
-  try {
-    await connectToDB();
-
-    const product = await Product
-      .findById(id)
-      .select('-__v');
-
-    return {
-      data: product,
-      error: null,
-      message: null,
-    };
-  } catch (error: any) {
-    return {
-      data: null,
-      error: error.message,
-      message: `Cannot find the product with ID: ${id}`,
-    };
-  }
-};
 
 export const createProduct = async (prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
