@@ -70,6 +70,18 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
     }
   }, [selectedCategory, selectedType]);
 
+  useEffect(() => {
+    if(!state.error && state.message) {
+      ref.current?.reset();
+      setProducts([]);
+      setSelectedProductIds([]);
+      setSelectedCategory('');
+      setTypes([]);
+      setSelectedType('');
+      router.push('/dashboard/interiors');
+    }
+  }, [state, formAction]);
+
   return (
     <form 
       ref={ref} 
