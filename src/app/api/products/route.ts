@@ -11,9 +11,11 @@ export const GET = async (req: NextRequest) => {
     const page = req.nextUrl.searchParams.get('page');
     const itemsPerPage = req.nextUrl.searchParams.get('itemsPerPage');
     const category = req.nextUrl.searchParams.get('category');
+    const type = req.nextUrl.searchParams.get('type');
+    const features = req.nextUrl.searchParams.get('tyfeaturespe');
     const manufacturer = req.nextUrl.searchParams.get('manufacturer');
 
-    const params = removeFalsyObjectFields({ category, manufacturer });
+    const params = removeFalsyObjectFields({ category, type, features, manufacturer });
 
     await connectToDB();
 
