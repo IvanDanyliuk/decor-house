@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
@@ -125,6 +125,7 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
       <ProductSelect 
         label={isLoading ? 'Loading...' : 'Add Products'}
         products={products} 
+        defaultValue={interiorToUpdate?.products}
         onChange={setSelectedProductIds} 
       />
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>

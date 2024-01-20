@@ -6,5 +6,5 @@ export interface IInterior {
   title: string,
   description: string;
   image: string;
-  products: IProduct[] | string[];
+  products: IProduct[];
 }
