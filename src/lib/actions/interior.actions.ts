@@ -33,8 +33,6 @@ export const createInterior = async (prevState: any, formData: FormData) => {
       };
     }
 
-    console.log('CREATE INTERIOR ACTION', data)
-
     const imageFile = await fetch(rawImage);
     const image = await imageFile.blob();
 
