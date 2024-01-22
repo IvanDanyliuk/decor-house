@@ -1,3 +1,5 @@
+'use server';
+
 import { revalidatePath } from 'next/cache';
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
@@ -13,6 +15,7 @@ const shopSchema = zod.object({
 
 export const createShop = async (prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
+  const coordinatesStr = formData.get('coordinates') as string;
 
   try {
     await connectToDB();  
@@ -25,7 +28,12 @@ export const createShop = async (prevState: any, formData: FormData) => {
       };
     }
 
-    await Shop.create(data);
+    const coordinates = JSON.parse(coordinatesStr);
+
+    await Shop.create({
+      ...data,
+      coordinates
+    });
 
     revalidatePath('/dashboard/shops');
 
@@ -46,6 +54,8 @@ export const createShop = async (prevState: any, formData: FormData) => {
 export const updateShop = async (prevState: any, formData: FormData) => {
   const id = prevState.id;
   const data = Object.fromEntries(formData);
+  const coordinatesStr = formData.get('coordinates') as string;
+
   try {
     await connectToDB();
 
@@ -57,7 +67,12 @@ export const updateShop = async (prevState: any, formData: FormData) => {
       };
     }
 
-    await Shop.findByIdAndUpdate(id, data);
+    const coordinates = JSON.parse(coordinatesStr);
+
+    await Shop.findByIdAndUpdate(id, {
+      ...data,
+      coordinates
+    });
 
     revalidatePath('/dashboard/shops');
 
