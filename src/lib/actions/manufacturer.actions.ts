@@ -63,7 +63,7 @@ export const updateManufacturer = async (prevState: any, formData: FormData) => 
 
     await Manufacturer.findByIdAndUpdate(id, { name, country });
 
-    revalidatePath('/dashboard/menufacturers');
+    revalidatePath('/dashboard/manufacturers');
 
     return {
       data: null,

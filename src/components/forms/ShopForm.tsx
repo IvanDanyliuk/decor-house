@@ -63,6 +63,7 @@ const ShopForm: React.FC<IShopForm> = async ({ shopToUpdate }) => {
       <MapInput 
         name='coordinates' 
         label='Coordinates' 
+        defaultValue={shopToUpdate?.coordinates && ({ lat: +shopToUpdate?.coordinates.lat!, lng: +shopToUpdate?.coordinates.lng! })}
         error={state && state.error && state.error['coordinates']} 
       />
       <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>

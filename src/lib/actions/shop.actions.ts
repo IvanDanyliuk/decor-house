@@ -52,7 +52,7 @@ export const createShop = async (prevState: any, formData: FormData) => {
 };
 
 export const updateShop = async (prevState: any, formData: FormData) => {
-  const id = prevState.id;
+  const id = prevState._id;
   const data = Object.fromEntries(formData);
   const coordinatesStr = formData.get('coordinates') as string;
 

@@ -49,13 +49,13 @@ const ShopsTable: React.FC<IShopsTable> = ({ shops }) => {
         <div className='flex'>
           <Link 
             className='mr-3 flex justify-center items-center text-center dashboard-table-action-btn'
-            href={`/dashboard/edit-manufacturer/${record._id!}`}
+            href={`/dashboard/edit-shop/${record._id!}`}
           >
             <EditOutlined />
           </Link>
           <Popconfirm
-            title='Delete Manufacturer'
-            description='Are you sure you want to delete this manufacturer?'
+            title='Delete Shop'
+            description='Are you sure you want to delete this shop?'
             onConfirm={(e) => confirmDeleting(record._id!)}
             okText='Yes'
             cancelText='No'
