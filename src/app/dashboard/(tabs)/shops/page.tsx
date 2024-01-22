@@ -1,3 +1,4 @@
+import ShopsTable from '@/components/tables/ShopsTable';
 import Pagination from '@/components/ui/Pagination';
 import { getShops } from '@/lib/queries/shop.queries';
 import React from 'react';
@@ -16,7 +17,7 @@ const Shops = async ({
     <>
       {data ? (
         <>
-          {/* <CategoriesTable categories={data.categories} /> */}
+          <ShopsTable shops={data.shops} />
           <Pagination itemsCount={data.count} />
         </>
       ) : (
