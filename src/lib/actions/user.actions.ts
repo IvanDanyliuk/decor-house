@@ -1,10 +1,11 @@
-'use server'
+'use server';
 
 import bcrypt from 'bcryptjs';
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
 import User from '../models/user.model'
 import { utapi } from '../uploadthing';
+import { revalidatePath } from 'next/cache';
 
 
 const userSchema = zod.object({
@@ -93,6 +94,56 @@ export const register = async (prevState: any, formData: FormData) => {
   } catch (error) {
     return {
       error: 'Failed to register',
+    };
+  }
+};
+
+export const updateUser = async (prevState: any, formData: FormData) => {
+  const data = Object.fromEntries(formData);
+
+  try {
+    await connectToDB();
+    
+
+    revalidatePath('/dashboard/users');
+    
+    return {
+      data: {},
+      error: null,
+      message: 'User has been successfully updated!',
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot update the user data',
+    }
+  }
+};
+
+export const deleteUser = async ({ id, path }: { id: string, path: string }) => {
+  try {
+    await connectToDB();
+
+    const user = await User.findById(id);
+    const photoUrl = user.photo.substring(user.photo.lastIndexOf('/') + 1);
+
+    await utapi.deleteFiles(photoUrl);
+
+    await User.findByIdAndDelete(id);
+
+    revalidatePath(path);
+
+    return {
+      data: null,
+      error: null,
+      message: 'User has been successfully deleted!',
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot delete a user',
     };
   }
 };
