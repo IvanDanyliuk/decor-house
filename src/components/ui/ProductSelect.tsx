@@ -51,9 +51,16 @@ const ProductSelect: React.FC<IProductSelect> = ({ label, products, defaultValue
         type='button'
         disabled={products.length === 0}
         onClick={handleProductSelectModalOpen}
-        className='w-full md:w-44 dashboard-add-new-btn'
+        className='w-full md:w-52 h-16 dashboard-add-new-btn'
       >
-        {label}
+        <span className='block'>{products.length !== 0 ? label : 'No products'}</span>
+        {
+          products.length > 0 && (
+            <span className='block text-xs'>
+              {`${products.length} product${products.length > 1 ? 's' : ''} available`}
+            </span>
+          )
+        }
       </button>
       <Modal
         open={isOpen}
