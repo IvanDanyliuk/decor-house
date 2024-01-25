@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ColorPicker from '@/components/ui/ColorPicker';
 import DatePicker from '@/components/ui/DatePicker';
 
 
