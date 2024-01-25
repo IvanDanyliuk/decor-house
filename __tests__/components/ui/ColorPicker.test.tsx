@@ -74,7 +74,6 @@ describe('ColorPicker tests', () => {
     const clearColorsBtn = screen.getByTestId('clearColorsBtn');
     fireEvent.click(clearColorsBtn);
 
-    screen.debug(undefined, 300000)
     expect(clearColorsBtn).not.toBeInTheDocument();
   });
 });
