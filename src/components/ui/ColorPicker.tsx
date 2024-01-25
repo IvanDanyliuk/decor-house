@@ -80,6 +80,7 @@ const ColorPicker: React.FC<IColorPicker> = ({ name, label, title, defaultValue,
               type='button' 
               onClick={clearSelectedColors} 
               className='px-3 py-1 text-sm text-gray-dark border rounded'
+              data-testid='clearColorsBtn'
             >
               Clear colors
             </button>
@@ -93,7 +94,7 @@ const ColorPicker: React.FC<IColorPicker> = ({ name, label, title, defaultValue,
                 className='px-3 py-2 flex gap-1 border rounded-full'
               >
                 <Tag color={color} className='w-4 h-4 rounded-full' />
-                <CloseOutlined className='text-sm' onClick={() => handlePickedColorDelete(color)} />
+                <CloseOutlined className='text-sm' onClick={() => handlePickedColorDelete(color)} data-testid='deleteColorBtn' />
               </li>
             ))}
           </ul>
