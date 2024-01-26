@@ -142,6 +142,7 @@ const Select: React.FC<ISelect> = ({
                   type='checkbox' 
                   checked={options.every(item => selectedValues.includes(item.value))}
                   onChange={handleSelectAllOptions} 
+                  data-testid='selectProductCheckbox'
                 />
                 <label>All</label>
               </li>
@@ -158,6 +159,7 @@ const Select: React.FC<ISelect> = ({
                   value={option.value} 
                   checked={data.includes(option.value)}
                   onChange={() => handleValueChange(option)} 
+                  data-testid='selectProductCheckbox'
                 />
                 <label>{option.label}</label>
               </li>
