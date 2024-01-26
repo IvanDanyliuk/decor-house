@@ -105,6 +105,7 @@ const ProductSelect: React.FC<IProductSelect> = ({ label, products, defaultValue
           <li 
             key={crypto.randomUUID()}
             className='my-1 pr-3 flex justify-between items-center'
+            data-testid='selectedProduct'
           >
             <div className='w-full flex gap-6 items-center'>
               <Image 
@@ -117,7 +118,7 @@ const ProductSelect: React.FC<IProductSelect> = ({ label, products, defaultValue
               <span className='w-36'>{typeof product.category !== 'string' && product.category.name}</span>
               <span className='w-36'>&euro;{product.price}</span>
             </div>
-            <CloseOutlined onClick={() => handleProductDelete(product._id!)} />
+            <CloseOutlined onClick={() => handleProductDelete(product._id!)} data-testid='deleteProductBtn' />
           </li>
         ))}
       </ul>
