@@ -64,8 +64,6 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({
     setSelectedFiles((prevState: any[]) => prevState.filter(url => typeof url === 'string' ? url !== value : url.name !== value.name));
   };
 
-  console.log('SELECTED FILES', selectedFiles)
-
   return (
     <div className='w-full flex items-center gap-3'>
       <input name={name} type='text' value={selectedFiles.join('|-| ')} onChange={() => {}} className='hidden' />

@@ -115,8 +115,6 @@ export const updateProduct = async (prevState: any, formData: FormData) => {
       }
     }
 
-    console.log('UPDATE PRODUCT', data)
-
     if(!imageUrls || imageUrls.length === 0) return { error: 'Product card should contain at least 1 image' };
 
     const images = imageUrls.split('|-| ');

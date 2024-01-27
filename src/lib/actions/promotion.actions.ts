@@ -90,8 +90,6 @@ export const updatePromotion = async (prevState: any, formData: FormData) => {
     const imageToDelete = prevState.image.substring(prevState.image.lastIndexOf('/') + 1);
     await utapi.deleteFiles(imageToDelete);
 
-    console.log('UPDATE PROMOTION', data)
-
     await Promotion.findByIdAndUpdate(id, {
       ...data,
       image: imageUrl,
