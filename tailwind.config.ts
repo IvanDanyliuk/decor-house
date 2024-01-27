@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 import { withUt } from 'uploadthing/tw';
 
+
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -21,6 +22,9 @@ const config: Config = {
       },
       fontFamily: {
         'inherit': ['inherit']
+      },
+      backgroundImage: {
+        'hero-pattern': "url('/assets/images/SOFA.png')",
       }
     },
   },

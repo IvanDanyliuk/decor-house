@@ -79,3 +79,17 @@ main {
 .ant-picker {
   @apply px-3 h-10 w-full text-sm border border-gray-regular rounded;
 }
+
+
+//HOME PAGE
+.hero {
+  @apply w-full h-[88vh] flex justify-center items-center bg-main-bg rounded-md;
+}
+
+.hero-item {
+  @apply flex-1 h-full bg-transparent;
+}
+
+.hero-divider {
+  @apply w-12 md:w-24 h-full bg-white;
+}

@@ -17,6 +17,7 @@
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.10",
+    "framer-motion": "^11.0.3",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "mongoose": "^8.0.1",
