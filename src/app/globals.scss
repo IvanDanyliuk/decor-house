@@ -17,10 +17,12 @@ main {
 }
 
 .page-heading-primary {
-  @apply text-5xl font-bold uppercase;
+  @apply text-3xl md:text-5xl font-bold uppercase;
 }
 
-/* NAV MENU */
+
+/* NAVIGATION */
+//====== MAIN MENU ======
 .ant-drawer-header-title {
   @apply flex-row-reverse;
 }
@@ -31,4 +33,49 @@ main {
 
 .secondary-nav-link-group {
   @apply flex flex-col gap-8 text-gray-regular text-lg font-medium;
+}
+
+//====== DASHBOARD MENU ======
+.ant-menu {
+  @apply relative w-full flex justify-center text-sm font-inherit uppercase border-none #{!important};
+
+  .ant-menu-item {
+    @apply py-3 flex-1 text-gray-regular font-semibold text-center #{!important};
+
+    &:after {
+      @apply absolute bottom-0 left-0 w-full border-b-4 border-gray-regular #{!important};
+    }
+  }
+
+  .ant-menu-item-selected {
+    @apply text-gray-dark #{!important};
+
+    &:after {
+      @apply absolute bottom-0 left-0 w-full border-b-4 border-gray-dark #{!important};
+    }
+  }
+}
+
+
+//COMPONENTS
+.pagination-btn {
+  @apply w-auto md:w-24 h-8 hover:bg-gray-light rounded duration-500;
+}
+
+.dashboard-add-new-btn {
+  @apply px-4 py-2 bg-accent-dark text-white uppercase rounded;
+}
+
+.dashboard-table-action-btn {
+  @apply w-8 h-8 rounded bg-gray-light hover:bg-accent-dark text-accent-dark hover:text-white duration-150; 
+}
+
+.ant-popconfirm-buttons {
+  .ant-btn {
+    @apply bg-gray-light hover:bg-accent-dark text-accent-dark border-none;
+  }
+}
+
+.ant-picker {
+  @apply px-3 h-10 w-full text-sm border border-gray-regular rounded;
 }

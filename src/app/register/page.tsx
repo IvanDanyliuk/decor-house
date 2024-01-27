@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import RegisterForm from '@/components/forms/RegisterForm';
 
 
@@ -10,13 +9,6 @@ const Register: React.FC = () => {
       </section>
       <section className='container mx-auto py-10 box-border'>
         <RegisterForm />
-        <div className='relative'>
-          <Link 
-            href='/' 
-            className='absolute bottom-0 right-0 w-72 h-12 link-primary'>
-              <span>GO BACK TO DASHBOARD</span>
-            </Link>
-        </div>
       </section>
     </div>
   );

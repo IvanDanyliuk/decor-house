@@ -1,25 +1,16 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from "next-auth/react";
+import { useEffect, useRef, useCallback } from 'react';
+import { useFormState } from 'react-dom';
+import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 import TextField from '../ui/TextField';
+import { register } from '@/lib/actions/user.actions';
+import SubmitButton from '../ui/SubmitButton';
 import UploadImageButton from '../ui/UploadImageBtn';
-import { UploaderEndpoint } from '@/lib/common.types';
-import { isEmailValid } from '@/utils/helpers';
 
 
-interface IRegisterData {
-  name: string;
-  phone: string;
-  address?: string;
-  photo?: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
-const initialRegisterData: IRegisterData = {
+const initialState = {
   name: '',
   phone: '',
   address: '',
@@ -31,136 +22,79 @@ const initialRegisterData: IRegisterData = {
 
 
 const RegisterForm: React.FC = () => {
-  const [registerData, setRegisterData] = useState<IRegisterData>(initialRegisterData);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [state, formAction] = useFormState(register, initialState);
+  const ref = useRef<HTMLFormElement>(null);
 
-  const router = useRouter();
-  const { data: session, status: sessionStatus } = useSession();
-
-  const handleRegisterData = (e: ChangeEvent<HTMLInputElement>) => {
-    setRegisterData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }));
-  };
-
-  const handleImageUrl = (imageUrl: string) => {
-    setRegisterData((prevState) => ({
-      ...prevState,
-      photo: imageUrl
-    }));
-  };
-
-  const submitRegisterData = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if(!isEmailValid(registerData.email)) {
-      setError('Email is not valid!');
-      return;
-    }
-
-    if(registerData.password && registerData.password.length < PASSWORD_MIN_LENGTH) {
-      setError(`Your password should contain ${PASSWORD_MIN_LENGTH} or more symbols!`);
-      return;
-    }
-
-    if(registerData.password !== registerData.confirmPassword) {
-      setError('Passwords do not match!');
-      return;
-    }
-    
-    try {
-      const res = await fetch('api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: registerData.name,
-          phone: registerData.phone,
-          address: registerData.address,
-          photo: registerData.photo,
-          email: registerData.email,
-          password: registerData.password,
-        })
+  const userSignIn = useCallback(async () => {
+    if(state.data && state.data.email && state.data.password) {
+      await signIn('credentials', { 
+        email: state.data.email, 
+        password: state.data.password, 
+        callbackUrl: '/' 
       });
-
-      console.log(res)
-    } catch (error: any) {
-      setError(`Registration Error: ${error.message}`);
-      return;
     }
-
-    setRegisterData(initialRegisterData);
-    router.push('/');
-  };
+  }, [state]);
 
   useEffect(() => {
-    if (sessionStatus === 'authenticated') {
-      router.replace('/dashboard');
+    if(state && !state.error) {
+      ref.current?.reset();
+      userSignIn();
     }
-  }, [sessionStatus, router]);
+  }, [state, formAction]);
 
   return (
     <form 
-      onSubmit={submitRegisterData} 
-      className='relative w-full flex flex-wrap justify-start md:gap-20'
+      ref={ref} 
+      action={formAction}
+      className='w-full flex flex-wrap gap-6'
     >
-      <fieldset className='flex flex-col flex-1 gap-6'>
+      <fieldset className='w-full md:w-auto flex flex-col gap-3 md:flex-1'>
         <TextField 
-          label='First Name and Last Name *' 
           name='name' 
-          value={registerData.name} 
-          onChange={handleRegisterData} 
+          label='First Name and Last Name' 
+          error={state && state.error && state.error['name']!} 
         />
         <TextField 
-          label='Phone *' 
           name='phone' 
-          value={registerData.phone} 
-          onChange={handleRegisterData} 
+          label='Phone' 
+          error={state && state.error && state.error['phone']!} 
         />
         <TextField 
-          label='Address' 
           name='address' 
-          value={registerData.address || ''} 
-          onChange={handleRegisterData} 
+          label='Address' 
+          error={state && state.error && state.error['address']!} 
         />
         <UploadImageButton 
-          label='Profile Photo' 
-          endpoint={UploaderEndpoint.ProfilePicture} 
-          setImageUrl={handleImageUrl}
+          name='photo' 
+          label='Photo' 
         />
       </fieldset>
-      <fieldset className='flex flex-col flex-1 gap-6'>
+      <fieldset className='w-full md:w-auto flex flex-col gap-3 md:flex-1'>
         <TextField 
-          label='Email *' 
           name='email' 
-          type='email'
-          value={registerData.email} 
-          onChange={handleRegisterData} 
+          label='Email' 
+          error={state && state.error && state.error['email']!} 
         />
         <TextField 
-          label='Password *' 
           name='password' 
-          type='password'
-          value={registerData.password} 
-          onChange={handleRegisterData} 
+          label='Password' 
+          error={state && state.error && state.error['password']!} 
         />
         <TextField 
-          label='Confirm Password *' 
           name='confirmPassword' 
-          type='password'
-          value={registerData.confirmPassword} 
-          onChange={handleRegisterData} 
+          label='Confirm Password' 
+          error={state && state.error && state.error['confirmPassword']!} 
         />
       </fieldset>
-      <fieldset className='w-full'>
-        <button type='submit' className='w-72 h-12 bg-accent-dark text-white uppercase rounded'>
-          {isLoading ? 'Loading...' : 'Register'}
-        </button>
-      </fieldset>
+      <div className='mt-6 w-full flex flex-col md:flex-row md:justify-between gap-5'>
+        <SubmitButton label='Register' />
+        <Link 
+          href='/login' 
+          className='w-full md:w-72 h-12 link-primary uppercase'
+        >
+          <span>Go back to login page</span>
+        </Link>
+      </div>
     </form>
   );
 };

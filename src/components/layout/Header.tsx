@@ -1,42 +1,15 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { signOut, useSession } from 'next-auth/react';
-import axios from 'axios';
 import { LoginOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import NavMenu from './NavMenu';
+import NavMenu from '../navigation/NavMenu';
 import Search from './Search';
-import UserMenu from './UserMenu';
+import UserMenu from '../navigation/UserMenu';
+import { getCurrentUser } from '@/lib/actions/user.actions';
+import { getServerSession } from 'next-auth';
 
 
-const Header: React.FC = () => {
-  const { data: session } = useSession();
-  const router = useRouter();
-
-  const [currentUser, setCurrentUser] = useState<any>(null);
-  const [error, setError] = useState<string | null>();
-
-  const fetchUser = async (email: string) => {
-    const { data } = await axios.get('/api/user', { params: { email } });
-    setCurrentUser(data);
-  };
-
-  const handleSignOut = () => {
-    signOut();
-    router.push('/');
-  };
-
-  useEffect(() => {
-    try {
-      if(session?.user) {
-        fetchUser(session.user.email!);
-      }
-    } catch (error: any) {
-      console.log('HEADER_ERROR', error)
-    }
-  }, []);
+const Header: React.FC = async () => {
+  const session = await getServerSession();
+  const currentUser = await getCurrentUser(session?.user?.email!);
 
   return (
     <header className='w-full h-24 flex items-center'>
@@ -52,8 +25,8 @@ const Header: React.FC = () => {
             <span>{`(${3})`}</span>
           </Link>
           {
-            currentUser ? (
-              <UserMenu user={currentUser} />
+            currentUser.data ? (
+              <UserMenu user={currentUser.data} />
             ) : (
               <Link href='/login' className='flex gap-1'>
                 <LoginOutlined />
