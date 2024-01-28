@@ -83,7 +83,7 @@ main {
 
 //HOME PAGE
 .hero {
-  @apply w-full h-[88vh] flex justify-center items-center bg-main-bg rounded-md;
+  @apply w-full h-80 md:h-[88vh] flex justify-center items-center bg-main-bg rounded-md;
 }
 
 .hero-item {
@@ -91,5 +91,9 @@ main {
 }
 
 .hero-divider {
-  @apply w-12 md:w-24 h-full bg-white;
+  @apply w-10 md:w-24 h-full bg-white;
+}
+
+.homepage-heading-primary {
+  @apply text-5xl font-bold uppercase;
 }
