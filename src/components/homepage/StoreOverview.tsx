@@ -60,8 +60,8 @@ const StoreOverview: React.FC = () => {
             className='md:absolute w-full md:w-[36rem] md:h-[36rem] rounded-xl z-10'
           />
         </div>
-        <div className='w-full md:w-1/2 h-[32rem] flex flex-col justify-center'>
-          <h3 className='text-5xl'>
+        <div className='w-full md:w-1/2 md:h-[32rem] flex flex-col justify-center'>
+          <h3 className='pt-6 text-5xl'>
             <span className='block font-semibold'>
               {galleryItems[currentItemIndex].heading.topText}
             </span>
@@ -76,7 +76,7 @@ const StoreOverview: React.FC = () => {
           <Divider />
           <Link 
             href='/catalog' 
-            className='py-3 w-72 link-primary'
+            className='py-3 wfull md:w-72 link-primary'
           >
             Catalog
           </Link>
@@ -84,7 +84,7 @@ const StoreOverview: React.FC = () => {
       </div>
       <div className='relative w-full flex justify-end bg-main-bg'>
         <div className='relative mx-auto w-full container flex justify-end'>
-          <div className='py-10 w-1/2 flex justify-between'>
+          <div className='py-10 w-full md:w-1/2 flex justify-between'>
             <div className='flex font-semibold text-xl'>
               <div className={`${currentItemIndex === 0 ? 'text-accent-dark' : 'text-gray-regular'}`}>
                 01
@@ -94,7 +94,7 @@ const StoreOverview: React.FC = () => {
                   <li 
                     key={crypto.randomUUID()}
                     onClick={() => setCurrentItemIndex(i)}
-                    className={`cursor-pointer w-12 h-[4px] ${i === currentItemIndex ? 'bg-accent-dark' : 'bg-gray-regular'}`}
+                    className={`cursor-pointer w-6 md:w-12 h-[4px] ${i === currentItemIndex ? 'bg-accent-dark' : 'bg-gray-regular'}`}
                   ></li>
                 ))}
               </ul>
