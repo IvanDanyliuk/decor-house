@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Divider } from 'antd';
+import SliderNavPanel from '../ui/SliderNavPanel';
 
 
 const galleryItems = [
@@ -33,22 +33,9 @@ const galleryItems = [
   },
 ];
 
-const disabledArrowColor = 'invert(62%) sepia(0%) saturate(1438%) hue-rotate(164deg) brightness(104%) contrast(73%)';
 
 const StoreOverview: React.FC = () => {
   const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
-
-  const showPreviousItem = () => {
-    if(currentItemIndex !== 0) {
-      setCurrentItemIndex(currentItemIndex - 1);
-    }
-  };
-
-  const showNextItem = () => {
-    if(currentItemIndex <= galleryItems.length) {
-      setCurrentItemIndex(currentItemIndex + 1);
-    }
-  };
 
   return (
     <div className='w-full'>
@@ -84,57 +71,12 @@ const StoreOverview: React.FC = () => {
       </div>
       <div className='relative w-full flex justify-end bg-main-bg'>
         <div className='relative mx-auto w-full container flex justify-end'>
-          <div className='py-10 w-full md:w-1/2 flex justify-between'>
-            <div className='flex font-semibold text-xl'>
-              <div className={`${currentItemIndex === 0 ? 'text-accent-dark' : 'text-gray-regular'}`}>
-                01
-              </div>
-              <ul className='mx-4 flex items-center'>
-                {galleryItems.map((item, i) => (
-                  <li 
-                    key={crypto.randomUUID()}
-                    onClick={() => setCurrentItemIndex(i)}
-                    className={`cursor-pointer w-6 md:w-12 h-[4px] ${i === currentItemIndex ? 'bg-accent-dark' : 'bg-gray-regular'}`}
-                  ></li>
-                ))}
-              </ul>
-              <div className={`${currentItemIndex === galleryItems.length - 1 ? 'text-accent-dark' : 'text-gray-regular'}`}>
-                {`0${galleryItems.length}`}
-              </div>
-            </div>
-            <div className='flex gap-8'>
-              <button 
-                type='button' 
-                disabled={currentItemIndex === 0}
-                onClick={showPreviousItem}
-              >
-                <Image 
-                  src='/assets/icons/left-arrow.svg'
-                  alt='previous'
-                  width={30}
-                  height={30}
-                  style={{ 
-                    filter: currentItemIndex ===  0 ? disabledArrowColor : '' 
-                  }}
-                />
-              </button>
-              <button 
-                type='button' 
-                disabled={currentItemIndex === galleryItems.length - 1}
-                onClick={showNextItem}
-              >
-                <Image
-                  src='/assets/icons/right-arrow.svg'
-                  alt='next'
-                  width={30}
-                  height={30}
-                  style={{ 
-                    filter: currentItemIndex ===  galleryItems.length - 1 ? disabledArrowColor : '' 
-                  }}
-                />
-              </button>
-            </div>
-          </div>
+          <SliderNavPanel 
+            currentIndex={currentItemIndex} 
+            itemsCount={galleryItems.length} 
+            onSetCurrentItem={setCurrentItemIndex} 
+            containerStyles='md:w-1/2'
+          />
         </div>
       </div>
     </div>
