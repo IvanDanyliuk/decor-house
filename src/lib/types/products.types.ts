@@ -18,4 +18,6 @@ export interface IProduct {
   sale: string;
   images: string;
   colors: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }

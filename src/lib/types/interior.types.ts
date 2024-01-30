@@ -7,4 +7,6 @@ export interface IInterior {
   description: string;
   image: string;
   products: IProduct[];
+  createdAt?: string;
+  updatedAt?: string;
 }

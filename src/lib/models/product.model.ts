@@ -19,6 +19,8 @@ const productSchema = new mongoose.Schema({
   images: [{
     type: String
   }],
+}, {
+  timestamps: true
 });
 
 const Product = models.Product || mongoose.model('Product', productSchema);

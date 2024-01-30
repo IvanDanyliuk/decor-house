@@ -7,5 +7,7 @@ export interface IPromotion {
   periodFrom: string;
   periodTo: string;
   description: string;
-  products: IProduct[]
+  products: IProduct[];
+  createdAt?: string;
+  updatedAt?: string;
 }

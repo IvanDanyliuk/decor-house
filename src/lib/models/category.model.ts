@@ -10,6 +10,8 @@ const categorySchema = new mongoose.Schema({
   features: [{
     type: String
   }],
+}, {
+  timestamps: true
 });
 
 const Category = models.Category || mongoose.model('Category', categorySchema);

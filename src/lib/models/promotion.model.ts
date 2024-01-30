@@ -8,6 +8,8 @@ const promotionSchema = new mongoose.Schema({
   periodTo: { type: String, required: true },
   description: { type: String, required: true },
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+}, {
+  timestamps: true
 });
 
 const Promotion = models.Promotion || mongoose.model('Promotion', promotionSchema);

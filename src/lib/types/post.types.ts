@@ -7,4 +7,6 @@ export interface IPost {
   publicationDate: string;
   tags: ICategory[] | string[];
   content: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

@@ -4,4 +4,6 @@ export interface ICategory  {
   image: string;
   types: string[];
   features: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }

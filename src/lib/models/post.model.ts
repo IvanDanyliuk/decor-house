@@ -6,6 +6,8 @@ const postSchema = new mongoose.Schema({
   publicationDate: { type: String, required: true },
   tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
   content: { type: String, required: true },
+}, {
+  timestamps: true
 });
 
 const Post = models.Post || mongoose.model('Post', postSchema);
