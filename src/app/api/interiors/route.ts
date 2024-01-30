@@ -15,12 +15,14 @@ export const GET = async (req: NextRequest) => {
     const interiors = (page && itemsPerPage) ? 
       await Interior
         .find({})
+        .sort({ 'createdAt': -1 })
         .limit(+itemsPerPage)
         .skip((+page - 1) * +itemsPerPage)
         .populate({ path: 'products', select: '-__v', model: Product })
         .select('-__v') :
       await Interior
         .find({})
+        .sort({ 'createdAt': -1 })
         .populate({ path: 'products', select: '-__v', model: Product })
         .select('-__v');
     
