@@ -6,7 +6,7 @@ import { getProducts } from '@/lib/queries/product.queries';
 
 
 export default async function Home() {
-  const { data } = await getProducts({ page: 1, itemsPerPage: 10 });
+  const { data } = await getProducts({ page: 1, itemsPerPage: 6 });
 
   return (
     <div className='flex flex-col gap-12 md:gap-24'>
@@ -17,7 +17,11 @@ export default async function Home() {
         <StoreOverview />
       </Section>
       <Section className='mx-auto container'>
-        <NewProducts products={data.products} />
+        {data ? (
+          <NewProducts products={data.products} />
+        ) : (
+          <div className='w-full h-96'>Loading products...</div>
+        )}
       </Section>
     </div>
   );

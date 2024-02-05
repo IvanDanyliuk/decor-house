@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image';
 
 interface ISliderNavPanle {
@@ -46,7 +48,7 @@ const SliderNavPanel: React.FC<ISliderNavPanle> = ({
           ))}
         </ul>
         <div className={`${currentIndex === itemsCount - 1 ? 'text-accent-dark' : 'text-gray-regular'}`}>
-          {`0${itemsCount}`}
+          {`${itemsCount < 10 ? '0' : ''}${itemsCount}`}
         </div>
       </div>
       <div className='flex gap-8'>
