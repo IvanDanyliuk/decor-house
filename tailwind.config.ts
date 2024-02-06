@@ -25,6 +25,7 @@ const config: Config = {
       },
       backgroundImage: {
         'hero-pattern': "url('/assets/images/SOFA.png')",
+        'demo-pattern': "url('/assets/images/demo-bg.jpg')",
       }
     },
   },

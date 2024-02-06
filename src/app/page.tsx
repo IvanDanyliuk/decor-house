@@ -1,3 +1,4 @@
+import Demo from '@/components/homepage/Demo';
 import Hero from '@/components/homepage/Hero';
 import NewProducts from '@/components/homepage/NewProducts';
 import StoreOverview from '@/components/homepage/StoreOverview';
@@ -22,6 +23,9 @@ export default async function Home() {
         ) : (
           <div className='w-full h-96'>Loading products...</div>
         )}
+      </Section>
+      <Section className='w-full'>
+        <Demo />
       </Section>
     </div>
   );
