@@ -34,8 +34,10 @@ const NewProducts: React.FC<INewProducts> = ({ products }) => {
         <h3 className='pb-6 text-5xl font-semibold'>
           New <span className='font-bold uppercase'>Products</span>
         </h3>
-        <Link href='/catalog' className='flex items-center gap-3'>
-          <span className='text-semibold'>All new items</span>
+        <Link href='/catalog' className='px-5 py-3 md:p-0 flex items-center gap-3 bg-main-bg md:bg-white'>
+          <span className='text-semibold'>
+            {`All${width && width >= 640 ? ' new items' : ''}`}
+          </span>
           <Image
             src='/assets/icons/right-arrow.svg'
             alt='next'
@@ -45,12 +47,12 @@ const NewProducts: React.FC<INewProducts> = ({ products }) => {
         </Link>
       </div>
       <div className='py-8'>
-        <div className='mb-16 w-full flex gap-10'>
+        <div className='mb-8 md:mb-16 w-full flex gap-10'>
           {products.slice(currentIndex, currentIndex + productsToShow).map(product => (
             <Link 
               key={crypto.randomUUID()}
               href={`/catalog/${product._id}`} 
-              className='relative flex-1 bg-white group'
+              className='relative w-full md:w-1/3 bg-white'
             >
               <div className='w-full min-h-max flex justify-center items-center'>
                 <Image 
@@ -60,7 +62,7 @@ const NewProducts: React.FC<INewProducts> = ({ products }) => {
                   height={350} 
                 />
               </div>
-              <div className='mt-6 text-center text-lg font-semibold'>
+              <div className='mt-6 text-center text-lg font-bold'>
                 {product.name}
               </div>
               <Divider className='my-6' />
