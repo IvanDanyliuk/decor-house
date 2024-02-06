@@ -16,7 +16,7 @@ interface INewProducts {
 
 const NewProducts: React.FC<INewProducts> = ({ products }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [productsToShow, setProductsToShow] = useState(4);
+  const [productsToShow, setProductsToShow] = useState(3);
 
   const { width } = useWindowSize();
 
