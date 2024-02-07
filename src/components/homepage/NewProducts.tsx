@@ -31,11 +31,11 @@ const NewProducts: React.FC<INewProducts> = ({ products }) => {
 
   return (
     <div className='flex flex-col'>
-      <div className='w-full flex justify-between items-center'>
-        <h3 className='pb-6 text-5xl font-semibold'>
-          New <span className='font-bold uppercase'>Products</span>
+      <div className='home-page-section-heading'>
+        <h3>
+          New <span>Products</span>
         </h3>
-        <Link href='/catalog' className='px-5 py-3 md:p-0 flex items-center gap-3 bg-main-bg md:bg-white'>
+        <Link href='/catalog'>
           <span className='text-semibold'>
             {`All${width && width >= 640 ? ' new items' : ''}`}
           </span>

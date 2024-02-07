@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -20,13 +20,21 @@ const Interiors: React.FC<IInteriors> = ({ interiors }) => {
 
   const { width } = useWindowSize();
 
+  useEffect(() => {
+    if(width && width >= 640) {
+      setProductsToShow(3);
+    } else {
+      setProductsToShow(1);
+    }
+  }, [width]);
+
   return (
     <div className='flex flex-col'>
-      <div className='w-full container mx-auto flex justify-between items-center'>
-        <h3 className='pb-6 text-5xl font-semibold'>
-          Interior <span className='font-bold uppercase'>Designs</span>
+      <div className='home-page-section-heading'>
+        <h3>
+          Interior <span>Designs</span>
         </h3>
-        <Link href='/catalog' className='px-5 py-3 md:p-0 flex items-center gap-3 bg-main-bg md:bg-white'>
+        <Link href='/catalog'>
           <span className='text-semibold'>
             {`All${width && width >= 640 ? ' interiors' : ''}`}
           </span>
@@ -62,8 +70,10 @@ const Interiors: React.FC<IInteriors> = ({ interiors }) => {
                     fill
                     
                   />
-                  <div className='absolute w-full h-full px-8 py-14 group-hover:flex justify-center items-end hidden bg-black bg-opacity-75 text-white'>
-                    <p className='text-lg font-semibold uppercase'>{interior.title}</p>
+                  <div className='absolute left-0 bottom-0 w-full h-fit md:h-full px-8 py-6 md:py-14 md:group-hover:flex justify-center items-end md:hidden bg-black bg-opacity-75 text-white'>
+                    <p className='text-lg text-center font-semibold uppercase'>
+                      {interior.title}
+                    </p>
                   </div>
                 </motion.div>
               </AnimatePresence>

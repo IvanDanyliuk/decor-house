@@ -48,16 +48,17 @@ const StoreOverview: React.FC = () => {
           />
         </div>
         <div className='w-full md:w-1/2 md:h-[32rem] flex flex-col justify-center'>
-          <h3 className='pt-6 text-5xl'>
-            <span className='block font-semibold'>
+          <h3 className='pt-6 text-3xl md:text-5xl'>
+            <span className='md:block font-semibold'>
               {galleryItems[currentItemIndex].heading.topText}
             </span>
-            <span className='block font-bold uppercase'>
+            &nbsp;
+            <span className='md:block font-bold uppercase'>
               {galleryItems[currentItemIndex].heading.bottomText}
             </span>
           </h3>
           <Divider />
-          <p>
+          <p className='text-sm md:text-base'>
             {galleryItems[currentItemIndex].content}
           </p>
           <Divider />
