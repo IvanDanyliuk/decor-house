@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { IInterior } from '@/lib/types/interior.types';
-import { useWindowSize } from '@/utils/hooks';
+import { useWindowSize } from '@/utils/hooks/use-window-size';
 import SliderNavPanel from '../ui/SliderNavPanel';
 
 

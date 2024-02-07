@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Divider } from 'antd';
 import { IProduct } from '@/lib/types/products.types';
 import SliderNavPanel from '../ui/SliderNavPanel';
-import { useWindowSize } from '@/utils/hooks';
+import { useWindowSize } from '@/utils/hooks/use-window-size';
 
 
 interface INewProducts {
