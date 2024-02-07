@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, useAnimation, useInView } from 'framer-motion';
 import { ReactNode, useEffect, useRef } from 'react';
+import { motion, useAnimation, useInView } from 'framer-motion';
 
 
 interface ISection {
