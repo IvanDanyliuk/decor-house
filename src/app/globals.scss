@@ -125,3 +125,33 @@ main {
     @apply px-5 py-3 md:p-0 flex items-center gap-3 bg-main-bg md:bg-white;
   }
 }
+
+
+//CATALOG PAGE
+.categories-container {
+  @apply grid grid-cols-4 gap-3;
+
+  li {
+    @apply min-h-max;
+
+    &:first-child {
+      @apply row-span-1 col-span-1;
+    }
+  
+    &:nth-child(2) {
+      @apply row-span-1 col-span-1;
+    }
+  
+    &:nth-child(3) {
+      @apply row-span-2 col-span-1;
+    }
+
+    &:nth-child(4) {
+      @apply row-span-2 col-span-1;
+    }
+
+    &:nth-child(5) {
+      @apply row-span-1 col-span-2;
+    }
+  }
+}
