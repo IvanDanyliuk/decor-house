@@ -6,6 +6,8 @@ const interiorSchema = new mongoose.Schema({
   description: { type: String, required: true },
   image: { type: String, required: true },
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
+}, {
+  timestamps: true
 });
 
 const Interior = models.Interior || mongoose.model('Interior', interiorSchema);

@@ -14,11 +14,13 @@ export const GET = async (req: NextRequest) => {
     const manufacturers = (page && itemsPerPage) ? 
       await Manufacturer
         .find({})
+        .sort({ 'createdAt': -1 })
         .limit(+itemsPerPage)
         .skip((+page - 1) * +itemsPerPage)
         .select('-__v') : 
       await Manufacturer
         .find({})
+        .sort({ 'createdAt': -1 })
         .select('-__v');
 
     const count = await Manufacturer.countDocuments();

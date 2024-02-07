@@ -15,12 +15,14 @@ export const GET = async (req: NextRequest) => {
     const posts = (page && itemsPerPage) ? 
       await Post
         .find({})
+        .sort({ 'createdAt': -1 })
         .limit(+itemsPerPage)
         .skip((+page -1) * +itemsPerPage)
         .populate({ path: 'tags', select: '-__v', model: Category })
         .select('-__v') : 
       await Post
         .find({})
+        .sort({ 'createdAt': -1 })
         .populate({ path: 'tags', select: '-__v', model: Category })
         .select('-__v');
 

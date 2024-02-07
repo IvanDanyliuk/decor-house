@@ -7,6 +7,8 @@ const shopSchema = new Schema({
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
   },
+}, {
+  timestamps: true
 });
 
 const Shop = models.Shop || model('Shop', shopSchema);

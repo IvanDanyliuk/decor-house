@@ -15,12 +15,14 @@ export const GET = async (req: NextRequest) => {
     const promotions = (page && itemsPerPage) ? 
       await Promotion
         .find({})
+        .sort({ 'createdAt': -1 })
         .limit(+itemsPerPage)
         .skip((+page - 1) * +itemsPerPage)
         .populate({ path: 'products', model: Product })
         .select('-__v') :
       await Promotion
         .find({})
+        .sort({ 'createdAt': -1 })
         .populate({ path: 'products', model: Product })
         .select('-__v');
 

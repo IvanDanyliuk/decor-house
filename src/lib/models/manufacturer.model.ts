@@ -3,6 +3,8 @@ import mongoose, { models } from 'mongoose';
 const manufacturerSchema = new mongoose.Schema({
   name: { type: String, required: true },
   country: { type: String, required: true },
+}, {
+  timestamps: true
 });
 
 const Manufacturer = models.Manufacturer || mongoose.model('Manufacturer', manufacturerSchema);
