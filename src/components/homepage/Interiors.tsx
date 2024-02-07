@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { IInterior } from '@/lib/types/interior.types';
 import { useWindowSize } from '@/utils/hooks';
 import SliderNavPanel from '../ui/SliderNavPanel';
@@ -44,24 +44,29 @@ const Interiors: React.FC<IInteriors> = ({ interiors }) => {
             <Link 
               key={crypto.randomUUID()}
               href={`/catalog/${interior._id}`} 
-              className='relative w-full md:w-1/3 bg-white'
+              className='relative w-full md:w-1/3 bg-white overflow-hidden rounded-lg'
             >
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                className='relative w-full h-80 flex justify-center items-center group border'
-              >
-                <Image 
-                  src={interior.image} 
-                  alt={interior._id!} 
-                  quality={100}
-                  className='w-full h-full object-cover'
-                  fill
-                  
-                />
-                <div className='absolute w-full h-full group-hover:flex justify-center items-center hidden bg-black bg-opacity-75 text-white'>
-                  <p>{interior.title}</p>
-                </div>
-              </motion.div>
+              <AnimatePresence>
+                <motion.div 
+                  whileHover={{ scale: 1.1 }}
+                  className='relative w-full h-96 flex justify-center items-center group'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <Image 
+                    src={interior.image} 
+                    alt={interior._id!} 
+                    quality={100}
+                    className='w-full h-full object-cover'
+                    fill
+                    
+                  />
+                  <div className='absolute w-full h-full px-8 py-14 group-hover:flex justify-center items-end hidden bg-black bg-opacity-75 text-white'>
+                    <p className='text-lg font-semibold uppercase'>{interior.title}</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </Link>
           ))}
         </div>
