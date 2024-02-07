@@ -97,3 +97,15 @@ main {
 .homepage-heading-primary {
   @apply text-5xl md:text-[3.55rem] font-bold uppercase;
 }
+
+.demo-control-container {
+  @apply absolute w-[90%] md:w-1/3 max-h-fit inset-x-0 inset-y-0 shadow-xl mx-auto my-auto p-10 flex flex-col justify-center items-center gap-6 bg-black bg-opacity-75 text-white rounded-lg z-10;
+  
+  &[data-isPlaying='true'] {
+    @apply w-auto h-auto inset-x-auto inset-y-auto mx-0 my-0 right-10 bottom-10 p-5 rounded-full;
+
+    h5, p, a {
+      @apply hidden;
+    }
+  }
+}

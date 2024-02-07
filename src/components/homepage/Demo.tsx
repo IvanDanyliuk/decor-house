@@ -1,8 +1,9 @@
 'use client';
 
-import { PlayCircleOutlined } from '@ant-design/icons';
-import Link from 'next/link';
 import { SyntheticEvent, useRef, useState } from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { PauseCircleOutlined, PlayCircleOutlined } from '@ant-design/icons';
 
 
 const Demo: React.FC = () => {
@@ -25,11 +26,26 @@ const Demo: React.FC = () => {
 
   return (
     <div className='relative w-full'>
-      <div className='absolute w-[90%] md:w-1/3 max-h-fit inset-x-0 inset-y-0 shadow-xl mx-auto my-auto p-10 flex flex-col justify-center items-center gap-6 bg-black bg-opacity-75 text-white rounded-lg z-10'>
+      <motion.div 
+        data-isPlaying={isPlaying} 
+        layout
+        transition={{
+          type: 'spring',
+          stiffness: 500,
+          damping: 50,
+        }}
+        className='demo-control-container'
+      >
         <h5 className='text-2xl md:text-4xl font-semibold'>Decor House Stores</h5>
         <button className='flex items-center gap-3 z-20' type='button' onClick={handleClick}>
-          <PlayCircleOutlined className='text-3xl' />
-          <span className='font-semibold'>View Demo</span>
+          {isPlaying ? (
+            <PauseCircleOutlined className='text-3xl' />
+          ) : (
+            <>
+              <PlayCircleOutlined className='text-3xl' />
+              <span className='font-semibold'>View Demo</span>
+            </>
+          )}
         </button>
         <p className='text-center text-xs md:text-sm leading-6'>
           The multi-channel concept is the ideal way for us to be able to offer design enthusiasts 
@@ -43,7 +59,7 @@ const Demo: React.FC = () => {
         >
           Salons on the map
         </Link>
-      </div>
+      </motion.div>
       <video 
         ref={ref}
         src='/assets/videos/video-bg.mp4' 
