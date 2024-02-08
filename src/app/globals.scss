@@ -128,18 +128,18 @@ main {
 
 
 //CATALOG PAGE
-.categories-container {
-  @apply grid grid-cols-4 gap-3;
+.categories-container-reverse {
+  @apply relative grid grid-cols-6 gap-6;
 
   li {
-    @apply min-h-max;
+    @apply min-h-max rounded-lg h-full overflow-hidden;
 
     &:first-child {
-      @apply row-span-1 col-span-1;
+      @apply row-span-1 col-span-2 aspect-square;
     }
   
     &:nth-child(2) {
-      @apply row-span-1 col-span-1;
+      @apply row-span-1 col-span-2 aspect-square;
     }
   
     &:nth-child(3) {
@@ -151,7 +151,35 @@ main {
     }
 
     &:nth-child(5) {
-      @apply row-span-1 col-span-2;
+      @apply row-span-1 col-span-4;
+    }
+  }
+}
+
+.categories-container {
+  @apply relative grid grid-cols-6 gap-6;
+
+  li {
+    @apply min-h-max h-full;
+
+    &:first-child {
+      @apply row-span-2 col-span-1;
+    }
+  
+    &:nth-child(2) {
+      @apply row-span-2 col-span-1;
+    }
+  
+    &:nth-child(3) {
+      @apply row-span-1 col-span-2 aspect-square;
+    }
+
+    &:nth-child(4) {
+      @apply row-span-1 col-span-2 aspect-square;
+    }
+
+    &:nth-child(5) {
+      @apply row-span-2 col-span-4;
     }
   }
 }
