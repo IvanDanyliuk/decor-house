@@ -1,13 +1,25 @@
+import CategoriesListLayout from '@/components/catalog/CategoriesListLayout';
 import { getCategories } from '@/lib/queries/category.queries';
-import { ICategory } from '@/lib/types/category.types';
+import { ICategory, IPremiumCategory } from '@/lib/types/category.types';
 import { splitArrayIntoChunks } from '@/utils/helpers';
 import Image from 'next/image';
 
 
+
+
+const premiumCategory: IPremiumCategory = {
+  _id: 'premium',
+  name: 'Top Quality',
+  image: '/assets/images/top-quality.png',
+}
+
+const chunkSize = 5;
+
+
 const Catalog = async () => {
   const { data } = await getCategories({});
-
-  const categoriesChunks = splitArrayIntoChunks(data.categories, 5);
+  data.categories.unshift(premiumCategory);
+  const categoriesChunks = splitArrayIntoChunks(data.categories, chunkSize);
 
   return (
     <div className='relative w-full'>
@@ -17,66 +29,28 @@ const Catalog = async () => {
           Catalog
         </h2>
         <div className='container w-full mx-auto flex flex-col gap-6'>
-          {/* <li 
-            key={crypto.randomUUID()}
-            className='relative py-12 px-4'
-          >
-            <Image 
-              src='/assets/images/top-quality.png'
-              alt='top-quality' 
-              quality={100}
-              className='w-full h-full object-cover'
-              fill
-            />
-            <div className='absolute bottom-0 h-full text-lg font-semibold uppercase'>
-              Top Quality
-            </div>
-          </li> */}
-          {categoriesChunks.map((chunk: ICategory[], i) => {
-            if(i % 2 !== 0) {
+          {categoriesChunks.map((chunk: (ICategory | IPremiumCategory)[], i) => {
+            if(chunk.length < chunkSize) {
               return (
-                <ul className='categories-container'>
-                  {chunk.map(category => (
-                    <li 
-                      key={crypto.randomUUID()}
-                      className='relative py-12 px-4'
-                    >
-                      <Image 
-                        src={category.image} 
-                        alt={category._id!} 
-                        quality={100}
-                        className='w-full h-full object-cover'
-                        fill
-                      />
-                      <div className='absolute bottom-0 h-full text-lg font-semibold uppercase'>
-                        {category.name}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )
+                <CategoriesListLayout 
+                  categories={chunk} 
+                  className='rest-categories-container' 
+                />
+              );
+            } else if(i % 2 !== 0) {
+              return (
+                <CategoriesListLayout 
+                  categories={chunk} 
+                  className='categories-container' 
+                />
+              );
             } else {
               return (
-                <ul className='categories-container-reverse'>
-                  {chunk.map(category => (
-                    <li 
-                      key={crypto.randomUUID()}
-                      className='relative py-12 px-4'
-                    >
-                      <Image 
-                        src={category.image} 
-                        alt={category._id!} 
-                        quality={100}
-                        className='w-full h-full object-cover'
-                        fill
-                      />
-                      <div className='absolute bottom-0 h-full text-lg font-semibold uppercase'>
-                        {category.name}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )
+                <CategoriesListLayout 
+                  categories={chunk} 
+                  className='categories-container-reverse' 
+                />
+              );
             }
           })}
         </div>
