@@ -2,7 +2,6 @@ import CategoriesListLayout from '@/components/catalog/CategoriesListLayout';
 import { getCategories } from '@/lib/queries/category.queries';
 import { ICategory, IPremiumCategory } from '@/lib/types/category.types';
 import { splitArrayIntoChunks } from '@/utils/helpers';
-import Image from 'next/image';
 
 
 
@@ -22,13 +21,13 @@ const Catalog = async () => {
   const categoriesChunks = splitArrayIntoChunks(data.categories, chunkSize);
 
   return (
-    <div className='relative w-full'>
+    <div className='relative w-full pb-6'>
       <div className='absolute top-0 w-full h-80 bg-main-bg' />
       <div className='relative pt-10 w-full'>
         <h2 className='mx-auto mb-10 text-4xl text-center font-bold uppercase'>
           Catalog
         </h2>
-        <div className='container w-full mx-auto flex flex-col gap-6'>
+        <div className='container w-full mx-auto flex flex-col gap-3 md:gap-6'>
           {categoriesChunks.map((chunk: (ICategory | IPremiumCategory)[], i) => {
             if(chunk.length < chunkSize) {
               return (
@@ -48,7 +47,7 @@ const Catalog = async () => {
               return (
                 <CategoriesListLayout 
                   categories={chunk} 
-                  className='categories-container-reverse' 
+                  className='categories-container reverse' 
                 />
               );
             }

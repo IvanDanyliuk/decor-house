@@ -19,7 +19,7 @@ const CategoriesListLayout: React.FC<ICategoriesListLayout> = ({ categories, ...
       {categories.map(category => (
         <li 
           key={crypto.randomUUID()}
-          className='relative overflow-hidden'
+          className='relative overflow-hidden group'
         >
           <Link href={`/catalog/${setUrlString(category.name)}`}>
             <motion.div
@@ -35,9 +35,23 @@ const CategoriesListLayout: React.FC<ICategoriesListLayout> = ({ categories, ...
               />
               <div className='absolute top-0 left-0 bottom-0 right-0 bg-black bg-opacity-50' />
             </motion.div>
-            <p className='absolute bottom-10 left-10 text-xl text-white font-semibold uppercase z-10'>
-              {category.name}
-            </p>
+            <div className='title'>
+              <p className='text-xl uppercase z-10'>
+                {category.name}
+              </p>
+              <p className='hidden group-hover:flex items-center gap-3 text-base'>
+                <span>View Products</span>
+                <Image 
+                  src='/assets/icons/right-arrow.svg'
+                  alt='previous'
+                  width={30}
+                  height={30}
+                  style={{
+                    filter: 'invert(1)'
+                  }}
+                />
+              </p>
+            </div>
           </Link>
         </li>
       ))}
