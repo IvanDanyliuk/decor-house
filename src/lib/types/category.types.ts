@@ -7,3 +7,9 @@ export interface ICategory  {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface IPremiumCategory {
+  _id: string;
+  name: string;
+  image: string;
+}

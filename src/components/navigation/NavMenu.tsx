@@ -2,9 +2,32 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { Divider, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import ContactLinks from '../ui/ContactLinks';
+
+
+const menuLinks = {
+  main: [
+    { path: '/', title: 'Home' },
+    { path: '/catalog', title: 'Catalog' },
+    { path: '/interiors', title: 'Interiors' },
+    { path: '/promotions', title: 'Promotions' },
+    { path: '/shops', title: 'Shops' },
+    { path: '/blog', title: 'Blog' },
+  ],
+  secondary: [
+    { path: '/login', title: 'Login' },
+    { path: '/profile/:id', title: 'Profile' },
+    { path: '/dashboard', title: 'Dashboard' },
+  ],
+  additional: [
+    { path: '/about', title: 'About Company' },
+    { path: '/legal-info', title: 'Legal Information' },
+    { path: '/privacy', title: 'Privacy Policy' },
+  ],
+};
 
 
 const NavMenu: React.FC = () => {
@@ -40,48 +63,42 @@ const NavMenu: React.FC = () => {
       >
         <div>
           <ul className='main-nav-link-group'>
-            <li>
-              <Link href='/'>Home</Link>
-            </li>
-            <li>
-              <Link href='/'>Catalog</Link>
-            </li>
-            <li>
-              <Link href='/'>Interiors</Link>
-            </li>
-            <li>
-              <Link href='/'>Promotions</Link>
-            </li>
-            <li>
-              <Link href='/'>Shops</Link>
-            </li>
-            <li>
-              <Link href='/'>Blog</Link>
-            </li>
+            {menuLinks.main.map(link => (
+              <motion.li 
+                key={crypto.randomUUID()}
+                whileHover={{ scale: 1.1 }}
+              >
+                <Link href={link.path} className='hover:text-gray-dark'>
+                  {link.title}
+                </Link>
+              </motion.li>
+            ))}
           </ul>
           <Divider />
           <ul className='main-nav-link-group'>
-            <li>
-              <Link href='/'>Login</Link>
-            </li>
-            <li>
-              <Link href='/'>Profile</Link>
-            </li>
-            <li>
-              <Link href='/'>Dashboard</Link>
-            </li>
+            {menuLinks.secondary.map(link => (
+              <motion.li 
+                key={crypto.randomUUID()}
+                whileHover={{ scale: 1.1 }}
+              >
+                <Link href={link.path} className='hover:text-gray-dark'>
+                  {link.title}
+                </Link>
+              </motion.li>
+            ))}
           </ul>
           <Divider />
           <ul className='secondary-nav-link-group'>
-            <li>
-              <Link href='/'>About Company</Link>
-            </li>
-            <li>
-              <Link href='/'>Legal Information</Link>
-            </li>
-            <li>
-              <Link href='/'>Privacy Policy</Link>
-            </li>
+            {menuLinks.additional.map(link => (
+              <motion.li 
+                key={crypto.randomUUID()}
+                whileHover={{ scale: 1.1 }}
+              >
+                <Link href={link.path} className='hover:text-gray-dark'>
+                  {link.title}
+                </Link>
+              </motion.li>
+            ))}
           </ul>
         </div>
         <ContactLinks />

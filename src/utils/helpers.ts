@@ -12,3 +12,18 @@ export const removeFalsyObjectFields = (object: any) => {
   });
   return res;
 };
+
+export const splitArrayIntoChunks = (array: any[], chunkSize: number) => {
+  const chunks = [];
+
+  for(let i = 0; i < array.length; i += chunkSize) {
+    chunks.push(array.slice(i, i + chunkSize));
+  }
+
+  return chunks;
+};
+
+export const setUrlString = (title: string) => {
+  const splittedTitle = title.toLowerCase().split(' ').map(item => item.replace(/[^a-z0-9]/gi, ''));
+  return splittedTitle.length > 1 ? splittedTitle.join('-') : splittedTitle[0];
+};

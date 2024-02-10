@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { IInterior } from '@/lib/types/interior.types';
-import { useWindowSize } from '@/utils/hooks';
+import { useWindowSize } from '@/utils/hooks/use-window-size';
 import SliderNavPanel from '../ui/SliderNavPanel';
 
 
@@ -68,7 +68,6 @@ const Interiors: React.FC<IInteriors> = ({ interiors }) => {
                     quality={100}
                     className='w-full h-full object-cover'
                     fill
-                    
                   />
                   <div className='absolute left-0 bottom-0 w-full h-fit md:h-full px-8 py-6 md:py-14 md:group-hover:flex justify-center items-end md:hidden bg-black bg-opacity-75 text-white'>
                     <p className='text-lg text-center font-semibold uppercase'>
