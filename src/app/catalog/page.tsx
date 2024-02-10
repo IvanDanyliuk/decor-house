@@ -4,8 +4,6 @@ import { ICategory, IPremiumCategory } from '@/lib/types/category.types';
 import { splitArrayIntoChunks } from '@/utils/helpers';
 
 
-
-
 const premiumCategory: IPremiumCategory = {
   _id: 'premium',
   name: 'Top Quality',

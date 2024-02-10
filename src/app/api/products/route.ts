@@ -8,16 +8,20 @@ import { removeFalsyObjectFields } from '@/utils/helpers';
 
 export const GET = async (req: NextRequest) => {
   try {
+    await connectToDB();
+
     const page = req.nextUrl.searchParams.get('page');
     const itemsPerPage = req.nextUrl.searchParams.get('itemsPerPage');
-    const category = req.nextUrl.searchParams.get('category');
+    const categoryData = req.nextUrl.searchParams.get('category');
     const type = req.nextUrl.searchParams.get('type');
     const features = req.nextUrl.searchParams.get('tyfeaturespe');
     const manufacturer = req.nextUrl.searchParams.get('manufacturer');
 
-    const params = removeFalsyObjectFields({ category, type, features, manufacturer });
+    const categoryPattern = new RegExp(`${categoryData?.replaceAll('-', ' ')}`);
+    const category = await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
 
-    await connectToDB();
+    const params = removeFalsyObjectFields({ category, type, features, manufacturer });
+    const countParams = categoryData ? params : {};
 
     const products = (page && itemsPerPage) ? 
       await Product
@@ -39,7 +43,7 @@ export const GET = async (req: NextRequest) => {
         ])
         .select('-__v');
         
-    const count = await Product.countDocuments();
+    const count = await Product.countDocuments(countParams);
 
     return NextResponse.json({
       data: {
