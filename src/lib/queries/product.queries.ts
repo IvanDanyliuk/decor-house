@@ -34,3 +34,11 @@ export const getProduct = async (id: string) => {
   const { data } = await AXIOS.get(`/api/products/${id}`);
   return data;
 };
+
+export const getProductsFilterData = async (category: string) => {
+  const { data } = await AXIOS.get(
+    '/api/products/filters',
+    { params: { category }}
+  );
+  return data;
+}

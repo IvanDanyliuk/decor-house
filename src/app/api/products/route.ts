@@ -45,15 +45,6 @@ export const GET = async (req: NextRequest) => {
         
     const count = await Product.countDocuments(countParams);
 
-    console.log('GET PRODUCTS', {
-      data: {
-        products,
-        count,
-      },
-      error: null,
-      message: ''
-    })
-
     return NextResponse.json({
       data: {
         products,

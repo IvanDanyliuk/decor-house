@@ -3,11 +3,45 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { Divider } from 'antd';
-import { getProducts } from '@/lib/queries/product.queries';
-import { IProduct } from '@/lib/types/products.types';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Divider, Dropdown, InputNumber, MenuProps, Modal, Slider } from 'antd';
+import { getProducts, getProductsFilterData } from '@/lib/queries/product.queries';
+import { IProduct } from '@/lib/types/products.types';
+import { ICategory } from '@/lib/types/category.types';
+import { IManufacturer } from '@/lib/types/manufacturer.types';
+import { DownOutlined } from '@ant-design/icons';
+
+
+interface IProductFiltersData {
+  types: MenuProps['items'];
+  features: MenuProps['items'];
+  manufacturers: MenuProps['items'];
+  price: {
+    min: number,
+    max: number,
+  };
+}
+
+interface ICheckedFilters {
+  types: string[];
+  features: string[];
+  manufacturers: string[];
+  price: {
+    min: number;
+    max: number;
+  };
+}
+
+const checkedFiltersInitialState: ICheckedFilters = {
+  types: [],
+  features: [],
+  manufacturers: [],
+  price: {
+    min: 0,
+    max: 0,
+  }
+};
 
 
 const CategoryProducts = ({ params }: { params: { category: string } }) => {
@@ -19,16 +53,56 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const [page, setPage] = useState<number>(1);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [productsCount, setProductsCount] = useState<number>(0);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [filtersData, setFiltersData] = useState<IProductFiltersData | null>(null);
+  const [checkedFilters, setCheckedFilters] = useState<ICheckedFilters>(checkedFiltersInitialState);
 
-  const fetchProducts = () => {
-    getProducts({ page, itemsPerPage: 12, category }).then(res => {
-      setProducts([...products, ...res.data.products]);
-      setProductsCount(res.data.count);
+  const [isPriceRangeModalOpen, setIsPriceRangeModalOpen] = useState<boolean>(false);
+
+  const handlePriceRangeModalOpen = () => {
+    setIsPriceRangeModalOpen(!isPriceRangeModalOpen);
+  };
+
+  const handleTypesChange = () => {
+
+  };
+
+  const handleFeaturesChange = () => {
+
+  };
+
+  const handleManufacturersChange = () => {
+
+  };
+
+  const handlePriceRangeChange = (newPriceValue: number[]) => {
+    setCheckedFilters({
+      ...checkedFilters,
+      price: {
+        min: newPriceValue[0],
+        max: newPriceValue[1],
+      }
     });
   };
 
   useEffect(() => {
-    fetchProducts();
+    console.log('PRODUCT CATEGORY FILTERS', checkedFilters)
+  }, [checkedFilters])
+
+  useEffect(() => {
+    getProducts({ page, itemsPerPage: 12, category }).then(res => {
+      setProducts([...products, ...res.data.products]);
+      setProductsCount(res.data.count);
+    });
+    getProductsFilterData(category).then(res => {
+      const types = res.types.map((item: string) => ({ key: item, label: item }));
+      const features = res.features.map((item: string) => ({ key: item, label: item }));
+      const manufacturers = res.manufacturers.map((item: IManufacturer) => ({ key: item._id, label: item.name }));
+      const price = res.price;
+
+      setFiltersData({ types, features, manufacturers, price });
+      setCheckedFilters({ ...checkedFilters, price });
+    });
   }, [page]);
 
   return (
@@ -40,6 +114,91 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
         <h2 className='container mx-auto page-heading-primary'>
           {category.replaceAll('-', ' ')}
         </h2>
+      </section>
+      <section className='relative w-full container mx-auto py-6'>
+        <div className='w-full flex justify-between items-center'>
+          <div className='flex gap-6'>
+            {filtersData && (
+              <>
+                <Dropdown menu={{ items: filtersData?.types! }} trigger={['click']}>
+                  <div className='flex gap-1 text-sm font-semibold'>
+                    <span>Types</span>
+                    <DownOutlined />
+                  </div>
+                </Dropdown>
+                <Dropdown menu={{ items: filtersData?.features! }} trigger={['click']}>
+                  <div className='flex gap-1 text-sm font-semibold'>
+                    <span>Features</span>
+                    <DownOutlined />
+                  </div>
+                </Dropdown>
+                <Dropdown menu={{ items: filtersData?.manufacturers! }} trigger={['click']}>
+                  <div className='flex gap-1 text-sm font-semibold'>
+                    <span>Manufacturers</span>
+                    <DownOutlined />
+                  </div>
+                </Dropdown>
+                <button 
+                  onClick={handlePriceRangeModalOpen} 
+                  className='flex items-center gap-1 text-sm font-semibold border-none'
+                >
+                  <span>Price</span>
+                  <DownOutlined />
+                </button>
+                <Modal
+                  open={isPriceRangeModalOpen}
+                  centered
+                  closable
+                  okButtonProps={{ style: { display: 'none' } }}
+                  cancelButtonProps={{ style: { display: 'none' } }}
+                  onCancel={handlePriceRangeModalOpen}
+                >
+                  <div className='f-full h-full px-3 pt-8'>
+                    {filtersData && (
+                      <div className='mb-8 flex gap-3'>
+                        <InputNumber 
+                          value={checkedFilters.price.min} 
+                          onChange={(value: any) => setCheckedFilters({
+                            ...checkedFilters, 
+                            price: { ...checkedFilters.price, min: value! }
+                          })} 
+                          className='flex-1'
+                        />
+                        <InputNumber 
+                          value={checkedFilters.price.max} 
+                          onChange={(value: any) => setCheckedFilters({
+                            ...checkedFilters, 
+                            price: { 
+                              ...checkedFilters.price, max: value! }
+                            })} 
+                            className='flex-1'
+                        />
+                      </div>
+                    )}
+                    <Slider 
+                      range 
+                      min={filtersData.price.min} 
+                      max={filtersData.price.max} 
+                      defaultValue={[checkedFilters.price.min, checkedFilters.price.max]} 
+                      onChange={handlePriceRangeChange} 
+                    />
+                  </div>
+                </Modal>
+              </>
+            )}
+          </div>
+          <button className='flex items-center gap-1'>
+            <span className='font-semibold'>Sorting</span>
+            <Image 
+              src='/assets/icons/arrows.png'
+              alt='previous'
+              width={15}
+              height={15}
+              className='rotate-90'
+            />
+          </button>
+        </div>
+        <ul></ul>
       </section>
       <section className='relative w-full container mx-auto py-6 box-border'>
         <ul className='w-full grid grid-cols-3 gap-6'>
@@ -75,7 +234,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
               e.preventDefault()
               setPage(page + 1)
             }}
-            className='w-full block mx-auto my-6 md:w-80 px-4 py-2 text-base font-semibold border border-accent-dark rounded-md'
+            className='w-full block mx-auto my-8 md:w-80 px-4 py-2 text-base font-semibold border border-accent-dark rounded-md'
           >
             View More
           </button>

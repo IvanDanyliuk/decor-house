@@ -27,3 +27,16 @@ export const setUrlString = (title: string) => {
   const splittedTitle = title.toLowerCase().split(' ').map(item => item.replace(/[^a-z0-9]/gi, ''));
   return splittedTitle.length > 1 ? splittedTitle.join('-') : splittedTitle[0];
 };
+
+export const getArrayUniqueItems = (array: any[], field: string) => {
+  let mapObj = new Map();
+  
+  array.forEach(v => {
+    let prevValue = mapObj.get(v[field])
+    if(!prevValue || prevValue.type === "new"){
+      mapObj.set(v[field], v)
+    } 
+  });
+
+  return [...mapObj.values()];
+}
