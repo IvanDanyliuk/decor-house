@@ -7,9 +7,10 @@ import { motion } from 'framer-motion';
 import { Divider } from 'antd';
 import { getProducts } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
+import Link from 'next/link';
 
 
-const CategoryProducts = async ({ params }: { params: { category: string } }) => {
+const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const { category } = params;
 
   const path= usePathname();
@@ -19,11 +20,15 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
   const [products, setProducts] = useState<IProduct[]>([]);
   const [productsCount, setProductsCount] = useState<number>(0);
 
-  useEffect(() => {
-    getProducts({ page: 1, itemsPerPage: page * 12, category }).then(res => {
-      setProducts(res.data.products);
+  const fetchProducts = () => {
+    getProducts({ page, itemsPerPage: 12, category }).then(res => {
+      setProducts([...products, ...res.data.products]);
       setProductsCount(res.data.count);
     });
+  };
+
+  useEffect(() => {
+    fetchProducts();
   }, [page]);
 
   return (
@@ -41,28 +46,35 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
           {products.map(product => (
             <motion.li 
               key={crypto.randomUUID()}
-
-              className='px-3 py-6 flex flex-col justify-center items-center border border-gray-light rounded-md overflow-hidden'
+              className='border border-gray-light rounded-md overflow-hidden'
             >
-              <Image 
-                src={product.images[0]}
-                alt={product.name}
-                width={350}
-                height={350}
-              />
-              <p className='text-lg font-bold'>
-                {product.name}
-              </p>
-              <Divider />
-              <p className='text-2xl font-bold'>
-                &euro;{product.price}
-              </p>
+              <Link 
+                href={`/catalog/${category}/${product._id!}`} 
+                className='px-3 py-6 flex flex-col justify-center items-center '
+              >
+                <Image 
+                  src={product.images[0]}
+                  alt={product.name}
+                  width={350}
+                  height={350}
+                />
+                <p className='text-lg font-bold'>
+                  {product.name}
+                </p>
+                <Divider />
+                <p className='text-2xl font-bold'>
+                  &euro;{product.price}
+                </p>
+              </Link>
             </motion.li>
           ))}
         </ul>
         {productsCount > products.length && (
           <button 
-            onClick={() => setPage(page + 1)}
+            onClick={(e) => {
+              e.preventDefault()
+              setPage(page + 1)
+            }}
             className='w-full block mx-auto my-6 md:w-80 px-4 py-2 text-base font-semibold border border-accent-dark rounded-md'
           >
             View More

@@ -14,7 +14,7 @@ export const GET = async (req: NextRequest) => {
     const itemsPerPage = req.nextUrl.searchParams.get('itemsPerPage');
     const categoryData = req.nextUrl.searchParams.get('category');
     const type = req.nextUrl.searchParams.get('type');
-    const features = req.nextUrl.searchParams.get('tyfeaturespe');
+    const features = req.nextUrl.searchParams.get('features');
     const manufacturer = req.nextUrl.searchParams.get('manufacturer');
 
     const categoryPattern = new RegExp(`${categoryData?.replaceAll('-', ' ')}`);
@@ -44,6 +44,15 @@ export const GET = async (req: NextRequest) => {
         .select('-__v');
         
     const count = await Product.countDocuments(countParams);
+
+    console.log('GET PRODUCTS', {
+      data: {
+        products,
+        count,
+      },
+      error: null,
+      message: ''
+    })
 
     return NextResponse.json({
       data: {
