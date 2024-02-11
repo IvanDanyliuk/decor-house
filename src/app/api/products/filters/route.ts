@@ -20,8 +20,8 @@ export const GET = async (req: NextRequest) => {
     const prices: number[] = products.map(item => item.price);
 
     return NextResponse.json({
-      types: category.types,
-      features: category.features,
+      types: [...new Set(category.types)],
+      features: [...new Set(category.features)],
       manufacturers,
       price: {
         min: Math.min(...prices),

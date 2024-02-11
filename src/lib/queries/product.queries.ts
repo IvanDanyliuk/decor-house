@@ -5,16 +5,16 @@ export const getProducts = async ({
   page, 
   itemsPerPage, 
   category,
-  type,
+  types,
   features,
-  manufacturer
+  manufacturers
 }: { 
   page?: number, 
   itemsPerPage?: number, 
   category?: string;
-  type?: string,
+  types?: string,
   features?: string,
-  manufacturer?: string;
+  manufacturers?: string;
 }) => {
   const { data } = await AXIOS.get(
     '/api/products', 
@@ -22,9 +22,9 @@ export const getProducts = async ({
         page, 
         itemsPerPage, 
         category, 
-        type, 
+        types, 
         features, 
-        manufacturer 
+        manufacturers 
     } }
   );
   return data;

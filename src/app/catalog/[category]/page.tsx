@@ -5,18 +5,26 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Divider, Dropdown, InputNumber, MenuProps, Modal, Slider } from 'antd';
+import { Divider, InputNumber, Modal, Select, Slider } from 'antd';
 import { getProducts, getProductsFilterData } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
-import { ICategory } from '@/lib/types/category.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
 import { DownOutlined } from '@ant-design/icons';
 
 
 interface IProductFiltersData {
-  types: MenuProps['items'];
-  features: MenuProps['items'];
-  manufacturers: MenuProps['items'];
+  types: {
+    value: string,
+    label: string
+  }[];
+  features: {
+    value: string,
+    label: string
+  }[];
+  manufacturers: {
+    value: string,
+    label: string
+  }[];
   price: {
     min: number,
     max: number,
@@ -53,7 +61,6 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const [page, setPage] = useState<number>(1);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [productsCount, setProductsCount] = useState<number>(0);
-  const [categories, setCategories] = useState<ICategory[]>([]);
   const [filtersData, setFiltersData] = useState<IProductFiltersData | null>(null);
   const [checkedFilters, setCheckedFilters] = useState<ICheckedFilters>(checkedFiltersInitialState);
 
@@ -63,16 +70,28 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
     setIsPriceRangeModalOpen(!isPriceRangeModalOpen);
   };
 
-  const handleTypesChange = () => {
-
+  const handleTypesChange = (value: string[]) => {
+    setProducts([]);
+    setCheckedFilters({
+      ...checkedFilters,
+      types: value
+    });
   };
 
-  const handleFeaturesChange = () => {
-
+  const handleFeaturesChange = (value: string[]) => {
+    setProducts([]);
+    setCheckedFilters({
+      ...checkedFilters,
+      features: value
+    });
   };
 
-  const handleManufacturersChange = () => {
-
+  const handleManufacturersChange = (value: string[]) => {
+    setProducts([]);
+    setCheckedFilters({
+      ...checkedFilters,
+      manufacturers: value
+    });
   };
 
   const handlePriceRangeChange = (newPriceValue: number[]) => {
@@ -86,24 +105,44 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   };
 
   useEffect(() => {
-    console.log('PRODUCT CATEGORY FILTERS', checkedFilters)
-  }, [checkedFilters])
+    const { types, features, manufacturers } = checkedFilters;
 
-  useEffect(() => {
-    getProducts({ page, itemsPerPage: 12, category }).then(res => {
+    getProducts({ 
+      page, 
+      itemsPerPage: 12, 
+      category, 
+      types: types.join(', '), 
+      features: features.join(', '), 
+      manufacturers: manufacturers.join(', '), 
+    }).then(res => {
       setProducts([...products, ...res.data.products]);
       setProductsCount(res.data.count);
     });
-    getProductsFilterData(category).then(res => {
-      const types = res.types.map((item: string) => ({ key: item, label: item }));
-      const features = res.features.map((item: string) => ({ key: item, label: item }));
-      const manufacturers = res.manufacturers.map((item: IManufacturer) => ({ key: item._id, label: item.name }));
-      const price = res.price;
-
-      setFiltersData({ types, features, manufacturers, price });
-      setCheckedFilters({ ...checkedFilters, price });
-    });
-  }, [page]);
+    
+    if(!filtersData) {
+      getProductsFilterData(category).then(res => {
+        const types = res.types.map((item: string) => ({ 
+          value: item, 
+          label: item 
+        }));
+  
+        const features = res.features.map((item: string) => ({ 
+          value: item, 
+          label: item
+        }));
+  
+        const manufacturers = res.manufacturers.map((item: IManufacturer) => ({ 
+          value: item._id!, 
+          label: item.name 
+        }));
+        
+        const price = res.price;
+  
+        setFiltersData({ types, features, manufacturers, price });
+        setCheckedFilters({ ...checkedFilters, price });
+      });
+    }
+  }, [page, checkedFilters]);
 
   return (
     <div className='w-full'>
@@ -120,24 +159,21 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
           <div className='flex gap-6'>
             {filtersData && (
               <>
-                <Dropdown menu={{ items: filtersData?.types! }} trigger={['click']}>
-                  <div className='flex gap-1 text-sm font-semibold'>
-                    <span>Types</span>
-                    <DownOutlined />
-                  </div>
-                </Dropdown>
-                <Dropdown menu={{ items: filtersData?.features! }} trigger={['click']}>
-                  <div className='flex gap-1 text-sm font-semibold'>
-                    <span>Features</span>
-                    <DownOutlined />
-                  </div>
-                </Dropdown>
-                <Dropdown menu={{ items: filtersData?.manufacturers! }} trigger={['click']}>
-                  <div className='flex gap-1 text-sm font-semibold'>
-                    <span>Manufacturers</span>
-                    <DownOutlined />
-                  </div>
-                </Dropdown>
+                <Select 
+                  mode='multiple' 
+                  options={filtersData.types} 
+                  onChange={handleTypesChange} 
+                />
+                <Select 
+                  mode='multiple' 
+                  options={filtersData.features} 
+                  onChange={handleFeaturesChange} 
+                />
+                <Select 
+                  mode='multiple' 
+                  options={filtersData.manufacturers} 
+                  onChange={handleManufacturersChange} 
+                />
                 <button 
                   onClick={handlePriceRangeModalOpen} 
                   className='flex items-center gap-1 text-sm font-semibold border-none'
@@ -188,7 +224,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
             )}
           </div>
           <button className='flex items-center gap-1'>
-            <span className='font-semibold'>Sorting</span>
+            <span className='font-semibold'>Sort</span>
             <Image 
               src='/assets/icons/arrows.png'
               alt='previous'

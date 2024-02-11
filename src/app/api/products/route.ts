@@ -13,14 +13,19 @@ export const GET = async (req: NextRequest) => {
     const page = req.nextUrl.searchParams.get('page');
     const itemsPerPage = req.nextUrl.searchParams.get('itemsPerPage');
     const categoryData = req.nextUrl.searchParams.get('category');
-    const type = req.nextUrl.searchParams.get('type');
-    const features = req.nextUrl.searchParams.get('features');
-    const manufacturer = req.nextUrl.searchParams.get('manufacturer');
+    const typesData = req.nextUrl.searchParams.get('types');
+    const featuresData = req.nextUrl.searchParams.get('features');
+    const manufacturersData = req.nextUrl.searchParams.get('manufacturers');
 
     const categoryPattern = new RegExp(`${categoryData?.replaceAll('-', ' ')}`);
     const category = await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
 
-    const params = removeFalsyObjectFields({ category, type, features, manufacturer });
+    const types = typesData ? { $in: typesData.split(', ') } : null;
+    const features = featuresData ? { $in: featuresData.split(', ') } : null;
+    const manufacturers = manufacturersData ? { $in: manufacturersData.split(', ') } : null;
+
+    const params = removeFalsyObjectFields({ category, type: types, features, manufacturer: manufacturers });
+
     const countParams = categoryData ? params : {};
 
     const products = (page && itemsPerPage) ? 
