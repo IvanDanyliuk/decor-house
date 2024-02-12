@@ -16,6 +16,8 @@ export const GET = async (req: NextRequest) => {
     const typesData = req.nextUrl.searchParams.get('types');
     const featuresData = req.nextUrl.searchParams.get('features');
     const manufacturersData = req.nextUrl.searchParams.get('manufacturers');
+    const minPrice = req.nextUrl.searchParams.get('minPrice');
+    const maxPrice = req.nextUrl.searchParams.get('maxPrice');
 
     const categoryPattern = new RegExp(`${categoryData?.replaceAll('-', ' ')}`);
     const category = await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
@@ -23,9 +25,10 @@ export const GET = async (req: NextRequest) => {
     const types = typesData ? { $in: typesData.split(', ') } : null;
     const features = featuresData ? { $in: featuresData.split(', ') } : null;
     const manufacturers = manufacturersData ? { $in: manufacturersData.split(', ') } : null;
+    const price = minPrice && maxPrice ? { $gte: Number(minPrice), $lte: Number(maxPrice) } : null;
 
-    const params = removeFalsyObjectFields({ category, type: types, features, manufacturer: manufacturers });
-
+    const params = removeFalsyObjectFields({ category, type: types, features, manufacturer: manufacturers, price });
+    
     const countParams = categoryData ? params : {};
 
     const products = (page && itemsPerPage) ? 

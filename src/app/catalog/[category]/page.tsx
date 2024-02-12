@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { FocusEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -95,6 +95,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   };
 
   const handlePriceRangeChange = (newPriceValue: number[]) => {
+    setProducts([]);
     setCheckedFilters({
       ...checkedFilters,
       price: {
@@ -105,7 +106,11 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   };
 
   useEffect(() => {
-    const { types, features, manufacturers } = checkedFilters;
+    console.log('PRICE HAS BEEN CHANGED', checkedFilters.price)
+  }, [checkedFilters.price])
+
+  useEffect(() => {
+    const { types, features, manufacturers, price } = checkedFilters;
 
     getProducts({ 
       page, 
@@ -114,6 +119,8 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
       types: types.join(', '), 
       features: features.join(', '), 
       manufacturers: manufacturers.join(', '), 
+      minPrice: price.min,
+      maxPrice: price.max,
     }).then(res => {
       setProducts([...products, ...res.data.products]);
       setProductsCount(res.data.count);
@@ -194,19 +201,24 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                       <div className='mb-8 flex gap-3'>
                         <InputNumber 
                           value={checkedFilters.price.min} 
-                          onChange={(value: any) => setCheckedFilters({
-                            ...checkedFilters, 
-                            price: { ...checkedFilters.price, min: value! }
-                          })} 
+                          onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
+                            setProducts([]);
+                            setCheckedFilters({
+                              ...checkedFilters, 
+                              price: { ...checkedFilters.price, min: +e.target.value! }
+                            })
+                          }} 
                           className='flex-1'
                         />
                         <InputNumber 
                           value={checkedFilters.price.max} 
-                          onChange={(value: any) => setCheckedFilters({
-                            ...checkedFilters, 
-                            price: { 
-                              ...checkedFilters.price, max: value! }
-                            })} 
+                          onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
+                            setProducts([]);
+                            setCheckedFilters({
+                              ...checkedFilters, 
+                              price: { ...checkedFilters.price, max: +e.target.value! }
+                            })
+                          }} 
                             className='flex-1'
                         />
                       </div>
@@ -215,8 +227,8 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                       range 
                       min={filtersData.price.min} 
                       max={filtersData.price.max} 
-                      defaultValue={[checkedFilters.price.min, checkedFilters.price.max]} 
-                      onChange={handlePriceRangeChange} 
+                      value={[checkedFilters.price.min, checkedFilters.price.max]} 
+                      onAfterChange={handlePriceRangeChange} 
                     />
                   </div>
                 </Modal>

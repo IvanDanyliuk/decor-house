@@ -7,7 +7,9 @@ export const getProducts = async ({
   category,
   types,
   features,
-  manufacturers
+  manufacturers, 
+  minPrice, 
+  maxPrice
 }: { 
   page?: number, 
   itemsPerPage?: number, 
@@ -15,6 +17,8 @@ export const getProducts = async ({
   types?: string,
   features?: string,
   manufacturers?: string;
+  minPrice?: number;
+  maxPrice?: number;
 }) => {
   const { data } = await AXIOS.get(
     '/api/products', 
@@ -24,7 +28,9 @@ export const getProducts = async ({
         category, 
         types, 
         features, 
-        manufacturers 
+        manufacturers, 
+        minPrice, 
+        maxPrice 
     } }
   );
   return data;

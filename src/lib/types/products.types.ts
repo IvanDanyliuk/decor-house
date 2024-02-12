@@ -14,7 +14,7 @@ export interface IProduct {
   };
   manufacturer: string;
   characteristics: string;
-  price: string;
+  price: number;
   sale: string;
   images: string;
   colors: string[];
