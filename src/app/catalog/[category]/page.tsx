@@ -1,6 +1,6 @@
 'use client';
 
-import { FocusEvent, SyntheticEvent, useEffect, useState } from 'react';
+import { FocusEvent, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -104,10 +104,6 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
       }
     });
   };
-
-  useEffect(() => {
-    console.log('PRICE HAS BEEN CHANGED', checkedFilters.price)
-  }, [checkedFilters.price])
 
   useEffect(() => {
     const { types, features, manufacturers, price } = checkedFilters;
