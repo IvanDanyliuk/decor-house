@@ -9,7 +9,7 @@ import { Divider, InputNumber, Modal, Select, Slider } from 'antd';
 import { getProducts, getProductsFilterData } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
-import { DownOutlined } from '@ant-design/icons';
+import { CloseOutlined, DownOutlined } from '@ant-design/icons';
 
 
 interface IProductFiltersData {
@@ -105,6 +105,15 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
     });
   };
 
+  const handleFilterItemDelete = (key: keyof ICheckedFilters, value: string) => {
+    if(key !== 'price') {
+      setCheckedFilters({
+        ...checkedFilters,
+        [key]: checkedFilters[key].filter((item: string) => item !== value),
+      });
+    }
+  };
+
   useEffect(() => {
     const { types, features, manufacturers, price } = checkedFilters;
 
@@ -164,16 +173,22 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
               <>
                 <Select 
                   mode='multiple' 
+                  placeholder='Types'
+                  value={checkedFilters.types}
                   options={filtersData.types} 
                   onChange={handleTypesChange} 
                 />
                 <Select 
                   mode='multiple' 
+                  placeholder='Features'
+                  value={checkedFilters.features}
                   options={filtersData.features} 
                   onChange={handleFeaturesChange} 
                 />
                 <Select 
                   mode='multiple' 
+                  placeholder='Manufacturers'
+                  value={checkedFilters.manufacturers}
                   options={filtersData.manufacturers} 
                   onChange={handleManufacturersChange} 
                 />
@@ -215,7 +230,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                               price: { ...checkedFilters.price, max: +e.target.value! }
                             })
                           }} 
-                            className='flex-1'
+                          className='flex-1'
                         />
                       </div>
                     )}
@@ -242,7 +257,36 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
             />
           </button>
         </div>
-        <ul></ul>
+        <Divider />
+        <ul className='flex gap-3'>
+          {checkedFilters.types.map(item => (
+            <li 
+              key={crypto.randomUUID()}
+              className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
+            >
+              <span>{item}</span>
+              <CloseOutlined onClick={() => handleFilterItemDelete('types', item)} />
+            </li>
+          ))}
+          {checkedFilters.features.map(item => (
+            <li 
+              key={crypto.randomUUID()}
+              className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
+            >
+              <span>{item}</span>
+              <CloseOutlined onClick={() => handleFilterItemDelete('features', item)} />
+            </li>
+          ))}
+          {checkedFilters.manufacturers.map(item => (
+            <li 
+              key={crypto.randomUUID()}
+              className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
+            >
+              <span>{filtersData?.manufacturers.find(val => val.value === item)?.label}</span>
+              <CloseOutlined onClick={() => handleFilterItemDelete('manufacturers', item)} />
+            </li>
+          ))}
+        </ul>
       </section>
       <section className='relative w-full container mx-auto py-6 box-border'>
         <ul className='w-full grid grid-cols-3 gap-6'>
