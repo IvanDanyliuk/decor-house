@@ -225,3 +225,24 @@ main {
     }
   }
 }
+
+.tag-selector {
+  // .ant-select-selection-overflow {
+  //   @apply hidden;
+  // }
+  .ant-select {
+    @apply relative flex items-center;
+  }
+
+  .ant-select-selection-placeholder {
+    @apply overflow-auto flex-auto relative w-auto #{!important} ;
+  }
+
+  .ant-select-selection-placeholder {
+    @apply text-base text-black font-semibold #{!important};
+  }
+
+  .ant-select-arrow {
+    @apply right-0 text-black;
+  }
+}

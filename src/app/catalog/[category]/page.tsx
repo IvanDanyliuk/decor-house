@@ -10,6 +10,8 @@ import { getProducts, getProductsFilterData } from '@/lib/queries/product.querie
 import { IProduct } from '@/lib/types/products.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
+import FilterSelect from '@/components/catalog/ProductFilters/FilterSelect';
+import PriceFilter from '@/components/catalog/ProductFilters/PriceFilter';
 
 
 interface IProductFiltersData {
@@ -94,19 +96,17 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
     });
   };
 
-  const handlePriceRangeChange = (newPriceValue: number[]) => {
+  const handlePriceRangeChange = (newPriceValues: { min: number, max: number }) => {
     setProducts([]);
     setCheckedFilters({
       ...checkedFilters,
-      price: {
-        min: newPriceValue[0],
-        max: newPriceValue[1],
-      }
+      price: newPriceValues
     });
   };
 
   const handleFilterItemDelete = (key: keyof ICheckedFilters, value: string) => {
     if(key !== 'price') {
+      setProducts([]);
       setCheckedFilters({
         ...checkedFilters,
         [key]: checkedFilters[key].filter((item: string) => item !== value),
@@ -166,33 +166,35 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
           {category.replaceAll('-', ' ')}
         </h2>
       </section>
-      <section className='relative w-full container mx-auto py-6'>
+      <section className='w-full container mx-auto py-6'>
         <div className='w-full flex justify-between items-center'>
           <div className='flex gap-6'>
             {filtersData && (
               <>
-                <Select 
-                  mode='multiple' 
-                  placeholder='Types'
-                  value={checkedFilters.types}
+                <FilterSelect 
+                  title='Types' 
                   options={filtersData.types} 
-                  onChange={handleTypesChange} 
+                  selectedOptions={checkedFilters.types} 
+                  multiple onChange={handleTypesChange} 
                 />
-                <Select 
-                  mode='multiple' 
-                  placeholder='Features'
-                  value={checkedFilters.features}
+                <FilterSelect 
+                  title='Features' 
                   options={filtersData.features} 
-                  onChange={handleFeaturesChange} 
+                  selectedOptions={checkedFilters.features} 
+                  multiple onChange={handleFeaturesChange} 
                 />
-                <Select 
-                  mode='multiple' 
-                  placeholder='Manufacturers'
-                  value={checkedFilters.manufacturers}
+                <FilterSelect 
+                  title='Manufacturers' 
                   options={filtersData.manufacturers} 
-                  onChange={handleManufacturersChange} 
+                  selectedOptions={checkedFilters.manufacturers} 
+                  multiple onChange={handleManufacturersChange} 
                 />
-                <button 
+                <PriceFilter 
+                  min={filtersData.price.min} 
+                  max={filtersData.price.max} 
+                  onChange={handlePriceRangeChange} 
+                />
+                {/* <button 
                   onClick={handlePriceRangeModalOpen} 
                   className='flex items-center gap-1 text-sm font-semibold border-none'
                 >
@@ -242,7 +244,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                       onAfterChange={handlePriceRangeChange} 
                     />
                   </div>
-                </Modal>
+                </Modal> */}
               </>
             )}
           </div>
