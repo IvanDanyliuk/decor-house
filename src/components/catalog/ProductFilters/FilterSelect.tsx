@@ -5,6 +5,7 @@ import { DownOutlined } from '@ant-design/icons';
 
 
 interface IFilterSelect {
+  name: string;
   title: string;
   options: {
     value: string;
@@ -12,11 +13,11 @@ interface IFilterSelect {
   }[];
   selectedOptions: string[];
   multiple?: boolean;
-  onChange: (values: string[]) => void;
+  onChange: (key: string, values: string[]) => void;
 }
 
 
-const FilterSelect: React.FC<IFilterSelect> = ({ title, options, selectedOptions, multiple, onChange }) => {
+const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, selectedOptions, multiple, onChange }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleSelectOpen = () => {
@@ -27,10 +28,10 @@ const FilterSelect: React.FC<IFilterSelect> = ({ title, options, selectedOptions
     const isAllSelected = options.every(option => selectedOptions.includes(option.value));
 
     if(isAllSelected) {
-      onChange([]);
+      onChange(name, []);
     } else {
       const values = options.map(option => option.value);
-      onChange(values);
+      onChange(name, values);
     }
   };
 
@@ -39,9 +40,9 @@ const FilterSelect: React.FC<IFilterSelect> = ({ title, options, selectedOptions
 
     if(isOptionSelected) {
       const filteredOptions = selectedOptions.filter(option => option !== value);
-      onChange(filteredOptions);
+      onChange(name, filteredOptions);
     } else {
-      onChange([...selectedOptions, value]);
+      onChange(name, [...selectedOptions, value]);
     }
   };
 
@@ -100,4 +101,4 @@ const FilterSelect: React.FC<IFilterSelect> = ({ title, options, selectedOptions
   );
 };
 
-export default FilterSelect
+export default FilterSelect;

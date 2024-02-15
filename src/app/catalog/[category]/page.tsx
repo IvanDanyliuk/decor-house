@@ -66,35 +66,37 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const [filtersData, setFiltersData] = useState<IProductFiltersData | null>(null);
   const [checkedFilters, setCheckedFilters] = useState<ICheckedFilters>(checkedFiltersInitialState);
 
-  const [isPriceRangeModalOpen, setIsPriceRangeModalOpen] = useState<boolean>(false);
-
-  const handlePriceRangeModalOpen = () => {
-    setIsPriceRangeModalOpen(!isPriceRangeModalOpen);
-  };
-
-  const handleTypesChange = (value: string[]) => {
+  const handleFilterProducts = (key: string, values: string[]) => {
     setProducts([]);
     setCheckedFilters({
       ...checkedFilters,
-      types: value
+      [key]: values
     });
   };
 
-  const handleFeaturesChange = (value: string[]) => {
-    setProducts([]);
-    setCheckedFilters({
-      ...checkedFilters,
-      features: value
-    });
-  };
+  // const handleTypesChange = (value: string[]) => {
+  //   setProducts([]);
+  //   setCheckedFilters({
+  //     ...checkedFilters,
+  //     types: value
+  //   });
+  // };
 
-  const handleManufacturersChange = (value: string[]) => {
-    setProducts([]);
-    setCheckedFilters({
-      ...checkedFilters,
-      manufacturers: value
-    });
-  };
+  // const handleFeaturesChange = (value: string[]) => {
+  //   setProducts([]);
+  //   setCheckedFilters({
+  //     ...checkedFilters,
+  //     features: value
+  //   });
+  // };
+
+  // const handleManufacturersChange = (value: string[]) => {
+  //   setProducts([]);
+  //   setCheckedFilters({
+  //     ...checkedFilters,
+  //     manufacturers: value
+  //   });
+  // };
 
   const handlePriceRangeChange = (newPriceValues: { min: number, max: number }) => {
     setProducts([]);
@@ -172,79 +174,34 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
             {filtersData && (
               <>
                 <FilterSelect 
+                  name='types'
                   title='Types' 
                   options={filtersData.types} 
                   selectedOptions={checkedFilters.types} 
-                  multiple onChange={handleTypesChange} 
+                  multiple 
+                  onChange={handleFilterProducts} 
                 />
                 <FilterSelect 
+                  name='features'
                   title='Features' 
                   options={filtersData.features} 
                   selectedOptions={checkedFilters.features} 
-                  multiple onChange={handleFeaturesChange} 
+                  multiple 
+                  onChange={handleFilterProducts} 
                 />
                 <FilterSelect 
+                  name='manufacturers'
                   title='Manufacturers' 
                   options={filtersData.manufacturers} 
                   selectedOptions={checkedFilters.manufacturers} 
-                  multiple onChange={handleManufacturersChange} 
+                  multiple 
+                  onChange={handleFilterProducts} 
                 />
                 <PriceFilter 
                   min={filtersData.price.min} 
                   max={filtersData.price.max} 
                   onChange={handlePriceRangeChange} 
                 />
-                {/* <button 
-                  onClick={handlePriceRangeModalOpen} 
-                  className='flex items-center gap-1 text-sm font-semibold border-none'
-                >
-                  <span>Price</span>
-                  <DownOutlined />
-                </button>
-                <Modal
-                  open={isPriceRangeModalOpen}
-                  centered
-                  closable
-                  okButtonProps={{ style: { display: 'none' } }}
-                  cancelButtonProps={{ style: { display: 'none' } }}
-                  onCancel={handlePriceRangeModalOpen}
-                >
-                  <div className='f-full h-full px-3 pt-8'>
-                    {filtersData && (
-                      <div className='mb-8 flex gap-3'>
-                        <InputNumber 
-                          value={checkedFilters.price.min} 
-                          onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
-                            setProducts([]);
-                            setCheckedFilters({
-                              ...checkedFilters, 
-                              price: { ...checkedFilters.price, min: +e.target.value! }
-                            })
-                          }} 
-                          className='flex-1'
-                        />
-                        <InputNumber 
-                          value={checkedFilters.price.max} 
-                          onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
-                            setProducts([]);
-                            setCheckedFilters({
-                              ...checkedFilters, 
-                              price: { ...checkedFilters.price, max: +e.target.value! }
-                            })
-                          }} 
-                          className='flex-1'
-                        />
-                      </div>
-                    )}
-                    <Slider 
-                      range 
-                      min={filtersData.price.min} 
-                      max={filtersData.price.max} 
-                      value={[checkedFilters.price.min, checkedFilters.price.max]} 
-                      onAfterChange={handlePriceRangeChange} 
-                    />
-                  </div>
-                </Modal> */}
               </>
             )}
           </div>
