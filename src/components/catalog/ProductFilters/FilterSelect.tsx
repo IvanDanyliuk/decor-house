@@ -24,17 +24,6 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, selectedO
     setIsOpen(prev => !prev);
   };
 
-  const handleSelectAllOptions = () => {
-    const isAllSelected = options.every(option => selectedOptions.includes(option.value));
-
-    if(isAllSelected) {
-      onChange(name, []);
-    } else {
-      const values = options.map(option => option.value);
-      onChange(name, values);
-    }
-  };
-
   const handleOptionSelect = (value: string) => {
     const isOptionSelected = selectedOptions.includes(value);
 
@@ -62,21 +51,6 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, selectedO
         </button>
         {isOpen && options.length && (
           <ul className='w-fit absolute bg-white rounded z-30'>
-            {multiple && (
-              <li 
-                onClick={handleSelectAllOptions} 
-                className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'
-              >
-                <input 
-                  id='All'
-                  type='checkbox' 
-                  checked={options.every(item => selectedOptions.includes(item.value))}
-                  onChange={handleSelectAllOptions} 
-                  data-testid='selectProductCheckbox'
-                />
-                <label>All</label>
-              </li>
-            )}
             {options.map(option => (
               <li 
                 key={crypto.randomUUID()} 

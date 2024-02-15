@@ -1,46 +1,41 @@
 'use client';
 
-import { FocusEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Divider, InputNumber, Modal, Select, Slider } from 'antd';
+import { Divider } from 'antd';
 import { getProducts, getProductsFilterData } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
-import { CloseOutlined, DownOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 import FilterSelect from '@/components/catalog/ProductFilters/FilterSelect';
 import PriceFilter from '@/components/catalog/ProductFilters/PriceFilter';
 
 
+interface IPrice {
+  min: number;
+  max: number;
+}
+
+interface IFilterItem {
+  value: string;
+  label: string;
+}
+
 interface IProductFiltersData {
-  types: {
-    value: string,
-    label: string
-  }[];
-  features: {
-    value: string,
-    label: string
-  }[];
-  manufacturers: {
-    value: string,
-    label: string
-  }[];
-  price: {
-    min: number,
-    max: number,
-  };
+  types: IFilterItem[];
+  features: IFilterItem[];
+  manufacturers: IFilterItem[];
+  price: IPrice;
 }
 
 interface ICheckedFilters {
   types: string[];
   features: string[];
   manufacturers: string[];
-  price: {
-    min: number;
-    max: number;
-  };
+  price: IPrice;
 }
 
 const checkedFiltersInitialState: ICheckedFilters = {
@@ -66,43 +61,31 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const [filtersData, setFiltersData] = useState<IProductFiltersData | null>(null);
   const [checkedFilters, setCheckedFilters] = useState<ICheckedFilters>(checkedFiltersInitialState);
 
-  const handleFilterProducts = (key: string, values: string[]) => {
+  const handleSetFilters = (key: string, values: string[] | IPrice) => {
     setProducts([]);
-    setCheckedFilters({
-      ...checkedFilters,
-      [key]: values
-    });
+    if(key === 'price' && 'min' in values && 'max' in values) {
+      setCheckedFilters({
+        ...checkedFilters,
+        price: values
+      });
+    } else {
+      setCheckedFilters({
+        ...checkedFilters,
+        [key]: values
+      });
+    }
   };
 
-  // const handleTypesChange = (value: string[]) => {
-  //   setProducts([]);
-  //   setCheckedFilters({
-  //     ...checkedFilters,
-  //     types: value
-  //   });
-  // };
-
-  // const handleFeaturesChange = (value: string[]) => {
-  //   setProducts([]);
-  //   setCheckedFilters({
-  //     ...checkedFilters,
-  //     features: value
-  //   });
-  // };
-
-  // const handleManufacturersChange = (value: string[]) => {
-  //   setProducts([]);
-  //   setCheckedFilters({
-  //     ...checkedFilters,
-  //     manufacturers: value
-  //   });
-  // };
-
-  const handlePriceRangeChange = (newPriceValues: { min: number, max: number }) => {
+  const clearFilters = () => {
     setProducts([]);
     setCheckedFilters({
-      ...checkedFilters,
-      price: newPriceValues
+      types: [],
+      features: [],
+      manufacturers: [],
+      price: {
+        min: filtersData?.price.min!,
+        max: filtersData?.price.max!,
+      }
     });
   };
 
@@ -179,7 +162,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                   options={filtersData.types} 
                   selectedOptions={checkedFilters.types} 
                   multiple 
-                  onChange={handleFilterProducts} 
+                  onChange={handleSetFilters} 
                 />
                 <FilterSelect 
                   name='features'
@@ -187,7 +170,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                   options={filtersData.features} 
                   selectedOptions={checkedFilters.features} 
                   multiple 
-                  onChange={handleFilterProducts} 
+                  onChange={handleSetFilters} 
                 />
                 <FilterSelect 
                   name='manufacturers'
@@ -195,12 +178,13 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                   options={filtersData.manufacturers} 
                   selectedOptions={checkedFilters.manufacturers} 
                   multiple 
-                  onChange={handleFilterProducts} 
+                  onChange={handleSetFilters} 
                 />
                 <PriceFilter 
+                  name='price'
                   min={filtersData.price.min} 
                   max={filtersData.price.max} 
-                  onChange={handlePriceRangeChange} 
+                  onChange={handleSetFilters} 
                 />
               </>
             )}
@@ -217,35 +201,40 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
           </button>
         </div>
         <Divider />
-        <ul className='flex gap-3'>
-          {checkedFilters.types.map(item => (
-            <li 
-              key={crypto.randomUUID()}
-              className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
-            >
-              <span>{item}</span>
-              <CloseOutlined onClick={() => handleFilterItemDelete('types', item)} />
-            </li>
-          ))}
-          {checkedFilters.features.map(item => (
-            <li 
-              key={crypto.randomUUID()}
-              className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
-            >
-              <span>{item}</span>
-              <CloseOutlined onClick={() => handleFilterItemDelete('features', item)} />
-            </li>
-          ))}
-          {checkedFilters.manufacturers.map(item => (
-            <li 
-              key={crypto.randomUUID()}
-              className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
-            >
-              <span>{filtersData?.manufacturers.find(val => val.value === item)?.label}</span>
-              <CloseOutlined onClick={() => handleFilterItemDelete('manufacturers', item)} />
-            </li>
-          ))}
-        </ul>
+        <div className='flex justify-between items-center'>
+          <ul className='flex gap-3'>
+            {checkedFilters.types.map(item => (
+              <li 
+                key={crypto.randomUUID()}
+                className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
+              >
+                <span>{item}</span>
+                <CloseOutlined onClick={() => handleFilterItemDelete('types', item)} />
+              </li>
+            ))}
+            {checkedFilters.features.map(item => (
+              <li 
+                key={crypto.randomUUID()}
+                className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
+              >
+                <span>{item}</span>
+                <CloseOutlined onClick={() => handleFilterItemDelete('features', item)} />
+              </li>
+            ))}
+            {checkedFilters.manufacturers.map(item => (
+              <li 
+                key={crypto.randomUUID()}
+                className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
+              >
+                <span>{filtersData?.manufacturers.find(val => val.value === item)?.label}</span>
+                <CloseOutlined onClick={() => handleFilterItemDelete('manufacturers', item)} />
+              </li>
+            ))}
+          </ul>
+          <button type='button' onClick={clearFilters} className='flex items-center gap-1 font-semibold'>
+            Reset Filters
+          </button>
+        </div>
       </section>
       <section className='relative w-full container mx-auto py-6 box-border'>
         <ul className='w-full grid grid-cols-3 gap-6'>
