@@ -18,6 +18,8 @@ export const GET = async (req: NextRequest) => {
     const manufacturersData = req.nextUrl.searchParams.get('manufacturers');
     const minPrice = req.nextUrl.searchParams.get('minPrice');
     const maxPrice = req.nextUrl.searchParams.get('maxPrice');
+    const order = req.nextUrl.searchParams.get('order') || 'asc';
+    const sortIndicator = req.nextUrl.searchParams.get('sortIndicator') || 'createdAt';
 
     const categoryPattern = new RegExp(`${categoryData?.replaceAll('-', ' ')}`);
     const category = await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
@@ -34,7 +36,7 @@ export const GET = async (req: NextRequest) => {
     const products = (page && itemsPerPage) ? 
       await Product
         .find(params)
-        .sort({ 'createdAt': -1 })
+        .sort({ [sortIndicator]: order === 'asc' ? 1 : -1 })
         .limit(+itemsPerPage)
         .skip((+page - 1) * +itemsPerPage)
         .populate([
@@ -44,7 +46,7 @@ export const GET = async (req: NextRequest) => {
         .select('-__v') :
       await Product
         .find(params)
-        .sort({ 'createdAt': -1 })
+        .sort({ [sortIndicator]: order === 'asc' ? 1 : -1  })
         .populate([
           { path: 'category', select: 'name', model: Category },
           { path: 'manufacturer', model: Manufacturer }

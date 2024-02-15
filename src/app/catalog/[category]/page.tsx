@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Divider } from 'antd';
+import { Divider, Select } from 'antd';
 import { getProducts, getProductsFilterData } from '@/lib/queries/product.queries';
 import { ICheckedProductFilters, IPrice, IProduct, IProductFiltersData } from '@/lib/types/products.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
@@ -22,8 +22,69 @@ const checkedFiltersInitialState: ICheckedProductFilters = {
   price: {
     min: 0,
     max: 0,
-  }
+  },
+  order: 'asc',
+  sortIndicator: 'createdAt',
 };
+
+const sortItems = [
+  {
+    value: JSON.stringify({
+      order: 'asc',
+      sortIndicator: 'createdAt'
+    }),
+    label: 'Newest',
+  },
+  {
+    value: JSON.stringify({
+      order: 'asc',
+      sortIndicator: 'price'
+    }),
+    label: 'Price: Low to High',
+  },
+  {
+    value: JSON.stringify({
+      order: 'desc',
+      sortIndicator: 'price'
+    }),
+    label: 'Price: Low to High',
+  },
+  {
+    value: JSON.stringify({
+      order: 'asc',
+      sortIndicator: 'name'
+    }),
+    label: 'Name: A-Z',
+  },
+  {
+    value: JSON.stringify({
+      order: 'desc',
+      sortIndicator: 'name'
+    }),
+    label: 'Name: Z-A',
+  },
+  {
+    value: JSON.stringify({
+      order: 'asc',
+      sortIndicator: 'size.width'
+    }),
+    label: 'Width',
+  },
+  {
+    value: JSON.stringify({
+      order: 'asc',
+      sortIndicator: 'size.height'
+    }),
+    label: 'Height',
+  },
+  {
+    value: JSON.stringify({
+      order: 'asc',
+      sortIndicator: 'size.depth'
+    }),
+    label: 'Depth',
+  },
+];
 
 
 const CategoryProducts = ({ params }: { params: { category: string } }) => {
@@ -63,12 +124,14 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
       price: {
         min: filtersData?.price.min!,
         max: filtersData?.price.max!,
-      }
+      },
+      order: 'asc',
+      sortIndicator: 'createdAt',
     });
   };
 
   const handleFilterItemDelete = (key: keyof ICheckedProductFilters, value: string) => {
-    if(key !== 'price') {
+    if(key !== 'price' && key !== 'order' && key !== 'sortIndicator') {
       setProducts([]);
       setCheckedFilters({
         ...checkedFilters,
@@ -77,8 +140,18 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
     }
   };
 
+  const handleSortChange = (value: string) => {
+    const parsedValue = JSON.parse(value);
+    setProducts([]);
+    setCheckedFilters({
+      ...checkedFilters,
+      order: parsedValue.order,
+      sortIndicator: parsedValue.sortIndicator,
+    });
+  };
+
   useEffect(() => {
-    const { types, features, manufacturers, price } = checkedFilters;
+    const { types, features, manufacturers, price, order, sortIndicator } = checkedFilters;
 
     getProducts({ 
       page, 
@@ -89,6 +162,8 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
       manufacturers: manufacturers.join(', '), 
       minPrice: price.min,
       maxPrice: price.max,
+      order,
+      sortIndicator
     }).then(res => {
       setProducts([...products, ...res.data.products]);
       setProductsCount(res.data.count);
@@ -112,12 +187,19 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
         }));
         
         const price = res.price;
+
+        const order = 'asc';
+        const sortIndicator = 'createdAt';
   
-        setFiltersData({ types, features, manufacturers, price });
-        setCheckedFilters({ ...checkedFilters, price });
+        setFiltersData({ types, features, manufacturers, price, order, sortIndicator });
+        setCheckedFilters({ ...checkedFilters, price, order, sortIndicator });
       });
     }
   }, [page, checkedFilters]);
+
+  useEffect(() => {
+    console.log()
+  }, [checkedFilters])
 
   return (
     <div className='w-full'>
@@ -150,7 +232,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
               </>
             )}
           </div>
-          <button className='flex items-center gap-1'>
+          {/* <button className='flex items-center gap-1'>
             <span className='font-semibold'>Sort</span>
             <Image 
               src='/assets/icons/arrows.png'
@@ -159,7 +241,13 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
               height={15}
               className='rotate-90'
             />
-          </button>
+          </button> */}
+          <Select 
+            options={sortItems}
+            defaultValue={sortItems[0].value}
+            onChange={handleSortChange}
+            className='w-52'
+          />
         </div>
         <Divider />
         <div className='flex justify-between items-center'>
@@ -198,7 +286,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
         </div>
       </section>
       <section className='relative w-full container mx-auto py-6 box-border'>
-        <ul className='w-full grid grid-cols-3 gap-6'>
+        <ul className='w-full grid grid-cols-1 md:grid-cols-3 gap-6'>
           {products.map(product => (
             <motion.li 
               key={crypto.randomUUID()}
@@ -218,7 +306,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                   {product.name}
                 </p>
                 <Divider />
-                <p className='text-2xl font-bold'>
+                <p className='text-xl md:text-2xl font-bold'>
                   &euro;{product.price}
                 </p>
               </Link>

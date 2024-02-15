@@ -1,4 +1,4 @@
-import { ICategory } from "./category.types";
+import { ICategory } from './category.types';
 
 export interface IProduct {
   _id?: string;
@@ -37,6 +37,8 @@ export interface IProductFiltersData {
   features: IFilterItem[];
   manufacturers: IFilterItem[];
   price: IPrice;
+  order?: string;
+  sortIndicator?: string;
 }
 
 export interface ICheckedProductFilters {
@@ -44,4 +46,6 @@ export interface ICheckedProductFilters {
   features: string[];
   manufacturers: string[];
   price: IPrice;
+  order?: string;
+  sortIndicator?: string;
 }

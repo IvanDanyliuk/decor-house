@@ -9,7 +9,9 @@ export const getProducts = async ({
   features,
   manufacturers, 
   minPrice, 
-  maxPrice
+  maxPrice,
+  order,
+  sortIndicator,
 }: { 
   page?: number, 
   itemsPerPage?: number, 
@@ -19,6 +21,8 @@ export const getProducts = async ({
   manufacturers?: string;
   minPrice?: number;
   maxPrice?: number;
+  order?: string;
+  sortIndicator?: string;
 }) => {
   const { data } = await AXIOS.get(
     '/api/products', 
@@ -30,7 +34,9 @@ export const getProducts = async ({
         features, 
         manufacturers, 
         minPrice, 
-        maxPrice 
+        maxPrice, 
+        order,
+        sortIndicator
     } }
   );
   return data;
