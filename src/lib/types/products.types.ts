@@ -21,3 +21,27 @@ export interface IProduct {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface IFilterItem {
+  value: string;
+  label: string;
+}
+
+export interface IPrice {
+  min: number;
+  max: number;
+}
+
+export interface IProductFiltersData {
+  types: IFilterItem[];
+  features: IFilterItem[];
+  manufacturers: IFilterItem[];
+  price: IPrice;
+}
+
+export interface ICheckedProductFilters {
+  types: string[];
+  features: string[];
+  manufacturers: string[];
+  price: IPrice;
+}

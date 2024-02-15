@@ -40,7 +40,7 @@ const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max, onChange }) => {
     <>
       <button 
         onClick={handlePriceRangeModalOpen} 
-        className='flex items-center gap-1 text-sm font-semibold border-none'
+        className='flex items-center gap-3 text-sm font-semibold border-none'
       >
         <span>Price</span>
         <DownOutlined />

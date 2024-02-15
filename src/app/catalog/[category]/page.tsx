@@ -7,38 +7,15 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Divider } from 'antd';
 import { getProducts, getProductsFilterData } from '@/lib/queries/product.queries';
-import { IProduct } from '@/lib/types/products.types';
+import { ICheckedProductFilters, IPrice, IProduct, IProductFiltersData } from '@/lib/types/products.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
 import { CloseOutlined } from '@ant-design/icons';
-import FilterSelect from '@/components/catalog/ProductFilters/FilterSelect';
-import PriceFilter from '@/components/catalog/ProductFilters/PriceFilter';
+import ProductFilters from '@/components/catalog/ProductFilters/ProductFilters';
+import { useWindowSize } from '@/utils/hooks/use-window-size';
+import ProductFiltersMobile from '@/components/catalog/ProductFilters/ProductFiltersMobile';
 
 
-interface IPrice {
-  min: number;
-  max: number;
-}
-
-interface IFilterItem {
-  value: string;
-  label: string;
-}
-
-interface IProductFiltersData {
-  types: IFilterItem[];
-  features: IFilterItem[];
-  manufacturers: IFilterItem[];
-  price: IPrice;
-}
-
-interface ICheckedFilters {
-  types: string[];
-  features: string[];
-  manufacturers: string[];
-  price: IPrice;
-}
-
-const checkedFiltersInitialState: ICheckedFilters = {
+const checkedFiltersInitialState: ICheckedProductFilters = {
   types: [],
   features: [],
   manufacturers: [],
@@ -52,6 +29,7 @@ const checkedFiltersInitialState: ICheckedFilters = {
 const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const { category } = params;
 
+  const { width } = useWindowSize();
   const path= usePathname();
   const modifiedPath = path.slice(1).replaceAll('/', ' / ');
 
@@ -59,7 +37,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [productsCount, setProductsCount] = useState<number>(0);
   const [filtersData, setFiltersData] = useState<IProductFiltersData | null>(null);
-  const [checkedFilters, setCheckedFilters] = useState<ICheckedFilters>(checkedFiltersInitialState);
+  const [checkedFilters, setCheckedFilters] = useState<ICheckedProductFilters>(checkedFiltersInitialState);
 
   const handleSetFilters = (key: string, values: string[] | IPrice) => {
     setProducts([]);
@@ -89,7 +67,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
     });
   };
 
-  const handleFilterItemDelete = (key: keyof ICheckedFilters, value: string) => {
+  const handleFilterItemDelete = (key: keyof ICheckedProductFilters, value: string) => {
     if(key !== 'price') {
       setProducts([]);
       setCheckedFilters({
@@ -156,36 +134,19 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
           <div className='flex gap-6'>
             {filtersData && (
               <>
-                <FilterSelect 
-                  name='types'
-                  title='Types' 
-                  options={filtersData.types} 
-                  selectedOptions={checkedFilters.types} 
-                  multiple 
-                  onChange={handleSetFilters} 
-                />
-                <FilterSelect 
-                  name='features'
-                  title='Features' 
-                  options={filtersData.features} 
-                  selectedOptions={checkedFilters.features} 
-                  multiple 
-                  onChange={handleSetFilters} 
-                />
-                <FilterSelect 
-                  name='manufacturers'
-                  title='Manufacturers' 
-                  options={filtersData.manufacturers} 
-                  selectedOptions={checkedFilters.manufacturers} 
-                  multiple 
-                  onChange={handleSetFilters} 
-                />
-                <PriceFilter 
-                  name='price'
-                  min={filtersData.price.min} 
-                  max={filtersData.price.max} 
-                  onChange={handleSetFilters} 
-                />
+                {width && width >= 640 ? (
+                  <ProductFilters 
+                    filtersData={filtersData} 
+                    checkedFilters={checkedFilters} 
+                    onSetFilters={handleSetFilters} 
+                  />
+                ) : (
+                  <ProductFiltersMobile 
+                    filtersData={filtersData}
+                    checkedFilters={checkedFilters}
+                    onSetFilters={handleSetFilters}
+                  />
+                )}
               </>
             )}
           </div>
@@ -275,7 +236,9 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
             View More
           </button>
         )}
+        <Divider />
       </section>
+      
     </div>
   );
 };
