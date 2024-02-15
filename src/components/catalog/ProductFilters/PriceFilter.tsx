@@ -1,6 +1,6 @@
 'use client';
 
-import { FocusEvent, useEffect, useState } from 'react';
+import { FocusEvent, useState } from 'react';
 import { InputNumber, Modal, Slider } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
@@ -31,9 +31,9 @@ const PriceFilter: React.FC<IPriceFilter> = ({ min, max, onChange }) => {
     });
   };
 
-  useEffect(() => {
-    onChange(values);
-  }, [values]);
+  const handlePriceChangeComplete = (range: number[]) => {
+    onChange({ min: range[0], max: range[1] });
+  };
 
   return (
     <>
@@ -81,7 +81,8 @@ const PriceFilter: React.FC<IPriceFilter> = ({ min, max, onChange }) => {
             max={max} 
             step={1}
             value={[values.min, values.max]} 
-            onAfterChange={handleSliderValuesChange} 
+            onChange={handleSliderValuesChange}
+            onAfterChange={handlePriceChangeComplete} 
           />
         </div>
       </Modal>

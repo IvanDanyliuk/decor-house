@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 
 
@@ -38,11 +38,9 @@ const FilterSelect: React.FC<IFilterSelect> = ({ title, options, selectedOptions
     const isOptionSelected = selectedOptions.includes(value);
 
     if(isOptionSelected) {
-      console.log('OPTION IS SELECTED')
       const filteredOptions = selectedOptions.filter(option => option !== value);
       onChange(filteredOptions);
     } else {
-      console.log('OPTION IS NOT SELECTED')
       onChange([...selectedOptions, value]);
     }
   };
@@ -62,7 +60,7 @@ const FilterSelect: React.FC<IFilterSelect> = ({ title, options, selectedOptions
           <DownOutlined />
         </button>
         {isOpen && options.length && (
-          <ul className='w-fit absolute bg-white rounded z-10'>
+          <ul className='w-fit absolute bg-white rounded z-30'>
             {multiple && (
               <li 
                 onClick={handleSelectAllOptions} 
