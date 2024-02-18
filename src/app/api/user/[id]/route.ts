@@ -1,7 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
 import { connectToDB } from "@/lib/database";
 import Product from "@/lib/models/product.model";
 import User from "@/lib/models/user.model";
-import { NextRequest, NextResponse } from "next/server";
 
 
 export const GET = async (req: NextRequest) => {
