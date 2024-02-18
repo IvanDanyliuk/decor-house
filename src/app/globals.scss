@@ -246,3 +246,25 @@ main {
     @apply right-0 text-black;
   }
 }
+
+.related-products-nav-container {
+  @apply relative flex justify-between items-center;
+
+  &:after {
+    content: '';
+    @apply absolute bottom-0 w-full h-1 bg-gray-medium;
+  }
+}
+
+.related-products-nav-btn {
+  @apply relative px-8 py-3 text-lg text-gray-regular font-bold uppercase;
+}
+
+.btn-active {
+  @apply text-accent-dark;
+  
+  &:after {
+    content: '';
+    @apply absolute bottom-0 left-0 right-0 w-full h-1 bg-accent-dark z-10;
+  }
+}

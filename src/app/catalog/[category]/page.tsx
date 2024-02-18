@@ -13,6 +13,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import ProductFilters from '@/components/catalog/ProductFilters/ProductFilters';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
 import ProductFiltersMobile from '@/components/catalog/ProductFilters/ProductFiltersMobile';
+import RelatedProducts from '@/components/catalog/RelatedProducts';
 
 
 const checkedFiltersInitialState: ICheckedProductFilters = {
@@ -197,10 +198,6 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
     }
   }, [page, checkedFilters]);
 
-  useEffect(() => {
-    console.log()
-  }, [checkedFilters])
-
   return (
     <div className='w-full'>
       <section className='w-full py-6 bg-main-bg'>
@@ -232,16 +229,6 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
               </>
             )}
           </div>
-          {/* <button className='flex items-center gap-1'>
-            <span className='font-semibold'>Sort</span>
-            <Image 
-              src='/assets/icons/arrows.png'
-              alt='previous'
-              width={15}
-              height={15}
-              className='rotate-90'
-            />
-          </button> */}
           <Select 
             options={sortItems}
             defaultValue={sortItems[0].value}
@@ -285,7 +272,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
           </button>
         </div>
       </section>
-      <section className='relative w-full container mx-auto py-6 box-border'>
+      <section className='relative w-full container mx-auto box-border'>
         <ul className='w-full grid grid-cols-1 md:grid-cols-3 gap-6'>
           {products.map(product => (
             <motion.li 
@@ -326,7 +313,9 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
         )}
         <Divider />
       </section>
-      
+      <section className='w-full mx-auto container'>
+        <RelatedProducts />
+      </section>
     </div>
   );
 };

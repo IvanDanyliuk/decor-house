@@ -53,4 +53,12 @@ export const getProductsFilterData = async (category: string) => {
     { params: { category }}
   );
   return data;
+};
+
+export const getRelatedProducts = async (userId: string, limit: number) => {
+  const { data } = await AXIOS.get(
+    '/api/products/related',
+    { params: { userId, limit } }
+  );
+  return data;
 }

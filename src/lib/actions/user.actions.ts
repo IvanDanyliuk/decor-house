@@ -147,3 +147,28 @@ export const deleteUser = async ({ id, path }: { id: string, path: string }) => 
     };
   }
 };
+
+export const viewProduct = async (userId: string, productId: string) => {
+  try {
+    await connectToDB();
+
+    const user = await User.findById(userId);
+
+    const isProductViewed = user.viewed.includes(productId);
+
+    if(isProductViewed) {
+      const modifiedViewedProducts = user.viewed.filter((id: string) => id !== productId);
+      modifiedViewedProducts.unshift(productId);
+      await User.findByIdAndUpdate(userId, { ...user, viewed: modifiedViewedProducts });
+      return 'User has been modified';
+    } else {
+      const modifiedViewedProducts = user.viewed.slice(0, 9);
+      modifiedViewedProducts.unshift(productId);
+      await User.findByIdAndUpdate(userId, { ...user, viewed: modifiedViewedProducts });
+      return 'User has been modified';
+    }
+
+  } catch (error: any) {
+    return error.message;
+  }
+}
