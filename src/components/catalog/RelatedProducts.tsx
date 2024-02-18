@@ -1,15 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { getRelatedProducts } from '@/lib/queries/product.queries';
+import { IProduct } from '@/lib/types/products.types';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 enum TabNames {
   Popular = 'popular',
   Viewed = 'viewed'
 }
 
+interface IRelatedProducts {
+  popular: IProduct[];
+  viewed: IProduct[];
+}
 
-const RelatedProducts: React.FC = () => {
+
+const RelatedProducts: React.FC = async () => {
+  const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState<string>(TabNames.Popular);
+  const [products, setProducts] = useState<IRelatedProducts | null>(null);
+
 
   const handleActiveTabChange = () => {
     if(activeTab === TabNames.Popular) {
@@ -18,6 +29,12 @@ const RelatedProducts: React.FC = () => {
       setActiveTab(TabNames.Popular);
     }
   };
+
+  useEffect(() => {
+    if(session && session.user) {
+      getRelatedProducts(session?.user?.email!, 10).then(res => setProducts(res));
+    }
+  }, []);
   
   return (
     <div>

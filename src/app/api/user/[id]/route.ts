@@ -1,4 +1,5 @@
 import { connectToDB } from "@/lib/database";
+import Product from "@/lib/models/product.model";
 import User from "@/lib/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -9,7 +10,10 @@ export const GET = async (req: NextRequest) => {
 
     await connectToDB();
 
-    const user = await User.findById(userId);
+    const user = await User
+      .findById(userId)
+      .populate({ path: 'viewed', model: Product })
+      .select('-password -__v');
 
     return NextResponse.json(user);
   } catch (error: any) {
