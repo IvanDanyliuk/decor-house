@@ -1,14 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Divider } from 'antd';
 import { getRelatedProducts } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
+import ProductsGallery from '../ui/ProductsGallery';
 
 enum TabNames {
   Popular = 'popular',
@@ -120,40 +118,13 @@ const RelatedProducts: React.FC = () => {
         )}
       </div>
       <div className='pt-16'>
-        <div className='mb-8 md:mb-16 w-full flex gap-10'>
-          {products && products[activeTab].slice(currentIndex, currentIndex + productsToShow).map((product: IProduct) => (
-            <Link 
-              key={crypto.randomUUID()}
-              href={`/catalog/${product._id}`} 
-              className='w-full md:w-1/3'
-            >
-              <AnimatePresence>
-                <motion.div 
-                  className='relative w-full bg-white'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
-                  <div className='w-full min-h-max flex justify-center items-center'>
-                    <Image 
-                      src={product.images[0]} 
-                      alt={product.name} 
-                      width={350} 
-                      height={350} 
-                    />
-                  </div>
-                  <div className='mt-6 text-center text-lg font-bold'>
-                    {product.name}
-                  </div>
-                  <Divider className='my-6' />
-                  <div className='text-center text-2xl font-bold'>
-                    &euro;{product.price}
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </Link>
-          ))}
-        </div>
+        {products && (
+          <ProductsGallery 
+            products={products[activeTab]} 
+            currentItemIndex={currentIndex} 
+            productsToShow={productsToShow} 
+          />
+        )}
       </div>
     </div>
   );
