@@ -257,7 +257,7 @@ main {
 }
 
 .related-products-nav-btn {
-  @apply relative px-8 py-3 text-lg text-gray-regular font-bold uppercase;
+  @apply relative px-4 md:px-8 py-3 text-sm md:text-lg text-gray-regular font-bold uppercase;
 }
 
 .btn-active {
