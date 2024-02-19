@@ -1,5 +1,6 @@
 'use server';
 
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
@@ -145,5 +146,29 @@ export const deleteUser = async ({ id, path }: { id: string, path: string }) => 
       error: error.message,
       message: 'Cannot delete a user',
     };
+  }
+};
+
+export const viewProduct = async (userId: string, productId: string) => {
+  try {
+    await connectToDB();
+
+    const viewedProductId = new mongoose.Types.ObjectId(productId)
+    const user = await User.findById(userId);
+    const isProductViewed = user.viewed.includes(viewedProductId);
+
+    if(isProductViewed) {
+      const modifiedViewedProducts = user.viewed.filter((id: any) => id.toString() !== productId);
+      modifiedViewedProducts.unshift(productId);
+      await User.findByIdAndUpdate(userId, { $set: { viewed: modifiedViewedProducts } });
+      return 'User has been modified';
+    } else {
+      const modifiedViewedProducts = user.viewed.slice(0, 9);
+      modifiedViewedProducts.unshift(productId);
+      await User.findByIdAndUpdate(userId, { $set: { viewed: modifiedViewedProducts } });
+      return 'User has been modified';
+    }
+  } catch (error: any) {
+    return error.message;
   }
 };

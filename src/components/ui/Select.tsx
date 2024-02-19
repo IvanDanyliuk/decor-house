@@ -11,7 +11,7 @@ interface Option {
 
 interface ISelect {
   name?: string;
-  label: string;
+  label?: string;
   title?: string;
   disabled?: boolean;
   multiple?: boolean;

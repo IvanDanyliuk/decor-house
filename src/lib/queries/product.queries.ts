@@ -5,16 +5,24 @@ export const getProducts = async ({
   page, 
   itemsPerPage, 
   category,
-  type,
+  types,
   features,
-  manufacturer
+  manufacturers, 
+  minPrice, 
+  maxPrice,
+  order,
+  sortIndicator,
 }: { 
   page?: number, 
   itemsPerPage?: number, 
   category?: string;
-  type?: string,
+  types?: string,
   features?: string,
-  manufacturer?: string;
+  manufacturers?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  order?: string;
+  sortIndicator?: string;
 }) => {
   const { data } = await AXIOS.get(
     '/api/products', 
@@ -22,9 +30,13 @@ export const getProducts = async ({
         page, 
         itemsPerPage, 
         category, 
-        type, 
+        types, 
         features, 
-        manufacturer 
+        manufacturers, 
+        minPrice, 
+        maxPrice, 
+        order,
+        sortIndicator
     } }
   );
   return data;
@@ -34,3 +46,19 @@ export const getProduct = async (id: string) => {
   const { data } = await AXIOS.get(`/api/products/${id}`);
   return data;
 };
+
+export const getProductsFilterData = async (category: string) => {
+  const { data } = await AXIOS.get(
+    '/api/products/filters',
+    { params: { category }}
+  );
+  return data;
+};
+
+export const getRelatedProducts = async (email: string, limit: number) => {
+  const { data } = await AXIOS.get(
+    '/api/products/related',
+    { params: { email, limit } }
+  );
+  return data;
+}

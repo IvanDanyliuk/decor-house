@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
   colors: [{ type: String, required: true }],
   features: [{ type: String }],
   manufacturer: { type: mongoose.Schema.Types.ObjectId, ref: 'Manufacturer' },
-  price: { type: String, required: true },
+  price: { type: Number, required: true },
   size: {
     width: { type: String, required: true },
     height: { type: String, required: true },

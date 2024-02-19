@@ -1,4 +1,4 @@
-import { ICategory } from "./category.types";
+import { ICategory } from './category.types';
 
 export interface IProduct {
   _id?: string;
@@ -14,10 +14,38 @@ export interface IProduct {
   };
   manufacturer: string;
   characteristics: string;
-  price: string;
+  price: number;
   sale: string;
   images: string;
   colors: string[];
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface IFilterItem {
+  value: string;
+  label: string;
+}
+
+export interface IPrice {
+  min: number;
+  max: number;
+}
+
+export interface IProductFiltersData {
+  types: IFilterItem[];
+  features: IFilterItem[];
+  manufacturers: IFilterItem[];
+  price: IPrice;
+  order?: string;
+  sortIndicator?: string;
+}
+
+export interface ICheckedProductFilters {
+  types: string[];
+  features: string[];
+  manufacturers: string[];
+  price: IPrice;
+  order?: string;
+  sortIndicator?: string;
 }

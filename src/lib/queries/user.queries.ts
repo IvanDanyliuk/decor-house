@@ -14,3 +14,11 @@ export const getUsers = async ({
   );
   return data;
 };
+
+export const getUser = async (id: string) => {
+  const { data } = await AXIOS.get(
+    `/api/users/${id}`,
+    { params: { id } }
+  );
+  return data;
+};

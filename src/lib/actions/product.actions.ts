@@ -185,4 +185,4 @@ export const deleteProduct = async ({ id, path }: { id: string, path: string }) 
       message: 'Cannot delete a product',
     }
   }
-}
+};

@@ -225,3 +225,46 @@ main {
     }
   }
 }
+
+.tag-selector {
+  // .ant-select-selection-overflow {
+  //   @apply hidden;
+  // }
+  .ant-select {
+    @apply relative flex items-center;
+  }
+
+  .ant-select-selection-placeholder {
+    @apply overflow-auto flex-auto relative w-auto #{!important} ;
+  }
+
+  .ant-select-selection-placeholder {
+    @apply text-base text-black font-semibold #{!important};
+  }
+
+  .ant-select-arrow {
+    @apply right-0 text-black;
+  }
+}
+
+.related-products-nav-container {
+  @apply relative flex justify-between items-center;
+
+  &:after {
+    content: '';
+    @apply absolute bottom-0 w-full h-1 bg-gray-medium;
+  }
+}
+
+.related-products-nav-btn {
+  @apply relative px-4 md:px-8 py-3 text-sm md:text-lg text-gray-regular font-bold uppercase;
+}
+
+.btn-active {
+  @apply text-accent-dark;
+  
+  &:after {
+    content: '';
+    @apply absolute bottom-0 left-0 right-0 w-full h-1 bg-accent-dark z-10;
+  }
+}
