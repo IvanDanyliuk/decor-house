@@ -18,8 +18,10 @@ const ProductPageSkeleton: React.FC = () => {
           <Skeleton.Node active className='w-full' />
         </div>
       </div>
-      <div className='w-full flex gap-6'>
-        
+      <div className='mt-6 w-full flex gap-6'>
+        <Skeleton.Node active className='flex-1 w-full h-28' />
+        <Skeleton.Node active className='flex-1 w-full h-28' />
+        <Skeleton.Node active className='flex-1 w-full h-28' />
       </div>
     </div>
   );

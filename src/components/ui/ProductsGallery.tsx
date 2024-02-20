@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Divider } from 'antd';
 import { IProduct } from '@/lib/types/products.types';
+import { setUrlString } from '@/utils/helpers';
 
 
 interface IProductGallery {
@@ -13,12 +14,13 @@ interface IProductGallery {
 
 
 const ProductsGallery: React.FC<IProductGallery> = ({ products, currentItemIndex, productsToShow }) => {
+  console.log('PRODUCT GALLERY', products)
   return (
     <div className='mb-8 md:mb-16 w-full flex gap-10'>
       {products.slice(currentItemIndex, currentItemIndex + productsToShow).map(product => (
         <Link 
           key={crypto.randomUUID()}
-          href={`/catalog/${product._id}`} 
+          href={`/catalog/${typeof product.category !== 'string' && setUrlString(product.category.name)}/${product._id}`} 
           className='w-full md:w-1/3'
         >
           <AnimatePresence>

@@ -55,10 +55,10 @@ export const getProductsFilterData = async (category: string) => {
   return data;
 };
 
-export const getRelatedProducts = async (email: string, limit: number) => {
+export const getRelatedProducts = async (email: string, limit: number, categoryId?: string) => {
   const { data } = await AXIOS.get(
     '/api/products/related',
-    { params: { email, limit } }
+    { params: { email, limit, categoryId } }
   );
   return data;
 }

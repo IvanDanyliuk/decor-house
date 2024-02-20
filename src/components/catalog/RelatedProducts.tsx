@@ -8,6 +8,10 @@ import { IProduct } from '@/lib/types/products.types';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
 import ProductsGallery from '../ui/ProductsGallery';
 
+interface IRelatedProductsProps {
+  categoryId?: string
+}
+
 enum TabNames {
   Popular = 'popular',
   Viewed = 'viewed'
@@ -21,7 +25,7 @@ interface IRelatedProducts {
 const disabledArrowColor = 'invert(62%) sepia(0%) saturate(1438%) hue-rotate(164deg) brightness(104%) contrast(73%)';
 
 
-const RelatedProducts: React.FC = () => {
+const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId }) => {
   const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState<keyof IRelatedProducts>(TabNames.Popular);
   const [products, setProducts] = useState<IRelatedProducts | null>(null);
@@ -61,7 +65,7 @@ const RelatedProducts: React.FC = () => {
 
   useEffect(() => {
     if(session && session.user) {
-      getRelatedProducts(session?.user?.email!, 10).then(res => setProducts(res));
+      getRelatedProducts(session?.user?.email!, 10, categoryId).then(res => setProducts(res));
     }
   }, []);
   
@@ -73,7 +77,7 @@ const RelatedProducts: React.FC = () => {
             onClick={handleActiveTabChange}
             className={`related-products-nav-btn ${activeTab === TabNames.Popular ? 'btn-active' : ''}`}
           >
-            Popular Products
+            {categoryId ? 'Similar Products' : 'Popular Products'}
           </button>
           <button 
             onClick={handleActiveTabChange}

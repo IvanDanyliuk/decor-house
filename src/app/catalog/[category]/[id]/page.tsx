@@ -8,6 +8,7 @@ import { getProduct } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
 import SliderNavPanel from '@/components/ui/SliderNavPanel';
 import ProductPageSkeleton from '@/components/loaders/ProductPageSkeleton';
+import RelatedProducts from '@/components/catalog/RelatedProducts';
 
 
 enum ProductTabs {
@@ -118,6 +119,13 @@ const page = ({ params }: { params: { category: string, id: string } }) => {
             </div>
           </div>
         </div>
+      </section>
+      <section className='mx-auto mt-6 container'>
+        {
+          product && typeof product.category === 'string' && (
+            <RelatedProducts categoryId={product.category!} />
+          )
+        }
       </section>
     </div>
   );
