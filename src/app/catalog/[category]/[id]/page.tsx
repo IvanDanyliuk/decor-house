@@ -82,7 +82,7 @@ const page = ({ params }: { params: { category: string, id: string } }) => {
               &euro;{product?.price}
             </p>
           </div>
-          <div>
+          <div className='mt-10'>
             <div className='mb-6 w-full flex gap-6'>
               <button type='button' className='add-to-cart-btn flex-1'>Add to cart</button>
               <button type='button' className='buy-now-btn flex-1'>Buy now</button>
