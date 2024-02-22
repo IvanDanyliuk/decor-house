@@ -13,13 +13,24 @@ const CartIcon: React.FC<ICartIcon> = ({ cartSize }) => {
   const [size, setSize] = useState<number>(cartSize || 0);
 
   useEffect(() => {
-    
+    const handleStorageChange = () => {
+      const cartString = localStorage.getItem('cart');
+      if(cartString) {
+        const cartData = JSON.parse(cartString);
+        setSize(cartData.length)
+      } else {
+        setSize(0);
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, [])
 
   return (
     <Link href='/cart' className='flex items-center gap-1'>
       <ShoppingCartOutlined style={{ fontSize: '20px' }} />
-      <span>{`(${3})`}</span>
+      <span>{size}</span>
     </Link>
   );
 };
