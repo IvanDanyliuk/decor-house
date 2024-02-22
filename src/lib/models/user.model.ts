@@ -1,5 +1,12 @@
 import mongoose, { models } from 'mongoose';
 
+const cartItemSchema = new mongoose.Schema({
+  product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+  quantity: { type: Number }
+}, {
+  _id: false
+});
+
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   photo: { type: String },
@@ -9,10 +16,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   address: { type: String },
   viewed: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  productCart: [{
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-    quantity: { type: Number }
-  }]
+  productCart: [cartItemSchema]
 }, {
   timestamps: true
 });

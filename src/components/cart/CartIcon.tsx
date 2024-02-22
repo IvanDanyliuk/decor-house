@@ -9,11 +9,18 @@ const CartIcon: React.FC = () => {
   const [size, setSize] = useState<number>(0);
 
   useEffect(() => {
-    const cartString = localStorage.getItem('cart');
-    if(cartString) {
-      const cart = JSON.parse(cartString);
-      setSize(cart.length);
+    const handleStorageChange = () => {
+      const cartString = localStorage.getItem('cart');
+      if(cartString) {
+        const cartData = JSON.parse(cartString);
+        setSize(cartData.length)
+      } else {
+        setSize(0);
+      }
     }
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   return (
