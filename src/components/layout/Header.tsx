@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LoginOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { LoginOutlined } from '@ant-design/icons';
 import NavMenu from '../navigation/NavMenu';
 import Search from './Search';
 import UserMenu from '../navigation/UserMenu';
@@ -20,10 +20,7 @@ const Header: React.FC = async () => {
         </div>
         <div className='flex items-center gap-6'>
           <Search />
-          <Link href='/cart' className='flex items-center gap-1'>
-            <ShoppingCartOutlined style={{ fontSize: '20px' }} />
-            <span>{`(${3})`}</span>
-          </Link>
+          
           {
             currentUser.data ? (
               <UserMenu user={currentUser.data} />
