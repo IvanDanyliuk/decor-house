@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LoginOutlined } from '@ant-design/icons';
+import { LoginOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import NavMenu from '../navigation/NavMenu';
 import Search from './Search';
 import UserMenu from '../navigation/UserMenu';
@@ -12,8 +12,6 @@ const Header: React.FC = async () => {
   const session = await getServerSession();
   const currentUser = await getCurrentUser(session?.user?.email!);
 
-  console.log('HEADER', currentUser)
-
   return (
     <header className='w-full h-24 flex items-center'>
       <div className='container mx-auto flex justify-between'>
@@ -23,7 +21,11 @@ const Header: React.FC = async () => {
         </div>
         <div className='flex items-center gap-6'>
           <Search />
-          <CartIcon cartSize={currentUser.data! && currentUser.data.cart.length} />
+          {/* <Link href='/cart' className='flex items-center gap-1'>
+            <ShoppingCartOutlined style={{ fontSize: '20px' }} />
+            <span>{`(${3})`}</span>
+          </Link> */}
+          <CartIcon />
           {
             currentUser.data ? (
               <UserMenu user={currentUser.data} />

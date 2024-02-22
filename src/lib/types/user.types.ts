@@ -10,8 +10,8 @@ export interface IUser {
   password?: string;
   address: string;
   viewed: string[];
-  cart: {
-    product: IProduct[];
+  productCart: {
+    product: IProduct;
     quantity: number;
   }[];
 }

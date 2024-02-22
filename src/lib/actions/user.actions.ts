@@ -82,6 +82,8 @@ export const register = async (prevState: any, formData: FormData) => {
       email,
       password: hashedPassword,
       role: 'user',
+      viewed: [],
+      cart: [],
     });
 
     return {

@@ -9,10 +9,10 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   address: { type: String },
   viewed: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  cart: [{
+  productCart: [{
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
     quantity: { type: Number }
-  }],
+  }]
 }, {
   timestamps: true
 });

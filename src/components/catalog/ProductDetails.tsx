@@ -31,7 +31,6 @@ const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
 
   const handleAddToCart = () => {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    console.log('ADD TO CART', cart)
     const isProductInCart = cart.some((item: any) => item.product._id === product._id);
 
     if(!isProductInCart) {
