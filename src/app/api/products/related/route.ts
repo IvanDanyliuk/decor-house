@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { connectToDB } from "@/lib/database";
-import Product from "@/lib/models/product.model";
-import User from "@/lib/models/user.model";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+import { connectToDB } from '@/lib/database';
+import Product from '@/lib/models/product.model';
+import User from '@/lib/models/user.model';
 import Category from '@/lib/models/category.model';
 
 
@@ -14,8 +14,7 @@ export const GET = async (req: NextRequest) => {
   try {
     await connectToDB();
 
-    const user = await User.findOne({ email }).populate({ path: 'viewed', model: Product });
-    const userViewedProductIds = user.viewed;
+    const user = email ? await User.findOne({ email }).populate({ path: 'viewed', model: Product }) : null;
     
     const query = category ? [
       { $sample: { size: +limit! } },
@@ -26,16 +25,18 @@ export const GET = async (req: NextRequest) => {
       { $project: { '__v': 0 } },
     ];
 
-    const popular = await Product.aggregate(query).limit(+limit!);
-    await Product.populate(popular, { path: 'category', model: Category });
+    const related = await Product.aggregate(query).limit(+limit!);
+    await Product.populate(related, { path: 'category', model: Category });
 
-    const viewed = await Product
-      .find({ _id: { $in: userViewedProductIds } })
-      .populate({ path: 'category', model: Category })
-      .select('-__v');
+    const viewed = user ? 
+      await Product
+        .find({ _id: { $in: user.viewed } })
+        .populate({ path: 'category', model: Category })
+        .select('-__v') : 
+      [];
 
     return NextResponse.json({
-      popular,
+      related,
       viewed
     });
   } catch (error: any) {

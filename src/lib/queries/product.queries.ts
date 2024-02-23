@@ -61,4 +61,4 @@ export const getRelatedProducts = async (email: string, limit: number, categoryI
     { params: { email, limit, categoryId } }
   );
   return data;
-}
+};

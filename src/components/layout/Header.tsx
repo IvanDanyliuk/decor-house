@@ -1,16 +1,16 @@
 import Link from 'next/link';
-import { LoginOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { LoginOutlined } from '@ant-design/icons';
 import NavMenu from '../navigation/NavMenu';
 import Search from './Search';
 import UserMenu from '../navigation/UserMenu';
-import { getCurrentUser } from '@/lib/actions/user.actions';
 import { getServerSession } from 'next-auth';
 import CartIcon from '../cart/CartIcon';
+import { getCurrentUser } from '@/lib/queries/user.queries';
 
 
 const Header: React.FC = async () => {
   const session = await getServerSession();
-  const currentUser = await getCurrentUser(session?.user?.email!);
+  const user = session?.user ? await getCurrentUser(session?.user?.email!) : null;
 
   return (
     <header className='w-full h-24 flex items-center'>
@@ -21,14 +21,10 @@ const Header: React.FC = async () => {
         </div>
         <div className='flex items-center gap-6'>
           <Search />
-          {/* <Link href='/cart' className='flex items-center gap-1'>
-            <ShoppingCartOutlined style={{ fontSize: '20px' }} />
-            <span>{`(${3})`}</span>
-          </Link> */}
-          <CartIcon />
+          <CartIcon user={user} />
           {
-            currentUser.data ? (
-              <UserMenu user={currentUser.data} />
+            user ? (
+              <UserMenu user={user} />
             ) : (
               <Link href='/login' className='flex gap-1'>
                 <LoginOutlined />

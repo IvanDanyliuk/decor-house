@@ -22,3 +22,11 @@ export const getUser = async (id: string) => {
   );
   return data;
 };
+
+export const getCurrentUser = async (email: string) => {
+  const { data } = await AXIOS.get(
+    '/api/user/current',
+    { params: { email } }
+  );
+  return data;
+};

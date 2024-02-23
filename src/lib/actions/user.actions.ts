@@ -7,6 +7,7 @@ import { connectToDB } from '../database';
 import User from '../models/user.model'
 import { utapi } from '../uploadthing';
 import { revalidatePath } from 'next/cache';
+import { ICartItem } from '../types/user.types';
 
 
 const userSchema = zod.object({
@@ -21,26 +22,6 @@ const userSchema = zod.object({
   message: 'Passwords do not match',
 });
 
-
-export const getCurrentUser = async (email: string) => {
-  try {
-    await connectToDB();
-
-    const user = await User.findOne({ email });
-
-    return {
-      data: user,
-      error: null,
-      message: '',
-    };
-  } catch (error: any) {
-    return { 
-      data: null,
-      error: error.message,
-      message: 'User not found',
-    };
-  }
-};
 
 export const register = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
@@ -83,7 +64,7 @@ export const register = async (prevState: any, formData: FormData) => {
       password: hashedPassword,
       role: 'user',
       viewed: [],
-      cart: [],
+      productCart: [],
     });
 
     return {
@@ -107,7 +88,6 @@ export const updateUser = async (prevState: any, formData: FormData) => {
   try {
     await connectToDB();
     
-
     revalidatePath('/dashboard/users');
     
     return {
@@ -170,6 +150,16 @@ export const viewProduct = async (email: string, productId: string) => {
       await User.findByIdAndUpdate(user._id, { $set: { viewed: modifiedViewedProducts } });
       return 'User has been modified';
     }
+  } catch (error: any) {
+    return error.message;
+  }
+};
+
+export const addToCart = async (email: string, product: ICartItem) => {
+  try {
+    await connectToDB();
+    await User.findOneAndUpdate({ email }, { $push: { 'cart': product } });
+    return 'Cart has been updated';
   } catch (error: any) {
     return error.message;
   }

@@ -49,3 +49,8 @@ export interface ICheckedProductFilters {
   order?: string;
   sortIndicator?: string;
 }
+
+export interface IRelatedProducts {
+  related: IProduct[];
+  viewed: IProduct[];
+}

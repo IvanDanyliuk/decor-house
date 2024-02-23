@@ -3,9 +3,15 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { IUser } from '@/lib/types/user.types';
 
 
-const CartIcon: React.FC = () => {
+interface ICartIcon {
+  user: IUser;
+}
+
+
+const CartIcon: React.FC<ICartIcon> = ({ user }) => {
   const [size, setSize] = useState<number>(0);
 
   useEffect(() => {
@@ -17,6 +23,14 @@ const CartIcon: React.FC = () => {
       } else {
         setSize(0);
       }
+    };
+
+    if(user) {
+      localStorage.setItem('cart', JSON.stringify(user.cart));
+      localStorage.setItem('viewed', JSON.stringify(user.viewed));
+      setSize(user.cart.length);
+    } else {
+      handleStorageChange();
     }
 
     window.addEventListener('storage', handleStorageChange);
@@ -26,7 +40,7 @@ const CartIcon: React.FC = () => {
   return (
     <Link href='/cart' className='flex items-center gap-1'>
       <ShoppingCartOutlined style={{ fontSize: '20px' }} />
-      <span>{`(${3})`}</span>
+      <span>{size}</span>
     </Link>
   )
 }

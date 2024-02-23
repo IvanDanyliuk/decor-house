@@ -1,13 +1,14 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { IProduct } from '@/lib/types/products.types';
-import { useState } from 'react';
+import { addToCart } from '@/lib/actions/user.actions';
 import SliderNavPanel from '../ui/SliderNavPanel';
 
 
 interface IProductDetails {
   product: IProduct;
-
 }
 
 enum ProductTabs {
@@ -19,6 +20,7 @@ enum ProductTabs {
 const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<keyof IProduct>(ProductTabs.Description);
+  const { data: session } = useSession();
 
   const handleActiveTabChange = () => {
     setCurrentIndex(0);
@@ -29,7 +31,7 @@ const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const isProductInCart = cart.some((item: any) => item.product._id === product._id);
 
@@ -42,8 +44,26 @@ const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
         }
       ]));
       window.dispatchEvent(new Event('storage'));
+
+      if(session?.user) {
+        await addToCart(session?.user?.email!, { product, quantity: 1})
+      }
     }
   };
+
+  useEffect(() => {
+    if(!session?.user) {
+      const viewedProductsString = localStorage.getItem('viewed') || '[]';
+      const viewedProducts = JSON.parse(viewedProductsString);
+      const isProductInCart = viewedProducts.some((item: any) => item._id === product._id);
+      if(!isProductInCart) {
+        localStorage.setItem('viewed', JSON.stringify([
+          ...viewedProducts,
+          product
+        ]));
+      }
+    }
+  }, [])
 
   return (
     <>

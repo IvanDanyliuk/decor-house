@@ -13,6 +13,7 @@ interface IUserMenuProps {
     photo: string;
     role: string;
     phone: string;
+    productCart: any[];
   };
 }
 
@@ -27,7 +28,12 @@ const userItems: MenuProps['items'] = [
     key: '1',
   },
   {
-    label: <button onClick={() => signOut()}>Sign Out</button>,
+    label: <button onClick={() => {
+      localStorage.removeItem('cart');
+      localStorage.removeItem('viewed');
+      window.dispatchEvent(new Event('storage'));
+      signOut();
+    }}>Sign Out</button>,
     key: '2',
   },
 ];
@@ -46,7 +52,12 @@ const adminItems: MenuProps['items'] = [
     key: '2',
   },
   {
-    label: <button onClick={() => signOut()}>Sign Out</button>,
+    label: <button onClick={() => {
+      localStorage.removeItem('cart');
+      localStorage.removeItem('viewed')
+      window.dispatchEvent(new Event('storage'));
+      signOut();
+    }}>Sign Out</button>,
     key: '3',
   },
 ];
