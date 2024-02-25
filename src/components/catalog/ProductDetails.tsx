@@ -46,7 +46,6 @@ const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
       window.dispatchEvent(new Event('storage'));
 
       if(session?.user) {
-        // await addToCart(session?.user?.email!, { product, quantity: 1});
         await updateCart(session?.user?.email!, [
           ...cart,
           {
