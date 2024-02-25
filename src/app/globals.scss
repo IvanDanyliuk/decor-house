@@ -275,3 +275,9 @@ main {
 .buy-now-btn {
   @apply px-4 py-3 text-base text-accent-dark font-semibold uppercase bg-white border border-accent-dark rounded;
 }
+
+
+//CART PAGE
+.cart-btn {
+  @apply px-3 md:w-72 h-12 flex flex-1 md:flex-none gap-3 justify-center items-center text-sm md:text-base font-semibold uppercase border border-accent-dark rounded;
+}

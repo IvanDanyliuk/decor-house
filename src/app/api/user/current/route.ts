@@ -6,15 +6,15 @@ import User from "@/lib/models/user.model";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const userId = req.nextUrl.searchParams.get('id');
+    const email = req.nextUrl.searchParams.get('email');
 
     await connectToDB();
 
     const user = await User
-      .findById(userId)
+      .findOne({ email })
       .populate([
         { path: 'viewed', model: Product },
-        { path: 'productCart', populate: 'product', model: Product },
+        { path: 'cart', populate: 'product', model: Product },
       ])
       .select('-password -__v');
 

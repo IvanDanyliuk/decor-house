@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { Divider, Select } from 'antd';
-import { getProducts, getProductsFilterData } from '@/lib/queries/product.queries';
-import { ICheckedProductFilters, IPrice, IProduct, IProductFiltersData } from '@/lib/types/products.types';
-import { IManufacturer } from '@/lib/types/manufacturer.types';
 import { CloseOutlined } from '@ant-design/icons';
+import { getProducts, getProductsFilterData, getRelatedProducts } from '@/lib/queries/product.queries';
+import { ICheckedProductFilters, IPrice, IProduct, IProductFiltersData, IRelatedProducts } from '@/lib/types/products.types';
+import { IManufacturer } from '@/lib/types/manufacturer.types';
 import ProductFilters from '@/components/catalog/ProductFilters/ProductFilters';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
 import ProductFiltersMobile from '@/components/catalog/ProductFilters/ProductFiltersMobile';
@@ -91,6 +92,7 @@ const sortItems = [
 const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const { category } = params;
 
+  const { data: session } = useSession();
   const { width } = useWindowSize();
   const path= usePathname();
   const modifiedPath = path.slice(1).replaceAll('/', ' / ');
@@ -100,6 +102,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const [productsCount, setProductsCount] = useState<number>(0);
   const [filtersData, setFiltersData] = useState<IProductFiltersData | null>(null);
   const [checkedFilters, setCheckedFilters] = useState<ICheckedProductFilters>(checkedFiltersInitialState);
+  const [relatedProducts, setRelatedProducts] = useState<IRelatedProducts | null>(null);
 
   const handleSetFilters = (key: string, values: string[] | IPrice) => {
     setProducts([]);
@@ -150,6 +153,10 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
       sortIndicator: parsedValue.sortIndicator,
     });
   };
+
+  useEffect(() => {
+    getRelatedProducts(session?.user?.email!, 10).then(res => setRelatedProducts(res));
+  }, []);
 
   useEffect(() => {
     const { types, features, manufacturers, price, order, sortIndicator } = checkedFilters;
@@ -314,7 +321,9 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
         <Divider />
       </section>
       <section className='w-full mx-auto container'>
-        <RelatedProducts />
+        {relatedProducts && (
+          <RelatedProducts products={relatedProducts} />
+        )}
       </section>
     </div>
   );

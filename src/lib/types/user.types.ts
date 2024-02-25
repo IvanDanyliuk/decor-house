@@ -1,3 +1,9 @@
+import { IProduct } from "./products.types";
+
+export interface ICartItem {
+  product: IProduct;
+  quantity: number;
+}
 export interface IUser {
   _id?: string;
   name: string;
@@ -8,4 +14,5 @@ export interface IUser {
   password?: string;
   address: string;
   viewed: string[];
+  cart: ICartItem[];
 }

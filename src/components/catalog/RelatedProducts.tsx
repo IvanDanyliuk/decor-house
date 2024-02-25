@@ -3,32 +3,27 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { getRelatedProducts } from '@/lib/queries/product.queries';
-import { IProduct } from '@/lib/types/products.types';
+import { IRelatedProducts } from '@/lib/types/products.types';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
 import ProductsGallery from '../ui/ProductsGallery';
 
+
 interface IRelatedProductsProps {
-  categoryId?: string
+  categoryId?: string;
+  products: IRelatedProducts;
 }
 
 enum TabNames {
-  Popular = 'popular',
+  Related = 'related',
   Viewed = 'viewed'
-}
-
-interface IRelatedProducts {
-  popular: IProduct[];
-  viewed: IProduct[];
 }
 
 const disabledArrowColor = 'invert(62%) sepia(0%) saturate(1438%) hue-rotate(164deg) brightness(104%) contrast(73%)';
 
 
-const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId }) => {
+const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId, products }) => {
   const { data: session } = useSession();
-  const [activeTab, setActiveTab] = useState<keyof IRelatedProducts>(TabNames.Popular);
-  const [products, setProducts] = useState<IRelatedProducts | null>(null);
+  const [activeTab, setActiveTab] = useState<keyof IRelatedProducts>(TabNames.Related);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [productsToShow, setProductsToShow] = useState(3);
 
@@ -36,10 +31,10 @@ const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId }) => {
 
   const handleActiveTabChange = () => {
     setCurrentIndex(0);
-    if(activeTab === TabNames.Popular) {
+    if(activeTab === TabNames.Related) {
       setActiveTab(TabNames.Viewed);
     } else {
-      setActiveTab(TabNames.Popular);
+      setActiveTab(TabNames.Related);
     }
   };
 
@@ -56,18 +51,18 @@ const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId }) => {
   };
 
   useEffect(() => {
+    if(!session?.user && products.viewed.length === 0) {
+
+    }  
+  }, []);
+
+  useEffect(() => {
     if(width && width >= 640) {
       setProductsToShow(3);
     } else {
       setProductsToShow(1);
     }
   }, [width]);
-
-  useEffect(() => {
-    if(session && session.user) {
-      getRelatedProducts(session?.user?.email!, 10, categoryId).then(res => setProducts(res));
-    }
-  }, []);
   
   return (
     <div>
@@ -75,7 +70,7 @@ const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId }) => {
         <div className='flex'>
           <button 
             onClick={handleActiveTabChange}
-            className={`related-products-nav-btn ${activeTab === TabNames.Popular ? 'btn-active' : ''}`}
+            className={`related-products-nav-btn ${activeTab === TabNames.Related ? 'btn-active' : ''}`}
           >
             {categoryId ? 'Similar Products' : 'Popular Products'}
           </button>

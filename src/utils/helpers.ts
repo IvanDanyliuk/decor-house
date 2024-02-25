@@ -39,4 +39,4 @@ export const getArrayUniqueItems = (array: any[], field: string) => {
   });
 
   return [...mapObj.values()];
-}
+};

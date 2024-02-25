@@ -14,7 +14,6 @@ interface IProductGallery {
 
 
 const ProductsGallery: React.FC<IProductGallery> = ({ products, currentItemIndex, productsToShow }) => {
-  console.log('PRODUCT GALLERY', products)
   return (
     <div className='mb-8 md:mb-16 w-full flex gap-10'>
       {products.slice(currentItemIndex, currentItemIndex + productsToShow).map(product => (
