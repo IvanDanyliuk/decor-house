@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { updateCart } from '@/lib/actions/user.actions';
 import { ICartItem, IUser } from '@/lib/types/user.types';
 import CartItem from './CartItem';
+import { useWindowSize } from '@/utils/hooks/use-window-size';
+import { Divider } from 'antd';
 
 
 interface ICartDetails {
@@ -16,6 +18,7 @@ interface ICartDetails {
 const CartDetails: React.FC<ICartDetails> = ({ user }) => {
   const [cartData, setCartData] = useState<ICartItem[]>(user?.cart || []);
   const [totalAmount, setTotalAmount] = useState<number>(0);
+  const { width } = useWindowSize();
 
   const countTotalAmount = () => {
     const amount = cartData.reduce((prev, curr) => prev + (curr.product.price * curr.quantity), 0);
@@ -68,31 +71,43 @@ const CartDetails: React.FC<ICartDetails> = ({ user }) => {
   }, []);
 
   return (
-    <div className=' py-8 container mx-auto'>
+    <div className='py-0 md:py-8 container mx-auto'>
       <ul className='w-full'>
-        {cartData.map(cartItem => (
-          <CartItem 
-            data={cartItem} 
-            onIncreaseQuantity={increaseProductQuantity} 
-            onDecreaseQuantity={decreaseProductQuantity} 
-            onDeleteItem={deleteProductFromCart} 
-          />
+        {cartData.map((cartItem, i) => (
+          <>
+            <CartItem 
+              data={cartItem} 
+              onIncreaseQuantity={increaseProductQuantity} 
+              onDecreaseQuantity={decreaseProductQuantity} 
+              onDeleteItem={deleteProductFromCart} 
+            />
+            <Divider />
+          </>
         ))}
       </ul>
-      <div className='py-6 flex justify-between items-center'>
+      {width && width < 640 && (
+        <p className='py-6 text-3xl text-right font-bold'>
+          Total: <span>&euro;{totalAmount}</span>
+        </p>
+      )}
+      <div className='py-6 flex justify-between items-center gap-3'>
         <Link href='/catalog' className='cart-btn'>
-          <Image 
-            src='/assets/icons/left-arrow.svg'
-            alt='arrow-left'
-            width={30}
-            height={30}
-          />
+          {width && width >= 640 && (
+            <Image 
+              src='/assets/icons/left-arrow.svg'
+              alt='arrow-left'
+              width={30}
+              height={30}
+            />
+          )}
           <span>Continue shopping</span>
         </Link>
-        <div className='flex items-center gap-8'>
-          <p className='text-xl font-bold'>
-            Total: <span>&euro;{totalAmount}</span>
-          </p>
+        <div className='flex flex-1 md:flex-none items-center gap-8'>
+          {width && width >= 640 && (
+            <p className='text-xl font-bold'>
+              Total: <span>&euro;{totalAmount}</span>
+            </p>
+          )}
           <Link href='/checkout' className='cart-btn bg-accent-dark text-white'>
             Checkout
           </Link>

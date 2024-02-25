@@ -23,8 +23,8 @@ const CartItem: React.FC<ICartItemProps> = ({ data, onIncreaseQuantity, onDecrea
         width={130} 
         height={130} 
       />
-      <div className='relative flex flex-col md:flex-row flex-1 justify-between md:items-center'>
-        <div className='w-full md:w-7/12 flex flex-col md:flex-row items-center gap-1 md:gap-3'>
+      <div className='relative flex flex-col md:flex-row flex-1 justify-between md:items-center gap-6'>
+        <div className='w-full md:w-7/12 flex flex-col md:flex-row md:items-center gap-1 md:gap-3'>
           <p>
             {data.product.name}
           </p>
@@ -62,7 +62,7 @@ const CartItem: React.FC<ICartItemProps> = ({ data, onIncreaseQuantity, onDecrea
         <button 
           type='button' 
           onClick={() => onDeleteItem(data.product._id!)} 
-          className='absolute top-0 right-0 md:relative px-3 py-2 bg-main-bg md:bg-white'
+          className='absolute top-0 right-0 md:relative px-3 py-2 text-lg bg-main-bg md:bg-white'
         >
           <DeleteOutlined />
         </button>
