@@ -155,10 +155,10 @@ export const viewProduct = async (email: string, productId: string) => {
   }
 };
 
-export const addToCart = async (email: string, product: ICartItem) => {
+export const updateCart = async (email: string, cartData: ICartItem[]) => {
   try {
     await connectToDB();
-    await User.findOneAndUpdate({ email }, { $push: { 'cart': product } });
+    await User.findOneAndUpdate({ email }, { $set: { 'cart': cartData } });
     return 'Cart has been updated';
   } catch (error: any) {
     return error.message;

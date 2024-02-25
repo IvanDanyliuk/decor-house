@@ -1,9 +1,9 @@
 import Link from 'next/link';
+import { getServerSession } from 'next-auth';
 import { LoginOutlined } from '@ant-design/icons';
 import NavMenu from '../navigation/NavMenu';
 import Search from './Search';
 import UserMenu from '../navigation/UserMenu';
-import { getServerSession } from 'next-auth';
 import CartIcon from '../cart/CartIcon';
 import { getCurrentUser } from '@/lib/queries/user.queries';
 

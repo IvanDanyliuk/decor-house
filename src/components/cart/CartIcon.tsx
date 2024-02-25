@@ -26,7 +26,11 @@ const CartIcon: React.FC<ICartIcon> = ({ user }) => {
     };
 
     if(user) {
-      localStorage.setItem('cart', JSON.stringify(user.cart));
+      const cartString = localStorage.getItem('cart');
+      if(!cartString) {
+        localStorage.setItem('cart', JSON.stringify(user.cart));
+      }
+      
       localStorage.setItem('viewed', JSON.stringify(user.viewed));
       setSize(user.cart.length);
     } else {

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { IProduct } from '@/lib/types/products.types';
-import { addToCart } from '@/lib/actions/user.actions';
+import { updateCart } from '@/lib/actions/user.actions';
 import SliderNavPanel from '../ui/SliderNavPanel';
 
 
@@ -46,7 +46,14 @@ const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
       window.dispatchEvent(new Event('storage'));
 
       if(session?.user) {
-        await addToCart(session?.user?.email!, { product, quantity: 1})
+        // await addToCart(session?.user?.email!, { product, quantity: 1});
+        await updateCart(session?.user?.email!, [
+          ...cart,
+          {
+            product,
+            quantity: 1,
+          }
+        ]);
       }
     }
   };
