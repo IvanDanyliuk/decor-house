@@ -1,7 +1,7 @@
+import { NextRequest, NextResponse } from 'next/server';
 import { connectToDB } from '@/lib/database';
 import Order from '@/lib/models/order.model';
 import Product from '@/lib/models/product.model';
-import { NextRequest, NextResponse } from 'next/server';
 
 
 export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
