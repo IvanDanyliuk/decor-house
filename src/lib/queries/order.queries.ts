@@ -6,8 +6,8 @@ export const getOrders = async ({
   itemsPerPage, 
   email 
 }: { 
-  page?: string, 
-  itemsPerPage?: string, 
+  page?: number, 
+  itemsPerPage?: number, 
   email?: string 
 }) => {
   const { data } = await AXIOS.get(

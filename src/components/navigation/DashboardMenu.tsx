@@ -24,6 +24,10 @@ const menuItems: MenuProps['items'] = [
     key: 'users',
   },
   {
+    label: <Link href='/dashboard/orders'>Orders</Link>,
+    key: 'orders',
+  },
+  {
     label: <Link href='/dashboard/manufacturers'>Manufacturers</Link>,
     key: 'manufacturers',
   },

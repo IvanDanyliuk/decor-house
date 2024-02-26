@@ -13,6 +13,7 @@ const orderSchema = zod.object({
   paymentMethod: zod.string().min(1, 'Payment method is required'),
   comment: zod.string(),
   deliveryAddress: zod.string().min(1, 'Delivery address is required'),
+  deliveryMethod: zod.string().min(1, 'Delivery method is required'),
 });
 
 
@@ -40,6 +41,7 @@ export const createOrder = async (prevState: any, formData: FormData) => {
       products: JSON.parse(productsData),
       totalAmount: +data.totalAmount,
       deliveryAddress: data.deliveryAddress,
+      deliveryMethod: data.deliveryMethod,
       deliveryStatus: data.deliveryStatus,
       paymentMethod: data.paymentMethod,
       paymentStatus: data.paymentStatus,
@@ -57,6 +59,28 @@ export const createOrder = async (prevState: any, formData: FormData) => {
       data: null,
       error: error.message,
       message: 'Cannot create a new order',
+    };
+  }
+};
+
+export const deleteOrder = async ({ id, path }: { id: string, path: string }) => {
+  try {
+    await connectToDB();
+
+    await Order.findByIdAndDelete(id);
+
+    revalidatePath(path);
+
+    return {
+      data: null,
+      error: null,
+      message: 'Order has been successfully deleted',
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot delete an order',
     };
   }
 };

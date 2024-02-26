@@ -16,6 +16,7 @@ const orderSchema = new mongoose.Schema({
   products: [cartItemSchema],
   totalAmount: { type: Number, required: true },
   deliveryAddress: { type: String, required: true },
+  deliveryMethod: { type: String, required: true },
   deliveryStatus: { type: String, required: true },
   paymentMethod: { type: String, required: true },
   paymentStatus: { type: String, required: true },

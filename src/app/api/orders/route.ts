@@ -31,8 +31,12 @@ export const GET = async(req: NextRequest, res: NextResponse) => {
       const count = await Order.countDocuments();
 
       return NextResponse.json({
-        orders,
-        count
+        data: {
+          orders,
+          count
+        },
+        error: null,
+        message: '',
       });
   } catch (error: any) {
     return new NextResponse(error, { status: 500 });
