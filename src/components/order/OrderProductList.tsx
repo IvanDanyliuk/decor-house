@@ -29,7 +29,7 @@ interface IOrderProducts {
 }
 
 
-const OrderProductList: React.FC<IOrderProducts> = ({ data }) => {
+const OrderProductsList: React.FC<IOrderProducts> = ({ data }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { width } = useWindowSize();
@@ -108,4 +108,4 @@ const OrderProductList: React.FC<IOrderProducts> = ({ data }) => {
   );
 };
 
-export default OrderProductList;
+export default OrderProductsList;

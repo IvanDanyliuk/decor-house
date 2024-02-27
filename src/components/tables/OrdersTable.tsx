@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { deleteOrder } from '@/lib/actions/order.actions';
 import { IOrder } from '@/lib/types/order.types';
 import { ICartItem } from '@/lib/types/user.types';
-import OrderProductList from '../order/OrderProductList';
+import OrderProductsList from '../order/OrderProductList';
 
 
 interface IOrdersTable {
@@ -94,7 +94,7 @@ const OrdersTable: React.FC<IOrdersTable> = ({ orders }) => {
       key: 'action',
       render: (_, record) => (
         <div className='flex gap-3'>
-          <OrderProductList data={record} />
+          <OrderProductsList data={record} />
           <Popconfirm
             title='Delete Order'
             description='Are you sure you want to delete this order?'
