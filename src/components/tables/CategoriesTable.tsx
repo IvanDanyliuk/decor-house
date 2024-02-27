@@ -31,7 +31,12 @@ const CategoriesTable: React.FC<ICategoriesTable> = ({ categories }) => {
     await deleteCategory({ id, path: '/dashboard/categories' });
   };
 
-  const tableData = categories.map(item => ({ ...item, types: item.types.join(', '), features: item.features.join(', '), key: crypto.randomUUID() }));
+  const tableData = categories.map(item => ({ 
+    ...item, 
+    types: item.types.join(', '), 
+    features: item.features.join(', '), 
+    key: crypto.randomUUID() 
+  }));
 
   const tableColumns: ColumnsType<DataType> = [
     {

@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { deleteOrder } from '@/lib/actions/order.actions';
 import { IOrder } from '@/lib/types/order.types';
 import { ICartItem } from '@/lib/types/user.types';
+import OrderProductList from '../order/OrderProductList';
 
 
 interface IOrdersTable {
@@ -15,7 +16,11 @@ interface IOrdersTable {
 
 interface DataType {
   _id: string;
-  user: string;
+  user: {
+    name: string;
+    phone: string;
+    email: string;
+  };
   products: ICartItem[];
   totalAmount: number;
   paymentMethod: string;
@@ -34,7 +39,7 @@ const OrdersTable: React.FC<IOrdersTable> = ({ orders }) => {
 
   const tableData = orders.map(order => ({
     _id: order._id!,
-    user: order.user.name,
+    user: order.user,
     products: order.products,
     totalAmount: order.totalAmount,
     paymentMethod: order.paymentMethod,
@@ -43,6 +48,7 @@ const OrdersTable: React.FC<IOrdersTable> = ({ orders }) => {
     deliveryMethod: order.deliveryMethod,
     deliveryStatus: order.deliveryStatus,
     createdAt: order.createdAt!,
+    key: crypto.randomUUID()
   }));
 
   const tableColumns: ColumnsType<DataType> = [
@@ -55,6 +61,7 @@ const OrdersTable: React.FC<IOrdersTable> = ({ orders }) => {
       title: 'Customer',
       dataIndex: 'user',
       key: 'user',
+      render: (_, record) => <span>{record.user.name}</span>
     },
     {
       title: 'Amount',
@@ -86,8 +93,8 @@ const OrdersTable: React.FC<IOrdersTable> = ({ orders }) => {
       title: 'sdfsadf',
       key: 'action',
       render: (_, record) => (
-        <>
-          <button>Details</button>
+        <div className='flex gap-3'>
+          <OrderProductList data={record} />
           <Popconfirm
             title='Delete Order'
             description='Are you sure you want to delete this order?'
@@ -101,7 +108,7 @@ const OrdersTable: React.FC<IOrdersTable> = ({ orders }) => {
               <DeleteOutlined />
             </button>
           </Popconfirm>
-        </>
+        </div>
       )
     },
   ];

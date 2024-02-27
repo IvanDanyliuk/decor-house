@@ -74,7 +74,7 @@ const CartDetails: React.FC<ICartDetails> = ({ user }) => {
     <div className='py-0 md:py-8 container mx-auto'>
       <ul className='w-full'>
         {cartData.map((cartItem, i) => (
-          <>
+          <div key={crypto.randomUUID()}>
             <CartItem 
               data={cartItem} 
               onIncreaseQuantity={increaseProductQuantity} 
@@ -82,7 +82,7 @@ const CartDetails: React.FC<ICartDetails> = ({ user }) => {
               onDeleteItem={deleteProductFromCart} 
             />
             <Divider />
-          </>
+          </div>
         ))}
       </ul>
       {width && width < 640 && (
