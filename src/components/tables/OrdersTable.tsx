@@ -1,7 +1,7 @@
 'use client';
 
-import { Popconfirm } from 'antd';
-import Table, { ColumnsType } from 'antd/es/table';
+import { Popconfirm, Table } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { deleteOrder } from '@/lib/actions/order.actions';
@@ -20,6 +20,7 @@ interface DataType {
   totalAmount: number;
   paymentMethod: string;
   paymentStatus: string;
+  deliveryAddress: string;
   deliveryMethod: string;
   deliveryStatus: string;
   createdAt: string;
@@ -31,7 +32,18 @@ const OrdersTable: React.FC<IOrdersTable> = ({ orders }) => {
     await deleteOrder({ id, path: '/dashboard/orders' });
   };
 
-  const tableData = orders.map(order => ({ ...order, user: order.user.name }));
+  const tableData = orders.map(order => ({
+    _id: order._id!,
+    user: order.user.name,
+    products: order.products,
+    totalAmount: order.totalAmount,
+    paymentMethod: order.paymentMethod,
+    paymentStatus: order.paymentStatus,
+    deliveryAddress: order.deliveryAddress,
+    deliveryMethod: order.deliveryMethod,
+    deliveryStatus: order.deliveryStatus,
+    createdAt: order.createdAt!,
+  }));
 
   const tableColumns: ColumnsType<DataType> = [
     {
@@ -56,7 +68,7 @@ const OrdersTable: React.FC<IOrdersTable> = ({ orders }) => {
     },
     {
       title: 'Status',
-      key: 'paymentStatus',
+      key: 'status',
       render: (_, record) => <span>{`${record.paymentStatus} / ${record.deliveryStatus}`}</span>
     },
     {
@@ -65,38 +77,31 @@ const OrdersTable: React.FC<IOrdersTable> = ({ orders }) => {
       key: 'deliveryMethod',
     },
     {
-      title: 'Delivery Status',
-      dataIndex: 'deliveryStatus',
-      key: 'deliveryStatus',
-    },
-    {
-      title: '',
-      key: 'products',
-      render: () => <button>Details</button>
-    },
-    {
       title: 'Date',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (_, record) => <span>{dayjs(record.createdAt).format('DD.MM.YYYY')}</span>
     },
     {
-      title: '',
-      key: 'details',
+      title: 'sdfsadf',
+      key: 'action',
       render: (_, record) => (
-        <Popconfirm
-          title='Delete Order'
-          description='Are you sure you want to delete this order?'
-          onConfirm={(e) => confirmDeleting(record._id)}
-          okText='Yes'
-          cancelText='No'
-        >
-          <button 
-            className='dashboard-table-action-btn'
+        <>
+          <button>Details</button>
+          <Popconfirm
+            title='Delete Order'
+            description='Are you sure you want to delete this order?'
+            onConfirm={(e) => confirmDeleting(record._id)}
+            okText='Yes'
+            cancelText='No'
           >
-            <DeleteOutlined />
-          </button>
-        </Popconfirm>
+            <button 
+              className='dashboard-table-action-btn'
+            >
+              <DeleteOutlined />
+            </button>
+          </Popconfirm>
+        </>
       )
     },
   ];

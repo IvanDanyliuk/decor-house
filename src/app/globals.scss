@@ -50,7 +50,7 @@ input[type='radio'] {
 
 //====== DASHBOARD MENU ======
 .ant-menu {
-  @apply relative w-full flex justify-center text-sm font-inherit uppercase border-none #{!important};
+  @apply relative w-full flex justify-center text-xs font-inherit uppercase border-none #{!important};
 
   .ant-menu-item {
     @apply py-3 flex-1 text-gray-regular font-semibold text-center #{!important};

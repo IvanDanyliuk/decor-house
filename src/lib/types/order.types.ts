@@ -22,6 +22,7 @@ export enum PaymentMethod {
 }
 
 export interface IOrder {
+  _id?: string;
   user: {
     name: string;
     phone: string;
@@ -31,6 +32,9 @@ export interface IOrder {
   totalAmount: number;
   deliveryAddress: string;
   deliveryStatus: string;
+  deliveryMethod: string;
   paymentMethod: string;
   paymentStatus: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

@@ -72,7 +72,7 @@ const DashboardMenu = () => {
       onClick={onClick} 
       selectedKeys={[currentLink]} 
       mode='horizontal' 
-      items={menuItems} 
+      items={menuItems}
     />
   );
 };

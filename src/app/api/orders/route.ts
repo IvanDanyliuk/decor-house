@@ -20,12 +20,12 @@ export const GET = async(req: NextRequest, res: NextResponse) => {
         .sort({ 'createdAt': -1 })
         .limit(+itemsPerPage)
         .skip((+page - 1) * +itemsPerPage)
-        .populate({ path: 'products', model: Product })
+        .populate({ path: 'products.product', select: '-__v', model: Product })
         .select('-__v') :
       await Order
         .find(query)
         .sort({ 'createdAt': -1 })
-        .populate({ path: 'products', model: Product })
+        .populate({ path: 'products.product', select: '-__v', model: Product })
         .select('-__v');
       
       const count = await Order.countDocuments();
