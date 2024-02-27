@@ -1,8 +1,8 @@
+import Link from 'next/link';
+import { getServerSession } from 'next-auth';
 import CartDetails from '@/components/cart/CartDetails';
 import { getCurrentUser } from '@/lib/queries/user.queries';
-import { getServerSession } from 'next-auth';
-import Link from 'next/link';
-import React from 'react'
+
 
 const Cart = async () => {
   const session = await getServerSession();

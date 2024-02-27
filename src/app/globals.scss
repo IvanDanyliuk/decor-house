@@ -12,6 +12,19 @@ main {
   @apply flex min-h-full flex-auto flex-col;
 }
 
+input[type='radio'] {
+  @apply appearance-none grid place-content-center bg-white m-0 font-inherit text-accent-dark w-8 h-8 border-2 border-gray-dark rounded-full;
+
+  &:before {
+    content: '';
+    @apply w-4 h-4 bg-accent-dark rounded-full scale-0;
+  }
+
+  &:before:checked {
+    @apply scale-100;
+  }
+}
+ 
 .link-primary {
   @apply flex justify-center items-center bg-accent-dark text-white uppercase rounded;
 }
@@ -37,7 +50,7 @@ main {
 
 //====== DASHBOARD MENU ======
 .ant-menu {
-  @apply relative w-full flex justify-center text-sm font-inherit uppercase border-none #{!important};
+  @apply relative w-full flex justify-center text-xs font-inherit uppercase border-none #{!important};
 
   .ant-menu-item {
     @apply py-3 flex-1 text-gray-regular font-semibold text-center #{!important};
@@ -67,7 +80,7 @@ main {
 }
 
 .dashboard-table-action-btn {
-  @apply w-8 h-8 rounded bg-gray-light hover:bg-accent-dark text-accent-dark hover:text-white duration-150; 
+  @apply px-3 w-auto h-8 rounded bg-gray-light hover:bg-accent-dark text-accent-dark hover:text-white duration-150; 
 }
 
 .ant-popconfirm-buttons {

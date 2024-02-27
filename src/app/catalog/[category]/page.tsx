@@ -49,7 +49,7 @@ const sortItems = [
       order: 'desc',
       sortIndicator: 'price'
     }),
-    label: 'Price: Low to High',
+    label: 'Price: High to Low',
   },
   {
     value: JSON.stringify({

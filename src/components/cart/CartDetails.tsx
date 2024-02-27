@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Divider } from 'antd';
 import { updateCart } from '@/lib/actions/user.actions';
 import { ICartItem, IUser } from '@/lib/types/user.types';
 import CartItem from './CartItem';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
-import { Divider } from 'antd';
 
 
 interface ICartDetails {
@@ -74,7 +74,7 @@ const CartDetails: React.FC<ICartDetails> = ({ user }) => {
     <div className='py-0 md:py-8 container mx-auto'>
       <ul className='w-full'>
         {cartData.map((cartItem, i) => (
-          <>
+          <div key={crypto.randomUUID()}>
             <CartItem 
               data={cartItem} 
               onIncreaseQuantity={increaseProductQuantity} 
@@ -82,7 +82,7 @@ const CartDetails: React.FC<ICartDetails> = ({ user }) => {
               onDeleteItem={deleteProductFromCart} 
             />
             <Divider />
-          </>
+          </div>
         ))}
       </ul>
       {width && width < 640 && (

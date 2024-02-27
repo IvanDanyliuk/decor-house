@@ -4,7 +4,7 @@ import { FocusEvent, useState } from 'react';
 import { Drawer, InputNumber, Slider } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
 import Accordion from '@/components/ui/Accordion';
-import { ICheckedProductFilters, IPrice, IProductFiltersData } from '@/lib/types/products.types';
+import { ICheckedProductFilters, IFilterItem, IPrice, IProductFiltersData } from '@/lib/types/products.types';
 
 
 interface IProductFilters {
@@ -41,13 +41,13 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData, checkedF
 
   const handleOptionSelect = (key: keyof ICheckedProductFilters, value: string | IPrice) => {
     if(key !== 'price' && typeof value !== 'object') {
-      const isOptionSelected = checkedFilters[key].includes(value);
+      const isOptionSelected = checkedFilters[key]!.includes(value);
 
       if(isOptionSelected) {
-        const filteredOptions = checkedFilters[key].filter(option => option !== value);
+        const filteredOptions = (checkedFilters[key] as string[]).filter(option => option !== value);
         onSetFilters(key, filteredOptions);
       } else {
-        onSetFilters(key, [...checkedFilters[key], value]);
+        onSetFilters(key, [...checkedFilters[key]!, value]);
       }
     }
   };
@@ -66,7 +66,7 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData, checkedF
         {filterDataBranches.map(({ title, name }) => (
           <Accordion title={title} key={crypto.randomUUID()}>
             <ul className='w-full bg-white rounded'>
-              {name !== 'price' && filtersData[name].map(option => (
+              {name !== 'price' && (filtersData[name] as IFilterItem[]).map(option => (
                 <li 
                   key={crypto.randomUUID()} 
                   onClick={() => handleOptionSelect(name, option.value)} 
@@ -75,7 +75,7 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData, checkedF
                   <input 
                     type='checkbox' 
                     value={option.value} 
-                    checked={checkedFilters[name].includes(option.value)}
+                    checked={checkedFilters[name]!.includes(option.value)}
                     onChange={() => handleOptionSelect(name, option.value)} 
                     data-testid='selectProductCheckbox'
                   />

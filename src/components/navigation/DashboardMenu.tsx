@@ -24,6 +24,10 @@ const menuItems: MenuProps['items'] = [
     key: 'users',
   },
   {
+    label: <Link href='/dashboard/orders'>Orders</Link>,
+    key: 'orders',
+  },
+  {
     label: <Link href='/dashboard/manufacturers'>Manufacturers</Link>,
     key: 'manufacturers',
   },
@@ -68,7 +72,7 @@ const DashboardMenu = () => {
       onClick={onClick} 
       selectedKeys={[currentLink]} 
       mode='horizontal' 
-      items={menuItems} 
+      items={menuItems}
     />
   );
 };
