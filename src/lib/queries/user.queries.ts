@@ -30,3 +30,11 @@ export const getCurrentUser = async (email: string) => {
   );
   return data;
 };
+
+export const getProfileData = async (email: string) => {
+  const { data } = await AXIOS.get(
+    '/api/user/profile',
+    { params: { email } }
+  );
+  return data;
+};

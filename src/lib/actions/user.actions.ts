@@ -22,6 +22,15 @@ const userSchema = zod.object({
   message: 'Passwords do not match',
 });
 
+const newPasswordSchema = zod.object({
+  currentPassword: zod.string().min(1, 'Enter your current password'),
+  newPassword: zod.string().min(1, 'Enter your new password'),
+  confirmPassword: zod.string().min(1, 'Confirm your new password'),
+}).refine(data => data.newPassword === data.confirmPassword, {
+  path: ['confirmPassword'],
+  message: 'Passwords do not match',
+});
+
 
 export const register = async (prevState: any, formData: FormData) => {
   const name = formData.get('name');
@@ -87,8 +96,16 @@ export const updateUser = async (prevState: any, formData: FormData) => {
 
   try {
     await connectToDB();
+
+    await User.findByIdAndUpdate(prevState._id, {
+      ...prevState,
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      address: data.address,
+    });
     
-    revalidatePath('/dashboard/users');
+    revalidatePath('/profile');
     
     return {
       data: {},
@@ -103,6 +120,67 @@ export const updateUser = async (prevState: any, formData: FormData) => {
     }
   }
 };
+
+export const updateUserPhoto = async (prevState: any, formData: FormData) => {
+  try {
+    const data = Object.fromEntries(formData);
+
+    await connectToDB();
+    await User.findByIdAndUpdate(data.id, { $set: { photo: data.photo } });
+    revalidatePath('/profile');
+
+    return {
+      data: null,
+      error: null,
+      message: 'User photo has been successfully updated!',
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot update the user photo',
+    }
+  }
+};
+
+export const updatePassword = async (prevState: any, formData: FormData) => {
+  try {
+    const data = Object.fromEntries(formData);
+
+    const validatedFields = newPasswordSchema.safeParse({
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+      confirmPassword: data.confirmPassword,
+    });
+
+    if(!validatedFields.success) {
+      return {
+        error: validatedFields.error.flatten().fieldErrors,
+      };
+    }
+
+    const user = await User.findById(data.id);
+    const isPasswordMatch = await bcrypt.compare(data.currentPassword as string, user!.password);
+
+    if(!isPasswordMatch) {
+      throw new Error('Passwords do not match!');
+    }
+
+    await connectToDB();
+
+    const hashedNewPassword = await bcrypt.hash(data.newPassword as string, 10);
+    await User.findByIdAndUpdate(data.id, { $set: { password: hashedNewPassword } });
+    revalidatePath('/profile');
+
+    return {
+      data: null,
+      error: null,
+      message: 'User photo has been successfully updated!',
+    };
+  } catch (error: any) {
+    
+  }
+}
 
 export const deleteUser = async ({ id, path }: { id: string, path: string }) => {
   try {

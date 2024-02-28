@@ -294,3 +294,14 @@ input[type='radio'] {
 .cart-btn {
   @apply px-3 md:w-72 h-12 flex flex-1 md:flex-none gap-3 justify-center items-center text-sm md:text-base font-semibold uppercase border border-accent-dark rounded;
 }
+
+
+//PROFILE PAGE
+.profile-nav-container {
+  @apply relative flex;
+
+  &:after {
+    content: '';
+    @apply absolute bottom-0 w-full h-1 bg-gray-medium;
+  }
+}

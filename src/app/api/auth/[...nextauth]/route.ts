@@ -2,10 +2,10 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CreadentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
+import { JWT } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
 import { connectToDB } from '@/lib/database';
 import User from '@/lib/models/user.model';
-import { JWT } from 'next-auth/jwt';
 
 
 export const authOptions: NextAuthOptions = {
@@ -27,13 +27,9 @@ export const authOptions: NextAuthOptions = {
             const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
             if(isPasswordCorrect) {
               return user;
+            } else {
+              return null;
             }
-          }
-
-          const passwordValid = user && bcrypt.compare(credentials.password, user.password);
-
-          if(passwordValid) {
-            return user;
           }
 
           return null;
@@ -62,13 +58,25 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT, user: any }) {
+    async jwt({ token, user, trigger, session }: any) {
       if (user) token.role = user.role;
-      if(user) console.log('JWT', { token, user })
+      if(user) console.log('JWT', { token, user });
+      if (trigger === "update" && session?.name) {
+        token.name = session.name;
+      }
+      if (trigger === "update" && session?.email) {
+        token.email = session.email;
+      }
       return token;
     },
-    async session({ session, token }: any) {
+    async session({ session, token, trigger, newSession }: any) {
       if (session?.user) session.user.role = token.role;
+      if (trigger === "update" && newSession?.name) {
+        session.name = newSession.name;
+      }
+      if (trigger === "update" && newSession?.email) {
+        session.email = newSession.email;
+      }
       return session;
     },
   },

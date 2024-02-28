@@ -6,7 +6,7 @@ import { CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 
 interface IUploadImageButton {
-  label: string;
+  label?: string;
   name: string;
   required?: boolean;
   multiple?: boolean;
@@ -67,9 +67,9 @@ const UploadImageButton: React.FC<IUploadImageButton> = ({
   return (
     <div className='w-full flex items-center gap-3'>
       <input name={name} type='text' value={selectedFiles.join('|-| ')} onChange={() => {}} className='hidden' />
-      <label htmlFor={name} className='w-full md:w-36 text-sm font-semibold'>{label}</label>
+      {label && <label htmlFor={name} className='w-full md:w-36 text-sm font-semibold'>{label}</label>}
       <div className='relative w-full md:grow'>
-        <div className='w-full flex gap-1 items-center  '>
+        <div className={`w-full flex gap-1 items-center ${!label ? 'justify-center' : ''}`}>
           <button 
             type='button'
             className='w-36 h-10 bg-slate-500 text-sm text-white uppercase rounded'
