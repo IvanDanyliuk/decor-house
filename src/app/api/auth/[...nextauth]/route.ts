@@ -61,20 +61,20 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, trigger, session }: any) {
       if (user) token.role = user.role;
       if(user) console.log('JWT', { token, user });
-      if (trigger === "update" && session?.name) {
+      if (trigger === 'update' && session?.name) {
         token.name = session.name;
       }
-      if (trigger === "update" && session?.email) {
+      if (trigger === 'update' && session?.email) {
         token.email = session.email;
       }
       return token;
     },
     async session({ session, token, trigger, newSession }: any) {
       if (session?.user) session.user.role = token.role;
-      if (trigger === "update" && newSession?.name) {
+      if (trigger === 'update' && newSession?.name) {
         session.name = newSession.name;
       }
-      if (trigger === "update" && newSession?.email) {
+      if (trigger === 'update' && newSession?.email) {
         session.email = newSession.email;
       }
       return session;

@@ -8,6 +8,7 @@ import User from '../models/user.model'
 import { utapi } from '../uploadthing';
 import { revalidatePath } from 'next/cache';
 import { ICartItem } from '../types/user.types';
+import { signIn } from 'next-auth/react';
 
 
 const userSchema = zod.object({
@@ -104,8 +105,12 @@ export const updateUser = async (prevState: any, formData: FormData) => {
       email: data.email,
       address: data.address,
     });
+
+    if(prevState.email !== data.email) {
+      await signIn('credentials', { email: data.email, callbackUrl: '/' });
+    }
     
-    revalidatePath('/profile');
+    revalidatePath(`/profile/${prevState._id}`);
     
     return {
       data: {},
@@ -127,7 +132,8 @@ export const updateUserPhoto = async (prevState: any, formData: FormData) => {
 
     await connectToDB();
     await User.findByIdAndUpdate(data.id, { $set: { photo: data.photo } });
-    revalidatePath('/profile');
+    // revalidatePath('/profile');
+    revalidatePath(`/profile/${prevState._id}`);
 
     return {
       data: null,

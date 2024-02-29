@@ -18,53 +18,52 @@ interface IUserMenuProps {
 }
 
 
-const userItems: MenuProps['items'] = [
-  {
-    label: <Link href='/profile'>Profile</Link>,
-    key: '0',
-  },
-  {
-    label: <Link href='/orders'>My Orders</Link>,
-    key: '1',
-  },
-  {
-    label: <button onClick={() => {
-      localStorage.removeItem('cart');
-      localStorage.removeItem('viewed');
-      window.dispatchEvent(new Event('storage'));
-      signOut();
-    }}>Sign Out</button>,
-    key: '2',
-  },
-];
-
-const adminItems: MenuProps['items'] = [
-  {
-    label: <Link href='/profile'>Profile</Link>,
-    key: '0',
-  },
-  {
-    label: <Link href='/orders'>My Orders</Link>,
-    key: '1',
-  },
-  {
-    label: <Link href='/dashboard'>Dashboard</Link>,
-    key: '2',
-  },
-  {
-    label: <button onClick={() => {
-      localStorage.removeItem('cart');
-      localStorage.removeItem('viewed')
-      window.dispatchEvent(new Event('storage'));
-      signOut();
-    }}>Sign Out</button>,
-    key: '3',
-  },
-];
-
-
 const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
   if(!user) return null;
+
+  const userItems: MenuProps['items'] = [
+    {
+      label: <Link href={`/profile/${user._id}`}>Profile</Link>,
+      key: '0',
+    },
+    {
+      label: <Link href='/orders'>My Orders</Link>,
+      key: '1',
+    },
+    {
+      label: <button onClick={() => {
+        localStorage.removeItem('cart');
+        localStorage.removeItem('viewed');
+        window.dispatchEvent(new Event('storage'));
+        signOut();
+      }}>Sign Out</button>,
+      key: '2',
+    },
+  ];
+  
+  const adminItems: MenuProps['items'] = [
+    {
+      label: <Link href={`/profile/${user._id}`}>Profile</Link>,
+      key: '0',
+    },
+    {
+      label: <Link href='/orders'>My Orders</Link>,
+      key: '1',
+    },
+    {
+      label: <Link href='/dashboard'>Dashboard</Link>,
+      key: '2',
+    },
+    {
+      label: <button onClick={() => {
+        localStorage.removeItem('cart');
+        localStorage.removeItem('viewed')
+        window.dispatchEvent(new Event('storage'));
+        signOut();
+      }}>Sign Out</button>,
+      key: '3',
+    },
+  ];
   
   return (
     <Dropdown 

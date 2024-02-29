@@ -7,12 +7,12 @@ import User from '@/lib/models/user.model';
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
-    const email = req.nextUrl.searchParams.get('email');
+    const id = req.nextUrl.searchParams.get('id');
 
     await connectToDB();
 
-    const user = await User.findOne({ email }).select('-__v');
-    const orders = await Order.find({ 'user.email': email }).populate({ path: 'products.product', select: '-__v', model: Product }).select('-__v');
+    const user = await User.findById(id).select('-__v');
+    const orders = await Order.find({ 'user.email': user.email }).populate({ path: 'products.product', select: '-__v', model: Product }).select('-__v');
 
     return NextResponse.json({
       profile: user,

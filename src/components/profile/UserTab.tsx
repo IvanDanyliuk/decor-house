@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import { Avatar } from 'antd';
 import { IUser } from '@/lib/types/user.types';
@@ -20,8 +20,7 @@ interface IUserTab {
 const UserTab: React.FC<IUserTab> = ({ user }) => {
   const [state, formAction] = useFormState(updateUser, user);
   const { data: session, update } = useSession();
-
-  console.log('USER TAB', user)
+  
 
   useEffect(() => {
     if(state && !state.error) {
