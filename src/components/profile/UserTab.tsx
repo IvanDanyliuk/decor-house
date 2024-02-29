@@ -10,6 +10,7 @@ import UpdateUserPhotoModal from './UpdateUserPhotoModal';
 import UpdatePasswordModal from './UpdatePasswordModal';
 import SubmitButton from '../ui/SubmitButton';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 
 interface IUserTab {
@@ -18,6 +19,7 @@ interface IUserTab {
 
 
 const UserTab: React.FC<IUserTab> = ({ user }) => {
+  const router = useRouter();
   const [state, formAction] = useFormState(updateUser, user);
   const { data: session, update } = useSession();
   
@@ -25,6 +27,7 @@ const UserTab: React.FC<IUserTab> = ({ user }) => {
   useEffect(() => {
     if(state && !state.error) {
       update({ name: user.name, email: user.email, image: user.photo }).then(res => console.log('Session has been updated!'));
+      router.refresh();
     }
   }, [state, formAction]);
 

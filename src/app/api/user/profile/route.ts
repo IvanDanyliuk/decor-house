@@ -11,8 +11,14 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
     await connectToDB();
 
-    const user = await User.findById(id).select('-__v');
-    const orders = await Order.find({ 'user.email': user.email }).populate({ path: 'products.product', select: '-__v', model: Product }).select('-__v');
+    const user = await User
+      .findById(id)
+      .select('-__v');
+      
+    const orders = await Order
+      .find({ 'user.email': user.email })
+      .populate({ path: 'products.product', select: '-__v', model: Product })
+      .select('-__v');
 
     return NextResponse.json({
       profile: user,

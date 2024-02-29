@@ -2,7 +2,6 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CreadentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
-import { JWT } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
 import { connectToDB } from '@/lib/database';
 import User from '@/lib/models/user.model';
@@ -64,7 +63,7 @@ export const authOptions: NextAuthOptions = {
       if (trigger === 'update' && session?.name) {
         token.name = session.name;
       }
-      if (trigger === 'update' && session?.email) {
+      if (trigger === 'update' && session?.email!) {
         token.email = session.email;
       }
       return token;
@@ -74,7 +73,7 @@ export const authOptions: NextAuthOptions = {
       if (trigger === 'update' && newSession?.name) {
         session.name = newSession.name;
       }
-      if (trigger === 'update' && newSession?.email) {
+      if (trigger === 'update' && newSession?.email!) {
         session.email = newSession.email;
       }
       return session;

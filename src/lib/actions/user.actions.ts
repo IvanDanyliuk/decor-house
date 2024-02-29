@@ -99,15 +99,21 @@ export const updateUser = async (prevState: any, formData: FormData) => {
     await connectToDB();
 
     await User.findByIdAndUpdate(prevState._id, {
-      ...prevState,
+      // ...prevState,
       name: data.name,
       phone: data.phone,
       email: data.email,
       address: data.address,
     });
 
+    console.log('USER UPDATE', {
+      prev: prevState,
+      curr: data.name
+    })
+
     if(prevState.email !== data.email) {
-      await signIn('credentials', { email: data.email, callbackUrl: '/' });
+      console.log('PASSWORD UPDATE', data.email)
+      await signIn('credentials', { email: data.email, callbackUrl: '/profile' });
     }
     
     revalidatePath(`/profile/${prevState._id}`);
@@ -129,10 +135,27 @@ export const updateUser = async (prevState: any, formData: FormData) => {
 export const updateUserPhoto = async (prevState: any, formData: FormData) => {
   try {
     const data = Object.fromEntries(formData);
+    const rawImage = formData.get('photo') as string;
+
+    if(!rawImage) return { error: 'User photo is required' };
 
     await connectToDB();
-    await User.findByIdAndUpdate(data.id, { $set: { photo: data.photo } });
-    // revalidatePath('/profile');
+
+    const imageFile = await fetch(rawImage);
+    const image = await imageFile.blob();
+
+    const user = await User.findById(data.id);
+
+    const photoUrl = new Blob([image]).size > 0 ? 
+      (await utapi.uploadFiles([image]))[0].data?.url : 
+      prevState.photo;
+
+    if(photoUrl !== user.photo) {
+      const imageToDelete = user.photo.substring(user.photo.lastIndexOf('/') + 1);
+      await utapi.deleteFiles(imageToDelete);
+    }
+
+    await User.findByIdAndUpdate(data.id, { $set: { photo: photoUrl } });
     revalidatePath(`/profile/${prevState._id}`);
 
     return {
