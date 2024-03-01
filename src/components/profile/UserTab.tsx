@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { Avatar } from 'antd';
 import { IUser } from '@/lib/types/user.types';
 import { updateUser } from '@/lib/actions/user.actions';
@@ -9,8 +11,6 @@ import TextField from '../ui/TextField';
 import UpdateUserPhotoModal from './UpdateUserPhotoModal';
 import UpdatePasswordModal from './UpdatePasswordModal';
 import SubmitButton from '../ui/SubmitButton';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 
 interface IUserTab {
@@ -42,7 +42,10 @@ const UserTab: React.FC<IUserTab> = ({ user }) => {
         <UpdateUserPhotoModal userId={user._id!} />
         <UpdatePasswordModal userId={user._id!} />
       </div>
-      <form action={formAction} className='flex flex-wrap md:flex-row flex-1 gap-6'>
+      <form action={async (formData: FormData) => {
+        formData.append('id', user._id!);
+        await formAction(formData);
+      }} className='flex flex-wrap md:flex-row flex-1 gap-6'>
         <fieldset className='flex flex-col flex-1 gap-3'>
           <TextField 
             name='name' 

@@ -98,21 +98,14 @@ export const updateUser = async (prevState: any, formData: FormData) => {
   try {
     await connectToDB();
 
-    await User.findByIdAndUpdate(prevState._id, {
-      // ...prevState,
+    await User.findByIdAndUpdate(data.id, {
       name: data.name,
       phone: data.phone,
       email: data.email,
       address: data.address,
     });
 
-    console.log('USER UPDATE', {
-      prev: prevState,
-      curr: data.name
-    })
-
     if(prevState.email !== data.email) {
-      console.log('PASSWORD UPDATE', data.email)
       await signIn('credentials', { email: data.email, callbackUrl: '/profile' });
     }
     
