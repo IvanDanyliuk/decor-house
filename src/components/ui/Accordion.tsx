@@ -4,7 +4,7 @@ import { DownOutlined } from '@ant-design/icons';
 
 
 interface IAccordion {
-  title: string;
+  title: string | ReactNode;
   children: ReactNode;
 }
 
@@ -21,9 +21,9 @@ const Accordion: React.FC<IAccordion> = ({ title, children }) => {
         initial={false}
         animate={{ backgroundColor: isExpanded ? '#F1F5FA' : 'white' }}
         onClick={handleAccordionExpanded}
-        className='relative px-2 py-3 w-full flex justify-between items-center text-base font-semibold'
+        className='relative px-2 py-3 w-full flex justify-between items-center gap-10 text-base font-semibold'
       >
-        <span>{title}</span>
+        <div className='flex-1'>{title}</div>
         <DownOutlined />
       </motion.div>
       <AnimatePresence initial={false}>
