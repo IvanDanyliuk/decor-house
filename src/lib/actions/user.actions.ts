@@ -8,6 +8,7 @@ import User from '../models/user.model'
 import { utapi } from '../uploadthing';
 import { revalidatePath } from 'next/cache';
 import { ICartItem } from '../types/user.types';
+import { signIn } from 'next-auth/react';
 
 
 const userSchema = zod.object({
@@ -18,6 +19,15 @@ const userSchema = zod.object({
   password: zod.string().min(1, 'Password is required!').min(6, 'Password must have 6 characters'),
   confirmPassword: zod.string().min(1, 'Password confirmation is required!'),
 }).refine(data => data.password === data.confirmPassword, {
+  path: ['confirmPassword'],
+  message: 'Passwords do not match',
+});
+
+const newPasswordSchema = zod.object({
+  currentPassword: zod.string().min(1, 'Enter your current password'),
+  newPassword: zod.string().min(1, 'Enter your new password'),
+  confirmPassword: zod.string().min(1, 'Confirm your new password'),
+}).refine(data => data.newPassword === data.confirmPassword, {
   path: ['confirmPassword'],
   message: 'Passwords do not match',
 });
@@ -87,8 +97,19 @@ export const updateUser = async (prevState: any, formData: FormData) => {
 
   try {
     await connectToDB();
+
+    await User.findByIdAndUpdate(data.id, {
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      address: data.address,
+    });
+
+    if(prevState.email !== data.email) {
+      await signIn('credentials', { email: data.email, callbackUrl: '/profile' });
+    }
     
-    revalidatePath('/dashboard/users');
+    revalidatePath(`/profile/${prevState._id}`);
     
     return {
       data: {},
@@ -103,6 +124,85 @@ export const updateUser = async (prevState: any, formData: FormData) => {
     }
   }
 };
+
+export const updateUserPhoto = async (prevState: any, formData: FormData) => {
+  try {
+    const data = Object.fromEntries(formData);
+    const rawImage = formData.get('photo') as string;
+
+    if(!rawImage) return { error: 'User photo is required' };
+
+    await connectToDB();
+
+    const imageFile = await fetch(rawImage);
+    const image = await imageFile.blob();
+
+    const user = await User.findById(data.id);
+
+    const photoUrl = new Blob([image]).size > 0 ? 
+      (await utapi.uploadFiles([image]))[0].data?.url : 
+      prevState.photo;
+
+    if(photoUrl !== user.photo) {
+      const imageToDelete = user.photo.substring(user.photo.lastIndexOf('/') + 1);
+      await utapi.deleteFiles(imageToDelete);
+    }
+
+    await User.findByIdAndUpdate(data.id, { $set: { photo: photoUrl } });
+    revalidatePath(`/profile/${prevState._id}`);
+
+    return {
+      data: null,
+      error: null,
+      message: 'User photo has been successfully updated!',
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot update the user photo',
+    }
+  }
+};
+
+export const updatePassword = async (prevState: any, formData: FormData) => {
+  try {
+    const data = Object.fromEntries(formData);
+
+    const validatedFields = newPasswordSchema.safeParse({
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+      confirmPassword: data.confirmPassword,
+    });
+
+    if(!validatedFields.success) {
+      return {
+        error: validatedFields.error.flatten().fieldErrors,
+      };
+    }
+
+    const user = await User.findById(data.id);
+    const isPasswordMatch = await bcrypt.compare(data.currentPassword as string, user!.password);
+
+    if(!isPasswordMatch) {
+      throw new Error('Passwords do not match!');
+    }
+
+    await connectToDB();
+
+    const hashedNewPassword = await bcrypt.hash(data.newPassword as string, 10);
+    await User.findByIdAndUpdate(data.id, { $set: { password: hashedNewPassword } });
+    revalidatePath('/profile');
+
+    return {
+      data: null,
+      error: null,
+      message: 'User photo has been successfully updated!',
+    };
+  } catch (error: any) {
+    
+  }
+}
 
 export const deleteUser = async ({ id, path }: { id: string, path: string }) => {
   try {
