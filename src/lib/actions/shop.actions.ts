@@ -8,6 +8,8 @@ import Shop from '../models/shop.model';
 
 const shopSchema = zod.object({
   name: zod.string(),
+  city: zod.string(),
+  country: zod.string(),
   address: zod.string(),
   coordinates: zod.string(),
 });

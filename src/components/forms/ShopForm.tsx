@@ -3,12 +3,12 @@
 import { useEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { createShop, updateShop } from '@/lib/actions/shop.actions';
 import { IShop } from '@/lib/types/shop.types';
 import TextField from '../ui/TextField';
 import SubmitButton from '../ui/SubmitButton';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
 
 const MapInput = dynamic(() => import('../ui/MapInput'), {
   loading: () => <div>Loading...</div>,
@@ -22,6 +22,8 @@ interface IShopForm {
 
 const initialEmptyState = {
   name: '',
+  city: '',
+  country: '',
   address: '',
   coordinates: '',
 }
@@ -53,6 +55,18 @@ const ShopForm: React.FC<IShopForm> = async ({ shopToUpdate }) => {
         label='Name' 
         defaultValue={shopToUpdate?.name} 
         error={state && state.error && state.error['name']} 
+      />
+      <TextField 
+        name='city' 
+        label='City' 
+        defaultValue={shopToUpdate?.city} 
+        error={state && state.error && state.error['city']} 
+      />
+      <TextField 
+        name='country' 
+        label='Country' 
+        defaultValue={shopToUpdate?.country} 
+        error={state && state.error && state.error['country']} 
       />
       <TextField 
         name='address' 
