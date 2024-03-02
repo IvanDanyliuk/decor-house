@@ -305,3 +305,17 @@ input[type='radio'] {
     @apply absolute bottom-0 w-full h-1 bg-gray-medium;
   }
 }
+
+
+//PROMOTIONS PAGE
+.promotions-nav-container {
+  @apply w-full bg-main-bg;
+}
+
+.promotions-nav-btn {
+  @apply py-3 w-1/3 font-bold uppercase bg-main-bg;
+}
+
+.promotions-nav-btn-active {
+  @apply py-3 w-1/3 font-bold uppercase bg-white;
+}

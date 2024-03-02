@@ -1,5 +1,6 @@
 'use client';
 
+import { DISABLED_ARROW_COLOR } from '@/lib/constants';
 import Image from 'next/image';
 
 interface ISliderNavPanle {
@@ -8,8 +9,6 @@ interface ISliderNavPanle {
   onSetCurrentItem: (index: number) => void;
   containerStyles?: string;
 }
-
-const disabledArrowColor = 'invert(62%) sepia(0%) saturate(1438%) hue-rotate(164deg) brightness(104%) contrast(73%)';
 
 
 const SliderNavPanel: React.FC<ISliderNavPanle> = ({ 
@@ -63,7 +62,7 @@ const SliderNavPanel: React.FC<ISliderNavPanle> = ({
             width={30}
             height={30}
             style={{ 
-              filter: currentIndex ===  0 ? disabledArrowColor : '' 
+              filter: currentIndex ===  0 ? DISABLED_ARROW_COLOR : '' 
             }}
           />
         </button>
@@ -78,7 +77,7 @@ const SliderNavPanel: React.FC<ISliderNavPanle> = ({
             width={30}
             height={30}
             style={{ 
-              filter: currentIndex ===  itemsCount - 1 ? disabledArrowColor : '' 
+              filter: currentIndex ===  itemsCount - 1 ? DISABLED_ARROW_COLOR : '' 
             }}
           />
         </button>

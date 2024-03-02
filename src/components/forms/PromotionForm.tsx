@@ -48,7 +48,7 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
 
   useEffect(() => {
     getCategories({}).then(res => {
-      const data = res.data.categories.map((item: ICategory) => ({ label: item.name, value: item._id }))
+      const data = res.data.categories.map((item: ICategory) => ({ label: item.name, value: item.name.toLowerCase() }))
       setCategories(data)
     });
   }, []);
