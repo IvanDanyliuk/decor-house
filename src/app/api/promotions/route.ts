@@ -6,12 +6,9 @@ import Product from '@/lib/models/product.model';
 
 export const GET = async (req: NextRequest) => {
   try {
-    // const url = new URL(req.url);
     const page = req.nextUrl.searchParams.get('page');
     const itemsPerPage = req.nextUrl.searchParams.get('itemsPerPage');
     const period = req.nextUrl.searchParams.get('period');
-
-    // console.log('GET PROMOTIONS', period)
 
     const query = period === 'current' ? 
       { $and: [
@@ -21,8 +18,6 @@ export const GET = async (req: NextRequest) => {
         period === 'past' ? 
           { periodTo: { $lte: new Date().toISOString() } } :
           {};
-
-    console.log('GET PROMOTIONS', query)
 
     await connectToDB();
 
@@ -40,7 +35,7 @@ export const GET = async (req: NextRequest) => {
         .populate({ path: 'products', model: Product })
         .select('-__v');
 
-    const count = await Promotion.countDocuments();
+    const count = await Promotion.countDocuments(query);
 
     return NextResponse.json({
       data: {

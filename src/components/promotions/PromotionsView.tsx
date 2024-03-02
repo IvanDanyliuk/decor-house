@@ -24,6 +24,7 @@ const PromotionsView: React.FC = () => {
   const [page, setPage] = useState<number>(1);
 
   const handleActiveTabChange = (e: MouseEvent<HTMLButtonElement>) => {
+    setPage(1);
     setActiveTab(e.currentTarget.name);
   };
 
@@ -42,10 +43,6 @@ const PromotionsView: React.FC = () => {
         setPromotionsCount(res.data.count);
       });
   }, [page, activeTab]);
-
-  useEffect(() => {
-    console.log('PROMOTIONS', promotions)
-  }, [promotions])
 
   return (
     <div className='w-full'>
