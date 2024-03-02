@@ -43,7 +43,9 @@ const ShopsView: React.FC<IShopsView> = ({ countries }) => {
   }, [country]);
 
   if(shops.length === 0) {
-    return <div className='w-full h-full grow text-center'>Cannot find any shops</div>;
+    return <div className='w-full h-[80vh] flex grow justify-center items-center'>
+      <p className='text-center text-lg text-gray-dark font-semibold'>Cannot find any shops</p>
+    </div>;
   }
 
   return (
