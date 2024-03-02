@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { IRelatedProducts } from '@/lib/types/products.types';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
 import ProductsGallery from '../ui/ProductsGallery';
+import { DISABLED_ARROW_COLOR } from '@/lib/constants';
 
 
 interface IRelatedProductsProps {
@@ -17,8 +18,6 @@ enum TabNames {
   Related = 'related',
   Viewed = 'viewed'
 }
-
-const disabledArrowColor = 'invert(62%) sepia(0%) saturate(1438%) hue-rotate(164deg) brightness(104%) contrast(73%)';
 
 
 const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId, products }) => {
@@ -94,7 +93,7 @@ const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId, products
                 width={30}
                 height={30}
                 style={{ 
-                  filter: currentIndex ===  0 ? disabledArrowColor : '' 
+                  filter: currentIndex ===  0 ? DISABLED_ARROW_COLOR : '' 
                 }}
               />
             </button>
@@ -109,7 +108,7 @@ const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId, products
                 width={30}
                 height={30}
                 style={{ 
-                  filter: currentIndex ===  products[activeTab].length - 1 ? disabledArrowColor : '' 
+                  filter: currentIndex ===  products[activeTab].length - 1 ? DISABLED_ARROW_COLOR : '' 
                 }}
               />
             </button>

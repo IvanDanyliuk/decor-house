@@ -40,3 +40,33 @@ export const getArrayUniqueItems = (array: any[], field: string) => {
 
   return [...mapObj.values()];
 };
+
+export const formatPromotionPeriod = (from: string, to: string) => {
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June', 
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const fromDate = new Date(from);
+  const toDate = new Date(to);
+
+  const fromMonth = months[fromDate.getMonth()];
+  const toMonth = months[toDate.getMonth()];
+
+  if(fromMonth === toMonth) {
+    return `${fromMonth}, ${fromDate.getDate()} - ${toDate.getDate()}`;
+  } else {
+    return `${fromMonth}, ${fromDate.getDate()} - ${toMonth}, ${toDate.getDate()}`;
+  }
+};
+
+export const countPromotionDaysLeft = (date: string) => {
+  const datesDifference = new Date(date).getTime() - new Date().getTime();
+  const daysLeft = Math.ceil(datesDifference  / ( 1000 * 60 * 60 * 24));
+
+  if(daysLeft < 0) {
+    return 'The promotion is over';
+  }
+
+  return `${daysLeft} day${daysLeft > 1 ? 's' : ''} left`;
+};

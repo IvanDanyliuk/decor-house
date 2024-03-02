@@ -2,14 +2,16 @@ import { AXIOS } from '../axios';
 
 export const getPromotions = async ({ 
   page, 
-  itemsPerPage 
+  itemsPerPage, 
+  period
 }: { 
-  page?: number, 
-  itemsPerPage?: number 
+  page?: number;
+  itemsPerPage?: number;
+  period?: string;
 }) => {
   const { data } = await AXIOS.get(
     '/api/promotions', 
-    { params: { page, itemsPerPage } }
+    { params: { page, itemsPerPage, period } }
   );
   return data;
 };

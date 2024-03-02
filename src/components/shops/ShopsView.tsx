@@ -5,10 +5,10 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { Divider } from 'antd';
 import { getShops } from '@/lib/queries/shop.queries';
 import { IShop } from '@/lib/types/shop.types';
+import Select from '../ui/Select';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
-import Select from '../ui/Select';
 
 
 interface IShopsView {
