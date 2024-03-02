@@ -1,9 +1,11 @@
 export interface IShop {
   _id?: string;
   name: string;
+  city: string;
+  country: string;
   address: string;
   coordinates: {
-    lat: string;
-    lng: string;
+    lat: number;
+    lng: number;
   };
 }
