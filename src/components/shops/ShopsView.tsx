@@ -1,25 +1,41 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { Divider } from 'antd';
 import { getShops } from '@/lib/queries/shop.queries';
 import { IShop } from '@/lib/types/shop.types';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import Select from '../ui/Select';
-import { Divider } from 'antd';
 
 
 interface IShopsView {
   countries: string[];
 }
 
+interface IFlyMapTo {
+  coordinates: {
+    lat: number;
+    lng: number;
+  }
+}
+
+const FlyMapTo: React.FC<IFlyMapTo> = ({ coordinates }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    map.flyTo(coordinates);
+  }, [coordinates]);
+
+  return null;
+}
+
 
 const ShopsView: React.FC<IShopsView> = ({ countries }) => {
   const [country, setCountry] = useState<string>(countries[0]);
   const [shops, setShops] = useState<IShop[]>([]);
-
   const countriesOptions = countries.map(item => ({ label: item, value: item }));
 
   useEffect(() => {
@@ -27,7 +43,7 @@ const ShopsView: React.FC<IShopsView> = ({ countries }) => {
   }, [country]);
 
   if(shops.length === 0) {
-    return <div>Cannot find any shops</div>
+    return <div className='w-full h-full grow text-center'>Cannot find any shops</div>;
   }
 
   return (
@@ -51,10 +67,11 @@ const ShopsView: React.FC<IShopsView> = ({ countries }) => {
               </Popup>
             </Marker>
           ))}
+          <FlyMapTo coordinates={shops[0].coordinates} />
         </MapContainer>
       </div>
       <div className='absolute left-52 top-0 px-10 py-16 w-[550px] h-full bg-white'>
-        <Select title='Select country' options={countriesOptions} onChange={setCountry} />
+        <Select defaultValue={countries[0]} options={countriesOptions} onChange={setCountry} />
         <ul className='py-5'>
           {shops.map((shop, i) => (
             <>

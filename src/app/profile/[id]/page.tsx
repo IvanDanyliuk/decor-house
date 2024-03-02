@@ -1,4 +1,4 @@
-import { getServerSession } from 'next-auth';import { getProfileData } from '@/lib/queries/user.queries';
+import { getProfileData } from '@/lib/queries/user.queries';
 import ProfileDetails from '@/components/profile/ProfileDetails';
 
 
