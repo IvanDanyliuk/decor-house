@@ -3,7 +3,6 @@ import { connectToDB } from '@/lib/database';
 import Product from '@/lib/models/product.model';
 import Manufacturer from '@/lib/models/manufacturer.model';
 import Category from '@/lib/models/category.model';
-import { getArrayUniqueItems } from '@/utils/helpers';
 
 
 export const GET = async (req: NextRequest) => {
