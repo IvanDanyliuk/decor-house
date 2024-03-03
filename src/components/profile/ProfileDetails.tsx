@@ -1,8 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { IOrder } from '@/lib/types/order.types';
 import { IUser } from '@/lib/types/user.types';
-import { useState } from 'react';
 import UserTab from './UserTab';
 import OrdersTab from './OrdersTab';
 
