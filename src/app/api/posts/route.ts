@@ -6,27 +6,29 @@ import Category from '@/lib/models/category.model';
 
 export const GET = async (req: NextRequest) => {
   try {
-    const url = new URL(req.url);
-    const page = url.searchParams.get('page');
-    const itemsPerPage = url.searchParams.get('itemsPerPage');
+    const page = req.nextUrl.searchParams.get('page');
+    const itemsPerPage = req.nextUrl.searchParams.get('itemsPerPage');
+    const tags = req.nextUrl.searchParams.get('tags');
+
+    const query = tags ? { tags: { $in: tags.split(', ') } } : {};
 
     await connectToDB();
 
     const posts = (page && itemsPerPage) ? 
       await Post
-        .find({})
+        .find(query)
         .sort({ 'createdAt': -1 })
         .limit(+itemsPerPage)
-        .skip((+page -1) * +itemsPerPage)
+        .skip((+page - 1) * +itemsPerPage)
         .populate({ path: 'tags', select: '-__v', model: Category })
         .select('-__v') : 
       await Post
-        .find({})
+        .find(query)
         .sort({ 'createdAt': -1 })
         .populate({ path: 'tags', select: '-__v', model: Category })
         .select('-__v');
 
-    const count = await Post.countDocuments();
+    const count = await Post.countDocuments(query);
 
     return NextResponse.json({
       data: {

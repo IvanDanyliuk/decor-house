@@ -2,14 +2,16 @@ import { AXIOS } from '../axios';
 
 export const getPosts = async ({ 
   page, 
-  itemsPerPage 
+  itemsPerPage, 
+  tags
 }: { 
-  page?: number, 
-  itemsPerPage?: number 
+  page?: number;
+  itemsPerPage?: number;
+  tags?: string;
 }) => {
   const { data } = await AXIOS.get(
     '/api/posts', 
-    { params: { page, itemsPerPage } }
+    { params: { page, itemsPerPage, tags } }
   );
   return data;
 };
