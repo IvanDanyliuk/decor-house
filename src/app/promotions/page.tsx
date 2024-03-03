@@ -1,4 +1,4 @@
-import PromotionsView from "@/components/promotions/PromotionsView";
+import PromotionsView from '@/components/promotions/PromotionsView';
 
 
 const Promotions = () => {
