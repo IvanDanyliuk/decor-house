@@ -84,7 +84,7 @@ const BlogDetails: React.FC<IBlogDetails> = ({ categories }) => {
       <ul className='py-3 w-full grid grid-cols-1 md:grid-cols-2 gap-14'>
         {posts.map((post, i) => (
           <li key={crypto.randomUUID()} className={i === 0 ? 'col-span-1 md:col-span-2' : 'col-span-1'}>
-            <Link href={`/posts/${post._id!}`}>
+            <Link href={`/blog/${post._id!}`}>
               <div className={`relative w-full ${i === 0 ? 'h-96 md:h-[80vh]' : 'h-96'} overflow-hidden`}>
                 <motion.div 
                   className='relative w-full h-full'
