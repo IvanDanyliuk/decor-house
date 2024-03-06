@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Divider } from 'antd';
 import { motion } from 'framer-motion';
+import { Divider } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 import { getPosts } from '@/lib/queries/post.queries';
 import { IPost } from '@/lib/types/post.types';
 import Select from '../ui/Select';
 import { formatDate } from '@/utils/helpers';
-import { CloseOutlined } from '@ant-design/icons';
 
 
 interface IBlogDetails {
