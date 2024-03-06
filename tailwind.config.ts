@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 import { withUt } from 'uploadthing/tw';
-
+import plugin from 'tailwindcss/plugin';
 
 const config: Config = {
   content: [
@@ -26,10 +26,24 @@ const config: Config = {
       backgroundImage: {
         'hero-pattern': "url('/assets/images/SOFA.png')",
         'demo-pattern': "url('/assets/images/demo-bg.jpg')",
+      },
+      textShadow: {
+        sm: '0 1px 2px accent-dark'
       }
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          'text-shadow': (value) => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme('textShadow') }
+      )
+    }),
+  ],
   important: true,
 };
 
