@@ -95,7 +95,6 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   const { data: session } = useSession();
   const { width } = useWindowSize();
   const path= usePathname();
-  const modifiedPath = path.slice(1).replaceAll('/', ' / ');
 
   const [page, setPage] = useState<number>(1);
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -208,9 +207,11 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
   return (
     <div className='w-full'>
       <section className='w-full py-6 bg-main-bg'>
-        <p className='container mx-auto mb-3 text-sm font-semibold capitalize'>
-          {modifiedPath}
-        </p>
+        <div className='container mx-auto mb-3 flex gap-1 text-sm font-semibold capitalize'>
+          <Link href='/catalog'>Catalog</Link>
+          <span>/</span>
+          <p>{category}</p>
+        </div>
         <h2 className='container mx-auto page-heading-primary'>
           {category.replaceAll('-', ' ')}
         </h2>

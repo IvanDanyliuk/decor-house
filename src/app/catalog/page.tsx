@@ -4,18 +4,11 @@ import { ICategory, IPremiumCategory } from '@/lib/types/category.types';
 import { splitArrayIntoChunks } from '@/utils/helpers';
 
 
-const premiumCategory: IPremiumCategory = {
-  _id: 'premium',
-  name: 'Top Quality',
-  image: '/assets/images/top-quality.png',
-}
-
 const chunkSize = 5;
 
 
 const Catalog = async () => {
   const { data } = await getCategories({});
-  data.categories.unshift(premiumCategory);
   const categoriesChunks = splitArrayIntoChunks(data.categories, chunkSize);
 
   return (
@@ -38,14 +31,14 @@ const Catalog = async () => {
               return (
                 <CategoriesListLayout 
                   categories={chunk} 
-                  className='categories-container' 
+                  className='categories-container reverse' 
                 />
               );
             } else {
               return (
                 <CategoriesListLayout 
                   categories={chunk} 
-                  className='categories-container reverse' 
+                  className='categories-container' 
                 />
               );
             }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { IProduct } from '@/lib/types/products.types';
 import { updateCart } from '@/lib/actions/user.actions';
@@ -18,6 +19,8 @@ enum ProductTabs {
 
 
 const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
+  const router = useRouter();
+  
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<keyof IProduct>(ProductTabs.Description);
   const { data: session } = useSession();
@@ -56,6 +59,34 @@ const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
       }
     }
   };
+
+  const handleBuyNow = async () => {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const isProductInCart = cart.some((item: any) => item.product._id === product._id);
+
+    if(!isProductInCart) {
+      localStorage.setItem('cart', JSON.stringify([
+        ...cart,
+        {
+          product,
+          quantity: 1,
+        }
+      ]));
+      window.dispatchEvent(new Event('storage'));
+
+      if(session?.user) {
+        await updateCart(session?.user?.email!, [
+          ...cart,
+          {
+            product,
+            quantity: 1,
+          }
+        ]);
+
+        router.push('/checkout')
+      }
+    }
+  }
 
   useEffect(() => {
     if(!session?.user) {
@@ -118,6 +149,7 @@ const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
             <button 
               type='button' 
               className='buy-now-btn flex-1'
+              onClick={handleBuyNow}
             >
               Buy now
             </button>

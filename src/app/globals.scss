@@ -154,22 +154,14 @@ input[type='radio'] {
     }
 
     &:first-child {
-      @apply row-span-2 col-span-1 h-80 md:h-auto;
-
-      div.title {
-        @apply flex flex-row-reverse
-      }
-
-      p {
-        @apply md:[writing-mode:vertical-rl] md:[text-orientation:mixed];
-
-        img {
-          @apply md:rotate-90;
-        }
-      }
+      @apply row-span-1 col-span-1 md:col-span-2 h-80 md:h-[30rem];
     }
   
     &:nth-child(2) {
+      @apply row-span-1 col-span-1 md:col-span-2 h-80 md:h-[30rem];
+    }
+  
+    &:nth-child(3) {
       @apply row-span-2 col-span-1 h-80 md:h-auto;
 
       div.title {
@@ -184,13 +176,21 @@ input[type='radio'] {
         }
       }
     }
-  
-    &:nth-child(3) {
-      @apply row-span-1 col-span-1 md:col-span-2 h-80 md:h-[30rem];
-    }
 
     &:nth-child(4) {
-      @apply row-span-1 col-span-1 md:col-span-2 h-80 md:h-[30rem];
+      @apply row-span-2 col-span-1 h-80 md:h-auto;
+
+      div.title {
+        @apply flex flex-row-reverse
+      }
+
+      p {
+        @apply md:[writing-mode:vertical-rl] md:[text-orientation:mixed];
+
+        img {
+          @apply md:rotate-90;
+        }
+      }
     }
 
     &:nth-child(5) {
@@ -201,7 +201,7 @@ input[type='radio'] {
 
 .reverse {
   @apply relative grid grid-cols-1 md:grid-cols-6 gap-3 md:gap-6;
-
+  
   li {
     &:first-child {
       @apply order-3
