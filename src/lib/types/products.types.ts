@@ -1,4 +1,5 @@
 import { ICategory } from './category.types';
+import { IManufacturer } from './manufacturer.types';
 
 export interface IProduct {
   _id?: string;
@@ -12,7 +13,7 @@ export interface IProduct {
     height: string;
     depth: string;
   };
-  manufacturer: string;
+  manufacturer: IManufacturer;
   characteristics: string;
   price: number;
   sale: string;

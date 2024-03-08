@@ -36,7 +36,7 @@ export const GET = async (req: NextRequest) => {
     const products = (page && itemsPerPage) ? 
       await Product
         .find(params)
-        .sort({ [sortIndicator]: order === 'asc' ? 1 : -1 })
+        .sort({ [sortIndicator]: order === 'asc' ? -1 : 1 })
         .limit(+itemsPerPage)
         .skip((+page - 1) * +itemsPerPage)
         .populate([

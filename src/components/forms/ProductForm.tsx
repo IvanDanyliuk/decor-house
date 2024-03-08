@@ -73,6 +73,8 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
 
   const router = useRouter();
 
+  console.log('UPDATE PRODUCT FORM', productToUpdate)
+
   const [state, formAction] = useFormState(action, initialState);
   const status = useFormStatus();
   const ref = useRef<HTMLFormElement>(null);
@@ -169,7 +171,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
           name='manufacturer'
           label='Manufacturer'
           title='Select a manufacturer' 
-          defaultValue={productToUpdate?.manufacturer}
+          defaultValue={productToUpdate?.manufacturer._id}
           options={manufacturersData}
         />
         <TextareaField 
