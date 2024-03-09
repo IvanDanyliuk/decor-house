@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDB } from '@/lib/database';
 import Product from '@/lib/models/product.model';
@@ -21,8 +22,10 @@ export const GET = async (req: NextRequest) => {
     const order = req.nextUrl.searchParams.get('order') || 'asc';
     const sortIndicator = req.nextUrl.searchParams.get('sortIndicator') || 'createdAt';
 
+    const isCategoryDataValidObjectId = mongoose.Types.ObjectId.isValid(categoryData!);
+
     const categoryPattern = new RegExp(`${categoryData?.replaceAll('-', ' ')}`);
-    const category = await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
+    const category = isCategoryDataValidObjectId ? await Category.findById(categoryData) : await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
 
     const types = typesData ? { $in: typesData.split(', ') } : null;
     const features = featuresData ? { $in: featuresData.split(', ') } : null;

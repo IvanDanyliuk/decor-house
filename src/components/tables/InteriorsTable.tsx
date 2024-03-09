@@ -27,7 +27,7 @@ const InteriorsTable: React.FC<IInteriorsTable> = ({ interiors }) => {
 
   const tableData = interiors.map(item => ({
     ...item,
-    products: `${item.products.length} product${item.products.length > 1 && 's'}`,
+    products: `${item.products.length} product${item.products.length > 1 || item.products.length === 0 ? 's' : ''}`,
     key: crypto.randomUUID(),
   }));
 
