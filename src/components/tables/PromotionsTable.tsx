@@ -33,7 +33,7 @@ const PromotionsTable: React.FC<IPromotionsTable> = ({ promotions }) => {
     ...item, 
     periodFrom: dayjs(item.periodFrom).format('DD.MM.YYYY'),
     periodTo: dayjs(item.periodTo).format('DD.MM.YYYY'),
-    products: `${item.products.length} product${item.products.length > 1 && 's'}`, 
+    products: `${item.products.length} product${item.products.length > 1 || item.products.length === 0 ? 's' : ''}`, 
     key: crypto.randomUUID() }));
 
   const tableColumns: ColumnsType<DataType> = [

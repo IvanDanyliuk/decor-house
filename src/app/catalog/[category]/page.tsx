@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -94,7 +93,6 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
 
   const { data: session } = useSession();
   const { width } = useWindowSize();
-  const path= usePathname();
 
   const [page, setPage] = useState<number>(1);
   const [products, setProducts] = useState<IProduct[]>([]);

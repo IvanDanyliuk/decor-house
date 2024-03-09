@@ -62,8 +62,6 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
         category: selectedCategory, 
         type: selectedType 
       });
-      
-      console.log('INTERIOR FORM', query)
 
       getProducts(query).then(res => {
         setProducts(res.data.products);
