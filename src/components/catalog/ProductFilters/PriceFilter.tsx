@@ -14,10 +14,10 @@ interface IPriceFilter {
   name: string;
   min: number;
   max: number;
-  onChange: (key: string, values: IPriceValues) => void;
+  // onChange: (key: string, values: IPriceValues) => void;
 }
 
-const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max, onChange }) => {
+const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [values, setValues] = useState<IPriceValues>({ min, max });
 
@@ -33,7 +33,7 @@ const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max, onChange }) => {
   };
 
   const handlePriceChangeComplete = (range: number[]) => {
-    onChange(name, { min: range[0], max: range[1] });
+    // onChange(name, { min: range[0], max: range[1] });
   };
 
   return (

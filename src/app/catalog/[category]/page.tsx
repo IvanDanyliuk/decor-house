@@ -16,6 +16,7 @@ import ProductFiltersMobile from '@/components/catalog/ProductFilters/ProductFil
 import RelatedProducts from '@/components/catalog/RelatedProducts';
 import { getServerSession } from 'next-auth';
 import ProductsList from '@/components/catalog/ProductsList';
+import ResetFiltersButton from '@/components/catalog/ProductFilters/ResetFiltersButton';
 
 
 const checkedFiltersInitialState: ICheckedProductFilters = {
@@ -288,6 +289,7 @@ const CategoryProducts = async ({ params, searchParams }: { params: { category: 
           {/* <button type='button' onClick={clearFilters} className='flex items-center gap-1 font-semibold'>
             Reset Filters
           </button> */}
+          <ResetFiltersButton />
         </div>
       </section>
       <section className='relative w-full container mx-auto box-border'>

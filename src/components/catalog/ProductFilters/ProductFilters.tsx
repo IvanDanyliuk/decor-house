@@ -37,12 +37,11 @@ const ProductFilters: React.FC<IProductFilters> = ({ filtersData }) => {
         // multiple 
         // onChange={onSetFilters} 
       />
-      {/* <PriceFilter 
+      <PriceFilter 
         name='price'
         min={filtersData.price.min} 
         max={filtersData.price.max} 
-        onChange={onSetFilters} 
-      /> */}
+      />
     </div>
   );
 };
