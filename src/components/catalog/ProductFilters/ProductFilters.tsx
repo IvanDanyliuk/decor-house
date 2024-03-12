@@ -1,19 +1,38 @@
+'use client';
+
 import { Select } from 'antd';
 import FilterSelect from './FilterSelect';
 import PriceFilter from './PriceFilter';
-import { IProductFiltersData } from '@/lib/types/products.types';
+import { IFilterItem, IProductFiltersData } from '@/lib/types/products.types';
+import { useCallback } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
 interface IProductFilters {
   filtersData: IProductFiltersData;
-  sortData: any;
+  sortData: IFilterItem[];
 }
 
 
 const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const createSortingQueryString = useCallback(
+    (order: string, sortIndicator: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('order', order);
+      params.set('sortIndicator', sortIndicator);
+      params.set('page', '1');
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   const handleSortChange = (value: string) => {
     const parsedValue = JSON.parse(value);
-    
+    router.push(`${pathname}?${createSortingQueryString(parsedValue.order, parsedValue.sortIndicator)}`);
   };
 
   return (

@@ -161,57 +161,6 @@ const CategoryProducts = async ({ params, searchParams }: { params: { category: 
   //   });
   // };
 
-  // useEffect(() => {
-  //   getRelatedProducts(session?.user?.email!, 10).then(res => setRelatedProducts(res));
-  // }, []);
-
-  // useEffect(() => {
-  //   const { types, features, manufacturers, price, order, sortIndicator } = checkedFilters;
-
-  //   getProducts({ 
-  //     page, 
-  //     itemsPerPage: 12, 
-  //     category, 
-  //     types: types.join(', '), 
-  //     features: features.join(', '), 
-  //     manufacturers: manufacturers.join(', '), 
-  //     minPrice: price.min,
-  //     maxPrice: price.max,
-  //     order,
-  //     sortIndicator
-  //   }).then(res => {
-  //     setProducts([...products, ...res.data.products]);
-  //     setProductsCount(res.data.count);
-  //   });
-    
-  //   if(!filtersData) {
-  //     getProductsFilterData(category).then(res => {
-  //       const types = res.types.map((item: string) => ({ 
-  //         value: item, 
-  //         label: item 
-  //       }));
-  
-  //       const features = res.features.map((item: string) => ({ 
-  //         value: item, 
-  //         label: item
-  //       }));
-  
-  //       const manufacturers = res.manufacturers.map((item: IManufacturer) => ({ 
-  //         value: item._id!, 
-  //         label: item.name 
-  //       }));
-        
-  //       const price = res.price;
-
-  //       const order = 'asc';
-  //       const sortIndicator = 'createdAt';
-  
-  //       setFiltersData({ types, features, manufacturers, price, order, sortIndicator });
-  //       setCheckedFilters({ ...checkedFilters, price, order, sortIndicator });
-  //     });
-  //   }
-  // }, [page, checkedFilters]);
-
   return (
     <div className='w-full'>
       <section className='w-full py-6 bg-main-bg'>
@@ -226,9 +175,10 @@ const CategoryProducts = async ({ params, searchParams }: { params: { category: 
       </section>
       <section className='w-full container mx-auto py-6'>
         <div className='w-full flex justify-between items-center'>
-          <div className='flex gap-6'>
+          <div className='w-full flex gap-6'>
             <ProductFilters 
               filtersData={filtersData} 
+              sortData={sortItems}
             />
             {/* {filtersData && (
               <>
@@ -248,12 +198,6 @@ const CategoryProducts = async ({ params, searchParams }: { params: { category: 
               </>
             )} */}
           </div>
-          {/* <Select 
-            options={sortItems}
-            defaultValue={sortItems[0].value}
-            onChange={handleSortChange}
-            className='w-52'
-          /> */}
         </div>
         <Divider />
         <div className='flex justify-between items-center'>
@@ -286,52 +230,11 @@ const CategoryProducts = async ({ params, searchParams }: { params: { category: 
               </li>
             ))} */}
           </ul>
-          {/* <button type='button' onClick={clearFilters} className='flex items-center gap-1 font-semibold'>
-            Reset Filters
-          </button> */}
           <ResetFiltersButton />
         </div>
       </section>
       <section className='relative w-full container mx-auto box-border'>
         <ProductsList category={category} />
-        {/* <ul className='w-full grid grid-cols-1 md:grid-cols-3 gap-6'>
-          {products.map(product => (
-            <motion.li 
-              key={crypto.randomUUID()}
-              className='border border-gray-light rounded-md overflow-hidden'
-            >
-              <Link 
-                href={`/catalog/${category}/${product._id!}`} 
-                className='px-3 py-6 flex flex-col justify-center items-center '
-              >
-                <Image 
-                  src={product.images[0]}
-                  alt={product.name}
-                  width={350}
-                  height={350}
-                />
-                <p className='text-lg font-bold'>
-                  {product.name}
-                </p>
-                <Divider />
-                <p className='text-xl md:text-2xl font-bold'>
-                  &euro;{product.price}
-                </p>
-              </Link>
-            </motion.li>
-          ))}
-        </ul> */}
-        {/* {productsCount > products.length && (
-          <button 
-            onClick={(e) => {
-              e.preventDefault()
-              setPage(page + 1)
-            }}
-            className='w-full block mx-auto my-8 md:w-80 px-4 py-2 text-base font-semibold border border-accent-dark rounded-md'
-          >
-            View More
-          </button>
-        )} */}
         <Divider />
       </section>
       <section className='w-full mx-auto container'>

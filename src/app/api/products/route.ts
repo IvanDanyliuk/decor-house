@@ -41,7 +41,7 @@ export const GET = async (req: NextRequest) => {
     const products = (page && itemsPerPage) ? 
       await Product
         .find(params)
-        .sort({ [sortIndicator]: order === 'asc' ? -1 : 1 })
+        .sort({ [sortIndicator]: order === 'asc' ? 1 : -1 })
         .limit(+itemsPerPage)
         .skip((+page - 1) * +itemsPerPage)
         .populate([
@@ -51,7 +51,7 @@ export const GET = async (req: NextRequest) => {
         .select('-__v') :
       await Product
         .find(params)
-        .sort({ [sortIndicator]: order === 'asc' ? 1 : -1  })
+        .sort({ [sortIndicator]: order === 'asc' ? -1 : 1  })
         .populate([
           { path: 'category', select: 'name', model: Category },
           { path: 'manufacturer', model: Manufacturer }
