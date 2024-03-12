@@ -98,6 +98,8 @@ const CategoryProducts = async ({ params, searchParams }: { params: { category: 
   const filtersData = await getProductsFilterData(category);
   const relatedProducts = await getRelatedProducts(session?.user?.email!, 10);
 
+  console.log('CATALOG PAGE', filtersData)
+
   // const { data: session } = useSession();
   // const { width } = useWindowSize();
 
@@ -224,7 +226,9 @@ const CategoryProducts = async ({ params, searchParams }: { params: { category: 
       <section className='w-full container mx-auto py-6'>
         <div className='w-full flex justify-between items-center'>
           <div className='flex gap-6'>
-            
+            <ProductFilters 
+              filtersData={filtersData} 
+            />
             {/* {filtersData && (
               <>
                 {width && width >= 640 ? (

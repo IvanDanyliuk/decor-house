@@ -45,7 +45,7 @@ const ProductsList: React.FC<IProductsList> = ({ category }) => {
       setCurrentPage(page);
     } else {
       getProducts(query).then(res => {
-        if(currentPage === page) {
+        if(currentPage === page && page !== 1) {
           setProducts([...products, ...res.data.products]);
         } else {
           setProducts(res.data.products);
