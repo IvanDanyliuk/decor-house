@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -14,6 +14,8 @@ import ProductFilters from '@/components/catalog/ProductFilters/ProductFilters';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
 import ProductFiltersMobile from '@/components/catalog/ProductFilters/ProductFiltersMobile';
 import RelatedProducts from '@/components/catalog/RelatedProducts';
+import { getServerSession } from 'next-auth';
+import ProductsList from '@/components/catalog/ProductsList';
 
 
 const checkedFiltersInitialState: ICheckedProductFilters = {
@@ -88,119 +90,124 @@ const sortItems = [
 ];
 
 
-const CategoryProducts = ({ params }: { params: { category: string } }) => {
+const CategoryProducts = async ({ params, searchParams }: { params: { category: string }, searchParams: { [key: string]: string } }) => {
   const { category } = params;
 
-  const { data: session } = useSession();
-  const { width } = useWindowSize();
+  const session = await getServerSession();
 
-  const [page, setPage] = useState<number>(1);
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [productsCount, setProductsCount] = useState<number>(0);
-  const [filtersData, setFiltersData] = useState<IProductFiltersData | null>(null);
-  const [checkedFilters, setCheckedFilters] = useState<ICheckedProductFilters>(checkedFiltersInitialState);
-  const [relatedProducts, setRelatedProducts] = useState<IRelatedProducts | null>(null);
+  const filtersData = await getProductsFilterData(category);
+  const relatedProducts = await getRelatedProducts(session?.user?.email!, 10);
 
-  const handleSetFilters = (key: string, values: string[] | IPrice) => {
-    setProducts([]);
-    if(key === 'price' && 'min' in values && 'max' in values) {
-      setCheckedFilters({
-        ...checkedFilters,
-        price: values
-      });
-    } else {
-      setCheckedFilters({
-        ...checkedFilters,
-        [key]: values
-      });
-    }
-  };
+  // const { data: session } = useSession();
+  // const { width } = useWindowSize();
 
-  const clearFilters = () => {
-    setProducts([]);
-    setCheckedFilters({
-      types: [],
-      features: [],
-      manufacturers: [],
-      price: {
-        min: filtersData?.price.min!,
-        max: filtersData?.price.max!,
-      },
-      order: 'asc',
-      sortIndicator: 'createdAt',
-    });
-  };
+  // const [page, setPage] = useState<number>(1);
+  // const [products, setProducts] = useState<IProduct[]>([]);
+  // const [productsCount, setProductsCount] = useState<number>(0);
+  // const [filtersData, setFiltersData] = useState<IProductFiltersData | null>(null);
+  // const [checkedFilters, setCheckedFilters] = useState<ICheckedProductFilters>(checkedFiltersInitialState);
+  // const [relatedProducts, setRelatedProducts] = useState<IRelatedProducts | null>(null);
 
-  const handleFilterItemDelete = (key: keyof ICheckedProductFilters, value: string) => {
-    if(key !== 'price' && key !== 'order' && key !== 'sortIndicator') {
-      setProducts([]);
-      setCheckedFilters({
-        ...checkedFilters,
-        [key]: checkedFilters[key].filter((item: string) => item !== value),
-      });
-    }
-  };
+  // const handleSetFilters = (key: string, values: string[] | IPrice) => {
+  //   setProducts([]);
+  //   if(key === 'price' && 'min' in values && 'max' in values) {
+  //     setCheckedFilters({
+  //       ...checkedFilters,
+  //       price: values
+  //     });
+  //   } else {
+  //     setCheckedFilters({
+  //       ...checkedFilters,
+  //       [key]: values
+  //     });
+  //   }
+  // };
 
-  const handleSortChange = (value: string) => {
-    const parsedValue = JSON.parse(value);
-    setProducts([]);
-    setCheckedFilters({
-      ...checkedFilters,
-      order: parsedValue.order,
-      sortIndicator: parsedValue.sortIndicator,
-    });
-  };
+  // const clearFilters = () => {
+  //   setProducts([]);
+  //   setCheckedFilters({
+  //     types: [],
+  //     features: [],
+  //     manufacturers: [],
+  //     price: {
+  //       min: filtersData?.price.min!,
+  //       max: filtersData?.price.max!,
+  //     },
+  //     order: 'asc',
+  //     sortIndicator: 'createdAt',
+  //   });
+  // };
 
-  useEffect(() => {
-    getRelatedProducts(session?.user?.email!, 10).then(res => setRelatedProducts(res));
-  }, []);
+  // const handleFilterItemDelete = (key: keyof ICheckedProductFilters, value: string) => {
+  //   if(key !== 'price' && key !== 'order' && key !== 'sortIndicator') {
+  //     setProducts([]);
+  //     setCheckedFilters({
+  //       ...checkedFilters,
+  //       [key]: checkedFilters[key].filter((item: string) => item !== value),
+  //     });
+  //   }
+  // };
 
-  useEffect(() => {
-    const { types, features, manufacturers, price, order, sortIndicator } = checkedFilters;
+  // const handleSortChange = (value: string) => {
+  //   const parsedValue = JSON.parse(value);
+  //   setProducts([]);
+  //   setCheckedFilters({
+  //     ...checkedFilters,
+  //     order: parsedValue.order,
+  //     sortIndicator: parsedValue.sortIndicator,
+  //   });
+  // };
 
-    getProducts({ 
-      page, 
-      itemsPerPage: 12, 
-      category, 
-      types: types.join(', '), 
-      features: features.join(', '), 
-      manufacturers: manufacturers.join(', '), 
-      minPrice: price.min,
-      maxPrice: price.max,
-      order,
-      sortIndicator
-    }).then(res => {
-      setProducts([...products, ...res.data.products]);
-      setProductsCount(res.data.count);
-    });
+  // useEffect(() => {
+  //   getRelatedProducts(session?.user?.email!, 10).then(res => setRelatedProducts(res));
+  // }, []);
+
+  // useEffect(() => {
+  //   const { types, features, manufacturers, price, order, sortIndicator } = checkedFilters;
+
+  //   getProducts({ 
+  //     page, 
+  //     itemsPerPage: 12, 
+  //     category, 
+  //     types: types.join(', '), 
+  //     features: features.join(', '), 
+  //     manufacturers: manufacturers.join(', '), 
+  //     minPrice: price.min,
+  //     maxPrice: price.max,
+  //     order,
+  //     sortIndicator
+  //   }).then(res => {
+  //     setProducts([...products, ...res.data.products]);
+  //     setProductsCount(res.data.count);
+  //   });
     
-    if(!filtersData) {
-      getProductsFilterData(category).then(res => {
-        const types = res.types.map((item: string) => ({ 
-          value: item, 
-          label: item 
-        }));
+  //   if(!filtersData) {
+  //     getProductsFilterData(category).then(res => {
+  //       const types = res.types.map((item: string) => ({ 
+  //         value: item, 
+  //         label: item 
+  //       }));
   
-        const features = res.features.map((item: string) => ({ 
-          value: item, 
-          label: item
-        }));
+  //       const features = res.features.map((item: string) => ({ 
+  //         value: item, 
+  //         label: item
+  //       }));
   
-        const manufacturers = res.manufacturers.map((item: IManufacturer) => ({ 
-          value: item._id!, 
-          label: item.name 
-        }));
+  //       const manufacturers = res.manufacturers.map((item: IManufacturer) => ({ 
+  //         value: item._id!, 
+  //         label: item.name 
+  //       }));
         
-        const price = res.price;
+  //       const price = res.price;
 
-        const order = 'asc';
-        const sortIndicator = 'createdAt';
+  //       const order = 'asc';
+  //       const sortIndicator = 'createdAt';
   
-        setFiltersData({ types, features, manufacturers, price, order, sortIndicator });
-        setCheckedFilters({ ...checkedFilters, price, order, sortIndicator });
-      });
-    }
-  }, [page, checkedFilters]);
+  //       setFiltersData({ types, features, manufacturers, price, order, sortIndicator });
+  //       setCheckedFilters({ ...checkedFilters, price, order, sortIndicator });
+  //     });
+  //   }
+  // }, [page, checkedFilters]);
 
   return (
     <div className='w-full'>
@@ -217,7 +224,8 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
       <section className='w-full container mx-auto py-6'>
         <div className='w-full flex justify-between items-center'>
           <div className='flex gap-6'>
-            {filtersData && (
+            
+            {/* {filtersData && (
               <>
                 {width && width >= 640 ? (
                   <ProductFilters 
@@ -233,19 +241,19 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                   />
                 )}
               </>
-            )}
+            )} */}
           </div>
-          <Select 
+          {/* <Select 
             options={sortItems}
             defaultValue={sortItems[0].value}
             onChange={handleSortChange}
             className='w-52'
-          />
+          /> */}
         </div>
         <Divider />
         <div className='flex justify-between items-center'>
           <ul className='flex gap-3'>
-            {checkedFilters.types.map(item => (
+            {/* {checkedFilters.types.map(item => (
               <li 
                 key={crypto.randomUUID()}
                 className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
@@ -253,8 +261,8 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                 <span>{item}</span>
                 <CloseOutlined onClick={() => handleFilterItemDelete('types', item)} />
               </li>
-            ))}
-            {checkedFilters.features.map(item => (
+            ))} */}
+            {/* {checkedFilters.features.map(item => (
               <li 
                 key={crypto.randomUUID()}
                 className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
@@ -262,8 +270,8 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                 <span>{item}</span>
                 <CloseOutlined onClick={() => handleFilterItemDelete('features', item)} />
               </li>
-            ))}
-            {checkedFilters.manufacturers.map(item => (
+            ))} */}
+            {/* {checkedFilters.manufacturers.map(item => (
               <li 
                 key={crypto.randomUUID()}
                 className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
@@ -271,15 +279,16 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
                 <span>{filtersData?.manufacturers.find(val => val.value === item)?.label}</span>
                 <CloseOutlined onClick={() => handleFilterItemDelete('manufacturers', item)} />
               </li>
-            ))}
+            ))} */}
           </ul>
-          <button type='button' onClick={clearFilters} className='flex items-center gap-1 font-semibold'>
+          {/* <button type='button' onClick={clearFilters} className='flex items-center gap-1 font-semibold'>
             Reset Filters
-          </button>
+          </button> */}
         </div>
       </section>
       <section className='relative w-full container mx-auto box-border'>
-        <ul className='w-full grid grid-cols-1 md:grid-cols-3 gap-6'>
+        <ProductsList category={category} />
+        {/* <ul className='w-full grid grid-cols-1 md:grid-cols-3 gap-6'>
           {products.map(product => (
             <motion.li 
               key={crypto.randomUUID()}
@@ -305,8 +314,8 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
               </Link>
             </motion.li>
           ))}
-        </ul>
-        {productsCount > products.length && (
+        </ul> */}
+        {/* {productsCount > products.length && (
           <button 
             onClick={(e) => {
               e.preventDefault()
@@ -316,7 +325,7 @@ const CategoryProducts = ({ params }: { params: { category: string } }) => {
           >
             View More
           </button>
-        )}
+        )} */}
         <Divider />
       </section>
       <section className='w-full mx-auto container'>

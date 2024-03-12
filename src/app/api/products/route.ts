@@ -29,9 +29,9 @@ export const GET = async (req: NextRequest) => {
       await Category.findById(categoryData) : 
       await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
 
-    const types = typesData ? { $in: typesData.split(', ') } : null;
-    const features = featuresData ? { $in: featuresData.split(', ') } : null;
-    const manufacturers = manufacturersData ? { $in: manufacturersData.split(', ') } : null;
+    const types = typesData ? { $in: typesData.split(';') } : null;
+    const features = featuresData ? { $in: featuresData.split(';') } : null;
+    const manufacturers = manufacturersData ? { $in: manufacturersData.split(';') } : null;
     const price = minPrice && maxPrice ? { $gte: Number(minPrice), $lte: Number(maxPrice) } : null;
 
     const params = removeFalsyObjectFields({ category, type: types, features, manufacturer: manufacturers, price });

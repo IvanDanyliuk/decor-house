@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
 interface IFilterSelect {
@@ -12,13 +13,17 @@ interface IFilterSelect {
     label: string;
   }[];
   selectedOptions: string[];
-  multiple?: boolean;
-  onChange: (key: string, values: string[]) => void;
+  // multiple?: boolean;
+  // onChange: (key: string, values: string[]) => void;
 }
 
 
-const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, selectedOptions, multiple, onChange }) => {
+const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, selectedOptions }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const handleSelectOpen = () => {
     setIsOpen(prev => !prev);
@@ -26,12 +31,16 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, selectedO
 
   const handleOptionSelect = (value: string) => {
     const isOptionSelected = selectedOptions.includes(value);
+    const params = new URLSearchParams(searchParams);
 
     if(isOptionSelected) {
-      const filteredOptions = selectedOptions.filter(option => option !== value);
-      onChange(name, filteredOptions);
+      const filteredOptions = selectedOptions.filter(option => option !== value).join(';');
+      // onChange(name, filteredOptions);
+      // params.set(name, )
+      console.log('FILTER SELECT', { name, value })
     } else {
-      onChange(name, [...selectedOptions, value]);
+      // onChange(name, [...selectedOptions, value]);
+      console.log('FILTER SELECT', { name, value })
     }
   };
 
