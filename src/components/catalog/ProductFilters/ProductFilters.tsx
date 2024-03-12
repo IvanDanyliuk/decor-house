@@ -1,46 +1,50 @@
+import { Select } from 'antd';
 import FilterSelect from './FilterSelect';
 import PriceFilter from './PriceFilter';
-import { ICheckedProductFilters, IPrice, IProductFiltersData } from '@/lib/types/products.types';
+import { IProductFiltersData } from '@/lib/types/products.types';
 
 
 interface IProductFilters {
   filtersData: IProductFiltersData;
-  // checkedFilters: ICheckedProductFilters;
-  // onSetFilters: (key: string, values: string[] | IPrice) => void;
+  sortData: any;
 }
 
 
-const ProductFilters: React.FC<IProductFilters> = ({ filtersData }) => {
+const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) => {
+  const handleSortChange = (value: string) => {
+    const parsedValue = JSON.parse(value);
+    
+  };
+
   return (
-    <div className='flex gap-6'>
-      <FilterSelect 
-        name='types'
-        title='Types' 
-        options={filtersData.types} 
-        // selectedOptions={checkedFilters.types} 
-        // multiple 
-        // onChange={onSetFilters} 
-      />
-      <FilterSelect 
-        name='features'
-        title='Features' 
-        options={filtersData.features} 
-        // selectedOptions={checkedFilters.features} 
-        // multiple 
-        // onChange={onSetFilters} 
-      />
-      <FilterSelect 
-        name='manufacturers'
-        title='Manufacturers' 
-        options={filtersData.manufacturers} 
-        // selectedOptions={checkedFilters.manufacturers} 
-        // multiple 
-        // onChange={onSetFilters} 
-      />
-      <PriceFilter 
-        name='price'
-        min={filtersData.price.min} 
-        max={filtersData.price.max} 
+    <div className='w-full flex justify-between items-center'>
+      <div className='flex gap-6'>
+        <FilterSelect 
+          name='types'
+          title='Types' 
+          options={filtersData.types} 
+        />
+        <FilterSelect 
+          name='features'
+          title='Features' 
+          options={filtersData.features} 
+        />
+        <FilterSelect 
+          name='manufacturers'
+          title='Manufacturers' 
+          options={filtersData.manufacturers} 
+        />
+        <PriceFilter 
+          name='price'
+          min={filtersData.price.min.toString()} 
+          max={filtersData.price.max.toString()} 
+        />
+      </div>
+      <Select 
+        options={sortData}
+        defaultValue={sortData[0].value}
+        onChange={handleSortChange}
+        className='w-52'
       />
     </div>
   );

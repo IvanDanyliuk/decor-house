@@ -1,25 +1,40 @@
 'use client';
 
-import { FocusEvent, useState } from 'react';
+import { FocusEvent, useCallback, useEffect, useState } from 'react';
 import { InputNumber, Modal, Slider } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
 interface IPriceValues {
-  min: number;
-  max: number;
+  min: string;
+  max: string;
 }
 
 interface IPriceFilter {
   name: string;
-  min: number;
-  max: number;
-  // onChange: (key: string, values: IPriceValues) => void;
+  min: string;
+  max: string;
 }
 
 const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [values, setValues] = useState<IPriceValues>({ min, max });
+
+  const createQueryString = useCallback(
+    (minValue: string, maxValue: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('minPrice', minValue);
+      params.set('maxPrice', maxValue);
+      params.set('page', '1');
+      return params.toString()
+    },
+    [searchParams]
+  );
 
   const handlePriceRangeModalOpen = () => {
     setIsOpen(!isOpen);
@@ -27,14 +42,23 @@ const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
 
   const handleSliderValuesChange = (range: number[]) => {
     setValues({
-      min: range[0],
-      max: range[1],
+      min: range[0].toString(),
+      max: range[1].toString(),
     });
   };
 
   const handlePriceChangeComplete = (range: number[]) => {
-    // onChange(name, { min: range[0], max: range[1] });
+    router.push(`${pathname}?${createQueryString(range[0].toString(), range[1].toString())}`);
   };
+
+  useEffect(() => {
+    const minPriceParams = searchParams.get('minPrice');
+    const maxPriceParams = searchParams.get('maxPrice');
+    setValues({
+      min: minPriceParams || min,
+      max: maxPriceParams || max
+    })
+  }, []);
 
   return (
     <>
@@ -60,7 +84,7 @@ const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
               onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
                 setValues({
                   ...values,
-                  min: +e.target.value!
+                  min: e.target.value!
                 })
               }} 
               className='flex-1'
@@ -70,7 +94,7 @@ const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
               onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
                 setValues({
                   ...values,
-                  max: +e.target.value!
+                  max: e.target.value!
                 })
               }} 
               className='flex-1'
@@ -78,10 +102,10 @@ const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
           </div>
           <Slider 
             range 
-            min={min} 
-            max={max} 
+            min={+min} 
+            max={+max} 
             step={1}
-            value={[values.min, values.max]} 
+            value={[+values.min, +values.max]} 
             onChange={handleSliderValuesChange}
             onAfterChange={handlePriceChangeComplete} 
           />
