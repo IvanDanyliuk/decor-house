@@ -19,9 +19,9 @@ export const GET = async (req: NextRequest) => {
     const prices: number[] = products.map(item => item.price);
 
     return NextResponse.json({
-      types: [...new Set(category.types)],
-      features: [...new Set(category.features)],
-      manufacturers,
+      types: [...new Set(category.types)].map(item => ({ label: item, value: item })),
+      features: [...new Set(category.features)].map(item => ({ label: item, value: item })),
+      manufacturers: manufacturers.map(item => ({ label: item.name, value: item._id })),
       price: {
         min: Math.min(...prices),
         max: Math.max(...prices)

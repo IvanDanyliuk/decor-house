@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { DownOutlined } from '@ant-design/icons';
 
 
@@ -11,27 +12,58 @@ interface IFilterSelect {
     value: string;
     label: string;
   }[];
-  selectedOptions: string[];
-  multiple?: boolean;
-  onChange: (key: string, values: string[]) => void;
 }
 
 
-const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, selectedOptions, multiple, onChange }) => {
+const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const handleSelectOpen = () => {
     setIsOpen(prev => !prev);
   };
 
-  const handleOptionSelect = (value: string) => {
-    const isOptionSelected = selectedOptions.includes(value);
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+      params.set('page', '1');
+      return params.toString()
+    },
+    [searchParams]
+  );
 
-    if(isOptionSelected) {
-      const filteredOptions = selectedOptions.filter(option => option !== value);
-      onChange(name, filteredOptions);
+  const isValueChecked = (value: string) => {
+    const currentSearchParams = searchParams.get(name);
+    if(currentSearchParams) {
+      const splittedSearchParams = currentSearchParams.split(';');
+      return splittedSearchParams.includes(value);
     } else {
-      onChange(name, [...selectedOptions, value]);
+      return false;
+    }
+  };
+
+  const handleOptionSelect = (value: string) => {
+    const currentParams = searchParams.get(name);
+    if(currentParams) {
+      const splittedSearchParams = currentParams.split(';');
+      const isValueChecked = splittedSearchParams.includes(value);
+
+      if(isValueChecked) {
+        const newSearchParams = splittedSearchParams.filter(item => item !== value).join(';');
+        const newPathname = newSearchParams.length > 0 ? 
+          `${pathname}?${createQueryString(name, newSearchParams)}` : 
+          pathname;
+        router.push(newPathname);
+      } else {
+        const newSearchParams = [...splittedSearchParams, value].join(';');
+        router.push(`${pathname}?${createQueryString(name, newSearchParams)}`)
+      }
+    } else {
+      router.push(`${pathname}?${createQueryString(name, value)}`);
     }
   };
 
@@ -61,7 +93,7 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, selectedO
                   id={title}
                   type='checkbox' 
                   value={option.value} 
-                  checked={selectedOptions.includes(option.value)}
+                  checked={isValueChecked(option.value)}
                   onChange={() => handleOptionSelect(option.value)} 
                   data-testid='selectProductCheckbox'
                 />

@@ -29,9 +29,9 @@ export const GET = async (req: NextRequest) => {
       await Category.findById(categoryData) : 
       await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
 
-    const types = typesData ? { $in: typesData.split(', ') } : null;
-    const features = featuresData ? { $in: featuresData.split(', ') } : null;
-    const manufacturers = manufacturersData ? { $in: manufacturersData.split(', ') } : null;
+    const types = typesData ? { $in: typesData.split(';') } : null;
+    const features = featuresData ? { $in: featuresData.split(';') } : null;
+    const manufacturers = manufacturersData ? { $in: manufacturersData.split(';') } : null;
     const price = minPrice && maxPrice ? { $gte: Number(minPrice), $lte: Number(maxPrice) } : null;
 
     const params = removeFalsyObjectFields({ category, type: types, features, manufacturer: manufacturers, price });
@@ -41,7 +41,7 @@ export const GET = async (req: NextRequest) => {
     const products = (page && itemsPerPage) ? 
       await Product
         .find(params)
-        .sort({ [sortIndicator]: order === 'asc' ? -1 : 1 })
+        .sort({ [sortIndicator]: order === 'asc' ? 1 : -1 })
         .limit(+itemsPerPage)
         .skip((+page - 1) * +itemsPerPage)
         .populate([
@@ -51,7 +51,7 @@ export const GET = async (req: NextRequest) => {
         .select('-__v') :
       await Product
         .find(params)
-        .sort({ [sortIndicator]: order === 'asc' ? 1 : -1  })
+        .sort({ [sortIndicator]: order === 'asc' ? -1 : 1  })
         .populate([
           { path: 'category', select: 'name', model: Category },
           { path: 'manufacturer', model: Manufacturer }
