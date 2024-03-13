@@ -12,13 +12,12 @@ interface IPriceValues {
 }
 
 interface IPriceFilter {
-  name: string;
   min: string;
   max: string;
 }
 
 
-const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
+const PriceFilter: React.FC<IPriceFilter> = ({ min, max }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

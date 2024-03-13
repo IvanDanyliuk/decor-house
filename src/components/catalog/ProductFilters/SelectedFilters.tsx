@@ -50,7 +50,7 @@ const SelectedFilters: React.FC<ISelectedFilters> = ({ manufacturers }) => {
   }, [searchParams]);
 
   return (
-    <ul className='flex gap-3'>
+    <ul className='flex flex-wrap gap-3'>
       {selectedParams.types && selectedParams.types.split(';').map(item => (
         <li 
           key={crypto.randomUUID()}

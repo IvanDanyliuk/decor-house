@@ -26,7 +26,7 @@ const Accordion: React.FC<IAccordion> = ({ title, children }) => {
         <div className='flex-1'>{title}</div>
         <DownOutlined />
       </motion.div>
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} onExitComplete={handleAccordionExpanded}>
         {isExpanded && (
           <motion.section
             key='content'

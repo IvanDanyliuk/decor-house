@@ -24,7 +24,10 @@ const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) =>
   const searchParams = useSearchParams();
 
   const sortValueInitialState = searchParams.get('order') && searchParams.get('sortIndicator') ? 
-    JSON.stringify({ order: searchParams.get('order'), sortIndicator: searchParams.get('sortIndicator') }) : 
+    JSON.stringify({ 
+      order: searchParams.get('order'), 
+      sortIndicator: searchParams.get('sortIndicator') 
+    }) : 
     sortData[0].value;
   
   const [sortValue, setSortValue] = useState<string>(sortValueInitialState);
@@ -72,7 +75,6 @@ const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) =>
             options={filtersData.manufacturers} 
           />
           <PriceFilter 
-            name='price'
             min={filtersData.price.min.toString()} 
             max={filtersData.price.max.toString()} 
           />

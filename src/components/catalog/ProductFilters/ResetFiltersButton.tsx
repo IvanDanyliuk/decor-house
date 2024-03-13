@@ -10,7 +10,7 @@ const ResetFiltersButton = () => {
   return (
     <Link 
       href={pathname} 
-      className='flex items-center gap-1 font-semibold'
+      className='px-3 flex items-center gap-1 font-semibold'
     >
       Reset Filters
     </Link>
