@@ -1,11 +1,13 @@
 'use client';
 
+import { useCallback, useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Select } from 'antd';
 import FilterSelect from './FilterSelect';
 import PriceFilter from './PriceFilter';
 import { IFilterItem, IProductFiltersData } from '@/lib/types/products.types';
-import { useCallback, useEffect, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useWindowSize } from '@/utils/hooks/use-window-size';
+import ProductFiltersMobile from './ProductFiltersMobile';
 
 
 interface IProductFilters {
@@ -15,6 +17,8 @@ interface IProductFilters {
 
 
 const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) => {
+  const { width } = useWindowSize();
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -50,31 +54,34 @@ const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) =>
 
   return (
     <div className='w-full flex justify-between items-center'>
-      <div className='flex gap-6'>
-        <FilterSelect 
-          name='types'
-          title='Types' 
-          options={filtersData.types} 
-        />
-        <FilterSelect 
-          name='features'
-          title='Features' 
-          options={filtersData.features} 
-        />
-        <FilterSelect 
-          name='manufacturers'
-          title='Manufacturers' 
-          options={filtersData.manufacturers} 
-        />
-        <PriceFilter 
-          name='price'
-          min={filtersData.price.min.toString()} 
-          max={filtersData.price.max.toString()} 
-        />
-      </div>
+      {width && width >= 640 ? (
+        <div className='flex gap-6'>
+          <FilterSelect 
+            name='types'
+            title='Types' 
+            options={filtersData.types} 
+          />
+          <FilterSelect 
+            name='features'
+            title='Features' 
+            options={filtersData.features} 
+          />
+          <FilterSelect 
+            name='manufacturers'
+            title='Manufacturers' 
+            options={filtersData.manufacturers} 
+          />
+          <PriceFilter 
+            name='price'
+            min={filtersData.price.min.toString()} 
+            max={filtersData.price.max.toString()} 
+          />
+        </div>
+      ) : (
+        <ProductFiltersMobile filtersData={filtersData} sortData={sortData} />
+      )}
       <Select 
         options={sortData}
-        // defaultValue={sortData[0].value}
         value={sortValue}
         onChange={handleSortChange}
         className='w-52'

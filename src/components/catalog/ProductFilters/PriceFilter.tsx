@@ -1,9 +1,9 @@
 'use client';
 
 import { FocusEvent, useCallback, useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { InputNumber, Modal, Slider } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
 interface IPriceValues {
@@ -112,7 +112,7 @@ const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
         </div>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default PriceFilter
+export default PriceFilter;

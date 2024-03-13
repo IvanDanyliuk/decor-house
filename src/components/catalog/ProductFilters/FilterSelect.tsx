@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { DownOutlined } from '@ant-design/icons';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { DownOutlined } from '@ant-design/icons';
 
 
 interface IFilterSelect {
@@ -12,9 +12,6 @@ interface IFilterSelect {
     value: string;
     label: string;
   }[];
-  // selectedOptions: string[];
-  // multiple?: boolean;
-  // onChange: (key: string, values: string[]) => void;
 }
 
 
@@ -47,7 +44,7 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options }) => {
     } else {
       return false;
     }
-  }
+  };
 
   const handleOptionSelect = (value: string) => {
     const currentParams = searchParams.get(name);

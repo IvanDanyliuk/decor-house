@@ -1,35 +1,12 @@
-// 'use client';
-
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
-import { motion } from 'framer-motion';
-import { Divider, Select } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
-import { getProducts, getProductsFilterData, getRelatedProducts } from '@/lib/queries/product.queries';
-import { ICheckedProductFilters, IPrice, IProduct, IProductFiltersData, IRelatedProducts } from '@/lib/types/products.types';
-import { IManufacturer } from '@/lib/types/manufacturer.types';
-import ProductFilters from '@/components/catalog/ProductFilters/ProductFilters';
-import { useWindowSize } from '@/utils/hooks/use-window-size';
-import ProductFiltersMobile from '@/components/catalog/ProductFilters/ProductFiltersMobile';
-import RelatedProducts from '@/components/catalog/RelatedProducts';
 import { getServerSession } from 'next-auth';
+import { Divider } from 'antd';
+import { getProductsFilterData, getRelatedProducts } from '@/lib/queries/product.queries';
+import ProductFilters from '@/components/catalog/ProductFilters/ProductFilters';
+import RelatedProducts from '@/components/catalog/RelatedProducts';
 import ProductsList from '@/components/catalog/ProductsList';
 import ResetFiltersButton from '@/components/catalog/ProductFilters/ResetFiltersButton';
 
-
-const checkedFiltersInitialState: ICheckedProductFilters = {
-  types: [],
-  features: [],
-  manufacturers: [],
-  price: {
-    min: 0,
-    max: 0,
-  },
-  order: 'asc',
-  sortIndicator: 'createdAt',
-};
 
 const sortItems = [
   {
@@ -91,75 +68,12 @@ const sortItems = [
 ];
 
 
-const CategoryProducts = async ({ params, searchParams }: { params: { category: string }, searchParams: { [key: string]: string } }) => {
+const CategoryProducts = async ({ params }: { params: { category: string } }) => {
   const { category } = params;
 
   const session = await getServerSession();
-
   const filtersData = await getProductsFilterData(category);
   const relatedProducts = await getRelatedProducts(session?.user?.email!, 10);
-
-  console.log('CATALOG PAGE', filtersData)
-
-  // const { data: session } = useSession();
-  // const { width } = useWindowSize();
-
-  // const [page, setPage] = useState<number>(1);
-  // const [products, setProducts] = useState<IProduct[]>([]);
-  // const [productsCount, setProductsCount] = useState<number>(0);
-  // const [filtersData, setFiltersData] = useState<IProductFiltersData | null>(null);
-  // const [checkedFilters, setCheckedFilters] = useState<ICheckedProductFilters>(checkedFiltersInitialState);
-  // const [relatedProducts, setRelatedProducts] = useState<IRelatedProducts | null>(null);
-
-  // const handleSetFilters = (key: string, values: string[] | IPrice) => {
-  //   setProducts([]);
-  //   if(key === 'price' && 'min' in values && 'max' in values) {
-  //     setCheckedFilters({
-  //       ...checkedFilters,
-  //       price: values
-  //     });
-  //   } else {
-  //     setCheckedFilters({
-  //       ...checkedFilters,
-  //       [key]: values
-  //     });
-  //   }
-  // };
-
-  // const clearFilters = () => {
-  //   setProducts([]);
-  //   setCheckedFilters({
-  //     types: [],
-  //     features: [],
-  //     manufacturers: [],
-  //     price: {
-  //       min: filtersData?.price.min!,
-  //       max: filtersData?.price.max!,
-  //     },
-  //     order: 'asc',
-  //     sortIndicator: 'createdAt',
-  //   });
-  // };
-
-  // const handleFilterItemDelete = (key: keyof ICheckedProductFilters, value: string) => {
-  //   if(key !== 'price' && key !== 'order' && key !== 'sortIndicator') {
-  //     setProducts([]);
-  //     setCheckedFilters({
-  //       ...checkedFilters,
-  //       [key]: checkedFilters[key].filter((item: string) => item !== value),
-  //     });
-  //   }
-  // };
-
-  // const handleSortChange = (value: string) => {
-  //   const parsedValue = JSON.parse(value);
-  //   setProducts([]);
-  //   setCheckedFilters({
-  //     ...checkedFilters,
-  //     order: parsedValue.order,
-  //     sortIndicator: parsedValue.sortIndicator,
-  //   });
-  // };
 
   return (
     <div className='w-full'>
@@ -180,23 +94,6 @@ const CategoryProducts = async ({ params, searchParams }: { params: { category: 
               filtersData={filtersData} 
               sortData={sortItems}
             />
-            {/* {filtersData && (
-              <>
-                {width && width >= 640 ? (
-                  <ProductFilters 
-                    filtersData={filtersData} 
-                    checkedFilters={checkedFilters} 
-                    onSetFilters={handleSetFilters} 
-                  />
-                ) : (
-                  <ProductFiltersMobile 
-                    filtersData={filtersData}
-                    checkedFilters={checkedFilters}
-                    onSetFilters={handleSetFilters}
-                  />
-                )}
-              </>
-            )} */}
           </div>
         </div>
         <Divider />

@@ -1,25 +1,31 @@
 'use client';
 
-import { FocusEvent, useState } from 'react';
+import { FocusEvent, useCallback, useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Drawer, InputNumber, Slider } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
 import Accordion from '@/components/ui/Accordion';
-import { ICheckedProductFilters, IFilterItem, IPrice, IProductFiltersData } from '@/lib/types/products.types';
+import { ICheckedProductFilters, IFilterItem, IProductFiltersData } from '@/lib/types/products.types';
 
 
 interface IProductFilters {
   filtersData: IProductFiltersData;
-  checkedFilters: ICheckedProductFilters;
-  onSetFilters: (key: string, values: string[] | IPrice) => void;
+  sortData: IFilterItem[];
+}
+
+interface IPriceValues {
+  min: number;
+  max: number;
 }
 
 
-const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData, checkedFilters, onSetFilters }) => {
+const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [priceValues, setPriceValues] = useState<IPrice>({ 
-    min: filtersData.price.min, 
-    max: filtersData.price.max 
-  });
+  const [priceValues, setPriceValues] = useState<IPriceValues>({ min: filtersData.price.min, max: filtersData.price.max });
 
   const filterDataBranches: {title: string, name: keyof ICheckedProductFilters}[] = [
     { title: 'Types', name: 'types' },
@@ -31,26 +37,77 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData, checkedF
     setIsOpen(prev => !prev);
   };
 
-  const handlePriceChange = (range: number[]) => {
-    setPriceValues({ min: range[0], max: range[1] });
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+      params.set('page', '1');
+      return params.toString()
+    },
+    [searchParams]
+  );
+
+  const isValueChecked = (name: string, value: string) => {
+    const currentSearchParams = searchParams.get(name);
+    if(currentSearchParams) {
+      const splittedSearchParams = currentSearchParams.split(';');
+      return splittedSearchParams.includes(value);
+    } else {
+      return false;
+    }
+  }
+
+  const handleOptionSelect = (name: string, value: string) => {
+    const currentParams = searchParams.get(name);
+    if(currentParams) {
+      const splittedSearchParams = currentParams.split(';');
+      const isValueChecked = splittedSearchParams.includes(value);
+
+      if(isValueChecked) {
+        const newSearchParams = splittedSearchParams.filter(item => item !== value).join(';');
+        const newPathname = newSearchParams.length > 0 ? 
+          `${pathname}?${createQueryString(name, newSearchParams)}` : 
+          pathname;
+        router.push(newPathname);
+      } else {
+        const newSearchParams = [...splittedSearchParams, value].join(';');
+        router.push(`${pathname}?${createQueryString(name, newSearchParams)}`)
+      }
+    } else {
+      router.push(`${pathname}?${createQueryString(name, value)}`);
+    }
+  };
+
+  const createPriceQueryString = useCallback(
+    (minValue: string, maxValue: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('minPrice', minValue);
+      params.set('maxPrice', maxValue);
+      params.set('page', '1');
+      return params.toString()
+    },
+    [searchParams]
+  );
+
+  const handleSliderValuesChange = (range: number[]) => {
+    setPriceValues({
+      min: range[0],
+      max: range[1]
+    });
   };
 
   const handlePriceChangeComplete = (range: number[]) => {
-    onSetFilters('price', { min: range[0], max: range[1] })
+    router.push(`${pathname}?${createPriceQueryString(range[0].toString(), range[1].toString())}`);
   };
 
-  const handleOptionSelect = (key: keyof ICheckedProductFilters, value: string | IPrice) => {
-    if(key !== 'price' && typeof value !== 'object') {
-      const isOptionSelected = checkedFilters[key]!.includes(value);
-
-      if(isOptionSelected) {
-        const filteredOptions = (checkedFilters[key] as string[]).filter(option => option !== value);
-        onSetFilters(key, filteredOptions);
-      } else {
-        onSetFilters(key, [...checkedFilters[key]!, value]);
-      }
-    }
-  };
+  useEffect(() => {
+    const minPriceParams = searchParams.get('minPrice');
+    const maxPriceParams = searchParams.get('maxPrice');
+    setPriceValues({
+      min: minPriceParams ? Number(minPriceParams) : filtersData.price.min,
+      max: maxPriceParams ? Number(maxPriceParams) : filtersData.price.max
+    })
+  }, []);
 
   return (
     <div>
@@ -75,7 +132,7 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData, checkedF
                   <input 
                     type='checkbox' 
                     value={option.value} 
-                    checked={checkedFilters[name]!.includes(option.value)}
+                    checked={isValueChecked(name, option.value)}
                     onChange={() => handleOptionSelect(name, option.value)} 
                     data-testid='selectProductCheckbox'
                   />
@@ -89,16 +146,16 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData, checkedF
           <div className='f-full h-full px-3 pt-8'>
             <div className='mb-8 flex gap-3'>
               <InputNumber 
-                value={checkedFilters.price.min} 
+                value={priceValues.min} 
                 onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
-                  handleOptionSelect('price', { ...checkedFilters.price, min: +e.target.value! })
+                  setPriceValues({ ...priceValues, min: +e.target.value! })
                 }} 
                 className='flex-1'
               />
               <InputNumber 
-                value={checkedFilters.price.max} 
+                value={priceValues.max} 
                 onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
-                  handleOptionSelect('price', { ...checkedFilters.price, min: +e.target.value! })
+                  setPriceValues({ ...priceValues, max: +e.target.value! })
                 }} 
                 className='flex-1'
               />
@@ -109,7 +166,7 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData, checkedF
               max={filtersData.price.max} 
               step={1}
               value={[priceValues.min, priceValues.max]} 
-              onChange={handlePriceChange}
+              onChange={handleSliderValuesChange}
               onAfterChange={handlePriceChangeComplete} 
             />
           </div>

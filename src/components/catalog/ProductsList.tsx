@@ -1,14 +1,14 @@
 'use client';
 
-import { getProducts } from '@/lib/queries/product.queries';
-import { IProduct } from '@/lib/types/products.types';
-import { removeFalsyObjectFields } from '@/utils/helpers';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Divider } from 'antd';
+import { motion } from 'framer-motion';
+import { getProducts } from '@/lib/queries/product.queries';
+import { IProduct } from '@/lib/types/products.types';
+import { removeFalsyObjectFields } from '@/utils/helpers';
 import LoadMoreButton from './LoadMoreButton';
 
 
@@ -17,8 +17,6 @@ interface IProductsList {
 }
 
 const ProductsList: React.FC<IProductsList> = ({ category }) => {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [products, setProducts] = useState<IProduct[]>([]);
