@@ -18,6 +18,11 @@ interface IPriceValues {
   max: number;
 }
 
+interface IFilterDataBranches {
+  title: string;
+  name: keyof ICheckedProductFilters;
+}
+
 
 const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
   const router = useRouter();
@@ -27,7 +32,7 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [priceValues, setPriceValues] = useState<IPriceValues>({ min: filtersData.price.min, max: filtersData.price.max });
 
-  const filterDataBranches: {title: string, name: keyof ICheckedProductFilters}[] = [
+  const filterDataBranches: IFilterDataBranches[] = [
     { title: 'Types', name: 'types' },
     { title: 'Features', name: 'features' },
     { title: 'Manufacturers', name: 'manufacturers' },

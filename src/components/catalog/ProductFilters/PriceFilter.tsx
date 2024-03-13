@@ -17,6 +17,7 @@ interface IPriceFilter {
   max: string;
 }
 
+
 const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -58,7 +59,7 @@ const PriceFilter: React.FC<IPriceFilter> = ({ name, min, max }) => {
       min: minPriceParams || min,
       max: maxPriceParams || max
     })
-  }, []);
+  }, [searchParams]);
 
   return (
     <>

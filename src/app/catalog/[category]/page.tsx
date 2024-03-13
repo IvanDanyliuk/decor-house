@@ -6,6 +6,7 @@ import ProductFilters from '@/components/catalog/ProductFilters/ProductFilters';
 import RelatedProducts from '@/components/catalog/RelatedProducts';
 import ProductsList from '@/components/catalog/ProductsList';
 import ResetFiltersButton from '@/components/catalog/ProductFilters/ResetFiltersButton';
+import SelectedFilters from '@/components/catalog/ProductFilters/SelectedFilters';
 
 
 const sortItems = [
@@ -98,35 +99,8 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
         </div>
         <Divider />
         <div className='flex justify-between items-center'>
-          <ul className='flex gap-3'>
-            {/* {checkedFilters.types.map(item => (
-              <li 
-                key={crypto.randomUUID()}
-                className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
-              >
-                <span>{item}</span>
-                <CloseOutlined onClick={() => handleFilterItemDelete('types', item)} />
-              </li>
-            ))} */}
-            {/* {checkedFilters.features.map(item => (
-              <li 
-                key={crypto.randomUUID()}
-                className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
-              >
-                <span>{item}</span>
-                <CloseOutlined onClick={() => handleFilterItemDelete('features', item)} />
-              </li>
-            ))} */}
-            {/* {checkedFilters.manufacturers.map(item => (
-              <li 
-                key={crypto.randomUUID()}
-                className='px-3 py-2 flex gap-3 text-sm font-semibold bg-main-bg'
-              >
-                <span>{filtersData?.manufacturers.find(val => val.value === item)?.label}</span>
-                <CloseOutlined onClick={() => handleFilterItemDelete('manufacturers', item)} />
-              </li>
-            ))} */}
-          </ul>
+          <SelectedFilters manufacturers={filtersData.manufacturers} />
+          
           <ResetFiltersButton />
         </div>
       </section>
