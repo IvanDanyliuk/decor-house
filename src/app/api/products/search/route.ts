@@ -4,7 +4,11 @@ import { connectToDB } from '@/lib/database';
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
+    const queryStr = req.nextUrl.searchParams.get('search');
+
     await connectToDB();
+
+    console.log('GET SEARCH PRODUCTS', queryStr)
 
     return NextResponse.json({
       data: {

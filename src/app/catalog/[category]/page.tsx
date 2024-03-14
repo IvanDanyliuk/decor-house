@@ -96,7 +96,6 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
         <Divider />
         <div className='flex justify-between items-center'>
           <SelectedFilters manufacturers={filtersData.manufacturers} />
-          
           <ResetFiltersButton />
         </div>
       </section>
