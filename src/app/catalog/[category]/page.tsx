@@ -89,14 +89,10 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
         </h2>
       </section>
       <section className='w-full container mx-auto py-6'>
-        <div className='w-full flex justify-between items-center'>
-          <div className='w-full flex gap-6'>
-            <ProductFilters 
-              filtersData={filtersData} 
-              sortData={sortItems}
-            />
-          </div>
-        </div>
+        <ProductFilters 
+          filtersData={filtersData} 
+          sortData={sortItems}
+        />
         <Divider />
         <div className='flex justify-between items-center'>
           <SelectedFilters manufacturers={filtersData.manufacturers} />
@@ -109,9 +105,7 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
         <Divider />
       </section>
       <section className='w-full mx-auto container'>
-        {relatedProducts && (
-          <RelatedProducts products={relatedProducts} />
-        )}
+        <RelatedProducts products={relatedProducts} />
       </section>
     </div>
   );
