@@ -52,6 +52,15 @@ const SearchFilters: React.FC<ISearchFilters> = ({ categories, types, manufactur
   };
 
   useEffect(() => {
+    const selectedTypes = searchParams.get('types');
+    const isSelectedTypesValid = selectedTypes && types.some(type => selectedTypes.split(';').includes(type.value));
+
+    if(!isSelectedTypesValid) {
+      const params = new URLSearchParams(searchParams);
+      params.delete('types');
+      router.push(pathname + (params.toString() ? '?' + params.toString() : ''));
+    }
+
     if(!searchParams.get('order') && !searchParams.get('sortIndicator')) {
       setSortValue(productsSortItems[0].value);
     }
