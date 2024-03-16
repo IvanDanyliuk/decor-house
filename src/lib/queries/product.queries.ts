@@ -62,3 +62,18 @@ export const getRelatedProducts = async (email: string, limit: number, categoryI
   );
   return data;
 };
+
+export const getSearchFilterData = async () => {
+  const { data } = await AXIOS.get(
+    '/api/products/search/filter'
+  );
+  return data;
+};
+
+export const searchProducts = async (query: string) => {
+  const { data } = await AXIOS.get(
+    '/api/products/search',
+    { params: { query } }
+  );
+  return data;
+};

@@ -1,22 +1,24 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Select } from 'antd';
-import FilterSelect from './FilterSelect';
-import PriceFilter from './PriceFilter';
-import { IFilterItem, IProductFiltersData } from '@/lib/types/products.types';
+import { productsSortItems } from '@/lib/constants';
+import { IFilterItem } from '@/lib/types/products.types';
+import FilterSelect from '../ProductFilters/FilterSelect';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
-import ProductFiltersMobile from './ProductFiltersMobile';
 
 
-interface IProductFilters {
-  filtersData: IProductFiltersData;
-  sortData: IFilterItem[];
+interface ISearchFilters {
+  categories: IFilterItem[];
+  types: IFilterItem[];
+  manufacturers: IFilterItem[];
+  minPrice: number;
+  maxPrice: number;
 }
 
 
-const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) => {
+const SearchFilters: React.FC<ISearchFilters> = ({ categories, types, manufacturers, minPrice, maxPrice }) => {
   const { width } = useWindowSize();
 
   const router = useRouter();
@@ -28,7 +30,7 @@ const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) =>
       order: searchParams.get('order'), 
       sortIndicator: searchParams.get('sortIndicator') 
     }) : 
-    sortData[0].value;
+    productsSortItems[0].value;
   
   const [sortValue, setSortValue] = useState<string>(sortValueInitialState);
 
@@ -51,42 +53,33 @@ const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) =>
 
   useEffect(() => {
     if(!searchParams.get('order') && !searchParams.get('sortIndicator')) {
-      setSortValue(sortData[0].value);
+      setSortValue(productsSortItems[0].value);
     }
   }, [searchParams]);
 
   return (
     <div className='w-full flex justify-between items-center'>
-      {width && width >= 640 ? (
-        <div className='flex gap-6'>
-          <FilterSelect 
-            name='types'
-            title='Types' 
-            options={filtersData.types} 
-            multiple
-          />
-          <FilterSelect 
-            name='features'
-            title='Features' 
-            options={filtersData.features} 
-            multiple
-          />
-          <FilterSelect 
-            name='manufacturers'
-            title='Manufacturers' 
-            options={filtersData.manufacturers} 
-            multiple
-          />
-          <PriceFilter 
-            min={filtersData.price.min.toString()} 
-            max={filtersData.price.max.toString()} 
-          />
-        </div>
-      ) : (
-        <ProductFiltersMobile filtersData={filtersData} sortData={sortData} />
-      )}
+      <div className='flex gap-6'>
+        <FilterSelect 
+          name='category'
+          title='Category' 
+          options={categories} 
+        />
+        <FilterSelect 
+          name='types'
+          title='Types' 
+          options={types} 
+          disabled={types.length === 0}
+          multiple
+        />
+        <FilterSelect 
+          name='manufacturers'
+          title='Manufacturers' 
+          options={manufacturers} 
+        />
+      </div>
       <Select 
-        options={sortData}
+        options={productsSortItems}
         value={sortValue}
         onChange={handleSortChange}
         className='w-52'
@@ -95,4 +88,4 @@ const ProductFilters: React.FC<IProductFilters> = ({ filtersData, sortData }) =>
   );
 };
 
-export default ProductFilters;
+export default SearchFilters;
