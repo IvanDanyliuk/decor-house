@@ -42,11 +42,27 @@ export interface IProductFiltersData {
   sortIndicator?: string;
 }
 
+export interface ISearchFiltersData {
+  category: IFilterItem[];
+  types: IFilterItem[];
+  manufacturers: IFilterItem[];
+  order?: string;
+  sortIndicator?: string;
+}
+
 export interface ICheckedProductFilters {
   types: string[];
   features: string[];
   manufacturers: string[];
   price: IPrice;
+  order?: string;
+  sortIndicator?: string;
+}
+
+export interface ICheckedSearchFilters {
+  category: string[];
+  types: string[];
+  manufacturers: string[];
   order?: string;
   sortIndicator?: string;
 }

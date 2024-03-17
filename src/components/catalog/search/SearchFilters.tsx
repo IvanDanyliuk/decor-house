@@ -19,7 +19,7 @@ interface ISearchFilters {
 }
 
 
-const SearchFilters: React.FC<ISearchFilters> = ({ categories, types, manufacturers, minPrice, maxPrice }) => {
+const SearchFilters: React.FC<ISearchFilters> = ({ categories, types, manufacturers }) => {
   const { width } = useWindowSize();
 
   const router = useRouter();
@@ -90,7 +90,11 @@ const SearchFilters: React.FC<ISearchFilters> = ({ categories, types, manufactur
           />
         </div>
       ) : (
-        <SearchFiltersMobile />
+        <SearchFiltersMobile 
+          categories={categories} 
+          types={types} 
+          manufacturers={manufacturers} 
+        />
       )}
       <Select 
         options={productsSortItems}
