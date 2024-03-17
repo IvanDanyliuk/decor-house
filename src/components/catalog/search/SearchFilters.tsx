@@ -7,6 +7,7 @@ import { productsSortItems } from '@/lib/constants';
 import { IFilterItem } from '@/lib/types/products.types';
 import FilterSelect from '../ProductFilters/FilterSelect';
 import { useWindowSize } from '@/utils/hooks/use-window-size';
+import SearchFiltersMobile from './SearchFiltersMobile';
 
 
 interface ISearchFilters {
@@ -68,25 +69,29 @@ const SearchFilters: React.FC<ISearchFilters> = ({ categories, types, manufactur
 
   return (
     <div className='w-full flex justify-between items-center'>
-      <div className='flex gap-6'>
-        <FilterSelect 
-          name='category'
-          title='Category' 
-          options={categories} 
-        />
-        <FilterSelect 
-          name='types'
-          title='Types' 
-          options={types} 
-          disabled={types.length === 0}
-          multiple
-        />
-        <FilterSelect 
-          name='manufacturers'
-          title='Manufacturers' 
-          options={manufacturers} 
-        />
-      </div>
+      {width && width >= 640 ? (
+        <div className='flex gap-6'>
+          <FilterSelect 
+            name='category'
+            title='Category' 
+            options={categories} 
+          />
+          <FilterSelect 
+            name='types'
+            title='Types' 
+            options={types} 
+            disabled={types.length === 0}
+            multiple
+          />
+          <FilterSelect 
+            name='manufacturers'
+            title='Manufacturers' 
+            options={manufacturers} 
+          />
+        </div>
+      ) : (
+        <SearchFiltersMobile />
+      )}
       <Select 
         options={productsSortItems}
         value={sortValue}

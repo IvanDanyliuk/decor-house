@@ -22,6 +22,14 @@ const Search = async ({ params, searchParams }: any) => {
     [];
   const manufacturerOptions = filterData.data.manufacturers.map((item: IManufacturer) => ({ label: item.name, value: item._id! }));
 
+  const page = searchParams.page || '1';
+  const query = searchParams.query;
+  const category = searchParams.category;
+  const types = searchParams.types;
+  const manufacturers = searchParams.manufacturers;
+
+  console.log('SEARCH PAGE', { page, query, category, types, manufacturers })
+
   return (
     <div className='w-full'>
       <section className='w-full py-6 bg-main-bg'>

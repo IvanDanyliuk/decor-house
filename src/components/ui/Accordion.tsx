@@ -12,7 +12,7 @@ const Accordion: React.FC<IAccordion> = ({ title, children }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const handleAccordionExpanded = () => {
-    setIsExpanded(!isExpanded);
+    setIsExpanded(prev => !prev);
   };
 
   return (
@@ -26,7 +26,7 @@ const Accordion: React.FC<IAccordion> = ({ title, children }) => {
         <div className='flex-1'>{title}</div>
         <DownOutlined />
       </motion.div>
-      <AnimatePresence initial={false} onExitComplete={handleAccordionExpanded}>
+      <AnimatePresence initial={false}>
         {isExpanded && (
           <motion.section
             key='content'

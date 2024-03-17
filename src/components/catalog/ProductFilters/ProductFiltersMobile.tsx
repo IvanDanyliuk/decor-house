@@ -1,6 +1,6 @@
 'use client';
 
-import { FocusEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, FocusEvent, useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Drawer, InputNumber, Slider } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
@@ -42,16 +42,6 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
     setIsOpen(prev => !prev);
   };
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
-      params.set('page', '1');
-      return params.toString()
-    },
-    [searchParams]
-  );
-
   const isValueChecked = (name: string, value: string) => {
     const currentSearchParams = searchParams.get(name);
     if(currentSearchParams) {
@@ -60,27 +50,27 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
     } else {
       return false;
     }
-  }
+  };
 
-  const handleOptionSelect = (name: string, value: string) => {
-    const currentParams = searchParams.get(name);
-    if(currentParams) {
-      const splittedSearchParams = currentParams.split(';');
-      const isValueChecked = splittedSearchParams.includes(value);
+  const handleOptionSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, checked } = e.target;
 
-      if(isValueChecked) {
-        const newSearchParams = splittedSearchParams.filter(item => item !== value).join(';');
-        const newPathname = newSearchParams.length > 0 ? 
-          `${pathname}?${createQueryString(name, newSearchParams)}` : 
-          pathname;
-        router.push(newPathname);
-      } else {
-        const newSearchParams = [...splittedSearchParams, value].join(';');
-        router.push(`${pathname}?${createQueryString(name, newSearchParams)}`)
-      }
+    const currentValues = searchParams.get(name);
+    const params = new URLSearchParams(searchParams.toString());
+
+    if(!checked) {
+      const newValues = currentValues!.split(';').filter(item => item !== value).join(';');
+      params.set(name, newValues!);
     } else {
-      router.push(`${pathname}?${createQueryString(name, value)}`);
+      const newValues = name !== 'category' ? (currentValues ? currentValues + ';' + value : value) : value;
+      params.set(name, newValues);
     }
+
+    if(!params.get(name)) {
+      params.delete(name);
+    }
+
+    router.push(pathname + (pathname.toString() ? '?' + params.toString() : ''));
   };
 
   const createPriceQueryString = useCallback(
@@ -131,17 +121,20 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
               {name !== 'price' && (filtersData[name] as IFilterItem[]).map(option => (
                 <li 
                   key={crypto.randomUUID()} 
-                  onClick={() => handleOptionSelect(name, option.value)} 
                   className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'
                 >
-                  <input 
-                    type='checkbox' 
-                    value={option.value} 
-                    checked={isValueChecked(name, option.value)}
-                    onChange={() => handleOptionSelect(name, option.value)} 
-                    data-testid='selectProductCheckbox'
-                  />
-                  <label>{option.label}</label>
+                  <label>
+                    <input 
+                      id={name}
+                      name={name}
+                      type='checkbox' 
+                      value={option.value} 
+                      checked={isValueChecked(name, option.value)}
+                      onChange={handleOptionSelect} 
+                      data-testid='selectProductCheckbox'
+                    />
+                    <span className='ml-3'>{option.label}</span>
+                  </label>
                 </li>
               ))}
             </ul>
