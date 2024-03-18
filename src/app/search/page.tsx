@@ -29,8 +29,6 @@ const Search = async ({ params, searchParams }: any) => {
   const types = searchParams.types;
   const manufacturers = searchParams.manufacturers;
 
-  // console.log('SEARCH PAGE', { page, query, category, types, manufacturers })
-
   const searchQuery = removeFalsyObjectFields({ page, itemsPerPage: 12, query, category, types, manufacturers });
   const searchedProducts = await searchProducts(searchQuery);
 

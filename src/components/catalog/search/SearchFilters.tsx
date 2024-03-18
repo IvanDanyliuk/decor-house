@@ -87,6 +87,7 @@ const SearchFilters: React.FC<ISearchFilters> = ({ categories, types, manufactur
             name='manufacturers'
             title='Manufacturers' 
             options={manufacturers} 
+            multiple
           />
         </div>
       ) : (
