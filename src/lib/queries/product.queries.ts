@@ -70,10 +70,28 @@ export const getSearchFilterData = async () => {
   return data;
 };
 
-export const searchProducts = async (query: string) => {
+export const searchProducts = async ({ 
+  page, 
+  itemsPerPage, 
+  query, 
+  category, 
+  types, 
+  manufacturers, 
+  order, 
+  sortIndicator 
+} : {
+  page: number;
+  itemsPerPage: number;
+  query: string;
+  category?: string;
+  types?: string;
+  manufacturers?: string;
+  order?: string;
+  sortIndicator?: string;
+}) => {
   const { data } = await AXIOS.get(
     '/api/products/search',
-    { params: { query } }
+    { params: { page, itemsPerPage, query, category, types, manufacturers, order, sortIndicator } }
   );
   return data;
 };

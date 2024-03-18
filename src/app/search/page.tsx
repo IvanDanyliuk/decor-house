@@ -1,9 +1,10 @@
 import ResetFiltersButton from '@/components/catalog/ProductFilters/ResetFiltersButton';
 import SelectedFilters from '@/components/catalog/ProductFilters/SelectedFilters';
 import SearchFilters from '@/components/catalog/search/SearchFilters';
-import { getSearchFilterData } from '@/lib/queries/product.queries';
+import { getSearchFilterData, searchProducts } from '@/lib/queries/product.queries';
 import { ICategory } from '@/lib/types/category.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
+import { removeFalsyObjectFields } from '@/utils/helpers';
 import { Divider } from 'antd';
 
 
@@ -28,7 +29,10 @@ const Search = async ({ params, searchParams }: any) => {
   const types = searchParams.types;
   const manufacturers = searchParams.manufacturers;
 
-  console.log('SEARCH PAGE', { page, query, category, types, manufacturers })
+  // console.log('SEARCH PAGE', { page, query, category, types, manufacturers })
+
+  const searchQuery = removeFalsyObjectFields({ page, itemsPerPage: 12, query, category, types, manufacturers });
+  const searchedProducts = await searchProducts(searchQuery);
 
   return (
     <div className='w-full'>
@@ -51,7 +55,9 @@ const Search = async ({ params, searchParams }: any) => {
           <ResetFiltersButton />
         </div>
       </section>
-      
+      <section className='relative w-full container mx-auto box-border'>
+
+      </section>
     </div>
   );
 };
