@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDB } from '@/lib/database';
 import Product from '@/lib/models/product.model';
@@ -8,6 +9,10 @@ import { removeFalsyObjectFields } from '@/utils/helpers';
 export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
     const query = Object.fromEntries(req.nextUrl.searchParams);
+    const itemsLimit = Number(query.itemsPerPage);
+    const itemsToSkip = (Number(query.page) - 1) * Number(query.itemsPerPage);
+
+    console.log('SEARCH PRODUCTS', { query, itemsLimit, itemsToSkip })
 
     const params: any = Object.values(removeFalsyObjectFields({
       query: {
@@ -18,7 +23,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       },
       category: query.category ? { 'category.name': { $regex: query.category, $options: 'i' } } : null,
       types: query.types ? { type: { $in: query.types.split(';') } } : null,
-      manufacturer: query.manufacturer ? { manufacturer: { $in: query.manufacturers.split(';') } } : null
+      manufacturer: query.manufacturers ? { manufacturer: { $in: query.manufacturers.split(';').map(item => new mongoose.Types.ObjectId(item)) } } : null,
     }));
     
     await connectToDB();
@@ -39,12 +44,34 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
           ]
         }
       },
-    ])
+      {
+        $sort: {
+          [query.sortIndicator]: query.order === 'asc' ? 1 : -1
+        }
+      },
+      {
+        $facet: {
+          products: [
+            {
+              $skip: itemsToSkip
+            },
+            {
+              $limit: itemsLimit
+            },
+          ],
+          count: [
+            {
+              $count: 'count'
+            }
+          ]
+        }
+      }
+    ]);
 
     return NextResponse.json({
       data: {
-        products,
-        count: products.length,
+        products: products[0].products,
+        count: products[0].count[0].count
       },
       error: null,
       message: '',

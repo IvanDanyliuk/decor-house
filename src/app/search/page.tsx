@@ -1,10 +1,10 @@
 import ResetFiltersButton from '@/components/catalog/ProductFilters/ResetFiltersButton';
 import SelectedFilters from '@/components/catalog/ProductFilters/SelectedFilters';
+import ProductsList from '@/components/catalog/ProductsList';
 import SearchFilters from '@/components/catalog/search/SearchFilters';
-import { getSearchFilterData, searchProducts } from '@/lib/queries/product.queries';
+import { getSearchFilterData } from '@/lib/queries/product.queries';
 import { ICategory } from '@/lib/types/category.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
-import { removeFalsyObjectFields } from '@/utils/helpers';
 import { Divider } from 'antd';
 
 
@@ -22,15 +22,6 @@ const Search = async ({ params, searchParams }: any) => {
       .types.map((item: string) => ({ label: item, value: item })) : 
     [];
   const manufacturerOptions = filterData.data.manufacturers.map((item: IManufacturer) => ({ label: item.name, value: item._id! }));
-
-  const page = searchParams.page || '1';
-  const query = searchParams.query;
-  const category = searchParams.category;
-  const types = searchParams.types;
-  const manufacturers = searchParams.manufacturers;
-
-  const searchQuery = removeFalsyObjectFields({ page, itemsPerPage: 12, query, category, types, manufacturers });
-  const searchedProducts = await searchProducts(searchQuery);
 
   return (
     <div className='w-full'>
@@ -54,7 +45,7 @@ const Search = async ({ params, searchParams }: any) => {
         </div>
       </section>
       <section className='relative w-full container mx-auto box-border'>
-
+        <ProductsList />
       </section>
     </div>
   );
