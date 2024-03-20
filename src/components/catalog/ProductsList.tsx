@@ -81,8 +81,9 @@ const ProductsList: React.FC<IProductsList> = ({ category }) => {
           }
           setCount(res.data.count);
         });
-        setCurrentPage(1)
       }
+      setCurrentPage(1)
+
     }
   }, [searchParams]);
 

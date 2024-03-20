@@ -12,8 +12,6 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     const itemsLimit = Number(query.itemsPerPage);
     const itemsToSkip = (Number(query.page) - 1) * Number(query.itemsPerPage);
 
-    console.log('SEARCH PRODUCTS', { query, itemsLimit, itemsToSkip })
-
     const params: any = Object.values(removeFalsyObjectFields({
       query: {
         $or: [

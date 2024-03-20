@@ -49,13 +49,16 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, disabled,
     if(!checked) {
       const newValues = currentValues!.split(';').filter(item => item !== value).join(';');
       params.set(name, newValues!);
+      params.set('page', '1')
     } else {
       const newValues = multiple ? (currentValues ? currentValues + ';' + value : value) : value;
       params.set(name, newValues);
+      params.set('page', '1')
     }
 
     if(!params.get(name)) {
       params.delete(name);
+      params.set('page', '1')
     }
 
     router.push(pathname + (pathname.toString() ? '?' + params.toString() : ''));
