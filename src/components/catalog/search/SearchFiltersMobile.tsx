@@ -1,40 +1,37 @@
 'use client';
 
-import { ChangeEvent, FocusEvent, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Drawer, InputNumber, Slider } from 'antd';
+import { Drawer } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
+import { ICheckedSearchFilters, IFilterItem, ISearchFiltersData } from '@/lib/types/products.types';
 import Accordion from '@/components/ui/Accordion';
-import { ICheckedProductFilters, IFilterItem, IProductFiltersData } from '@/lib/types/products.types';
 
 
-interface IProductFilters {
-  filtersData: IProductFiltersData;
-  sortData: IFilterItem[];
-}
-
-interface IPriceValues {
-  min: number;
-  max: number;
+interface ISearchFiltersMobile {
+  categories: IFilterItem[];
+  types: IFilterItem[];
+  manufacturers: IFilterItem[];
 }
 
 interface IFilterDataBranches {
   title: string;
-  name: keyof ICheckedProductFilters;
+  name: keyof ICheckedSearchFilters;
 }
 
 
-const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
+const SearchFiltersMobile: React.FC<ISearchFiltersMobile> = ({ categories, types, manufacturers }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const filterData: ISearchFiltersData = { category: categories, types, manufacturers };
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [priceValues, setPriceValues] = useState<IPriceValues>({ min: filtersData.price.min, max: filtersData.price.max });
 
   const filterDataBranches: IFilterDataBranches[] = [
+    { title: 'Categories', name: 'category' },
     { title: 'Types', name: 'types' },
-    { title: 'Features', name: 'features' },
     { title: 'Manufacturers', name: 'manufacturers' },
   ];
 
@@ -73,37 +70,6 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
     router.push(pathname + (pathname.toString() ? '?' + params.toString() : ''));
   };
 
-  const createPriceQueryString = useCallback(
-    (minValue: string, maxValue: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set('minPrice', minValue);
-      params.set('maxPrice', maxValue);
-      params.set('page', '1');
-      return params.toString()
-    },
-    [searchParams]
-  );
-
-  const handleSliderValuesChange = (range: number[]) => {
-    setPriceValues({
-      min: range[0],
-      max: range[1]
-    });
-  };
-
-  const handlePriceChangeComplete = (range: number[]) => {
-    router.push(`${pathname}?${createPriceQueryString(range[0].toString(), range[1].toString())}`);
-  };
-
-  useEffect(() => {
-    const minPriceParams = searchParams.get('minPrice');
-    const maxPriceParams = searchParams.get('maxPrice');
-    setPriceValues({
-      min: minPriceParams ? Number(minPriceParams) : filtersData.price.min,
-      max: maxPriceParams ? Number(maxPriceParams) : filtersData.price.max
-    })
-  }, []);
-
   return (
     <div>
       <button type='button' onClick={handleMenuOpen}>
@@ -118,7 +84,7 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
         {filterDataBranches.map(({ title, name }) => (
           <Accordion title={title} key={crypto.randomUUID()}>
             <ul className='w-full bg-white rounded'>
-              {name !== 'price' && (filtersData[name] as IFilterItem[]).map(option => (
+              {(filterData[name] as IFilterItem[]).map(option => (
                 <li 
                   key={crypto.randomUUID()} 
                   className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'
@@ -140,38 +106,9 @@ const ProductFiltersMobile: React.FC<IProductFilters> = ({ filtersData }) => {
             </ul>
           </Accordion>
         ))}
-        <Accordion title='Price'>
-          <div className='f-full h-full px-3 pt-8'>
-            <div className='mb-8 flex gap-3'>
-              <InputNumber 
-                value={priceValues.min} 
-                onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
-                  setPriceValues({ ...priceValues, min: +e.target.value! })
-                }} 
-                className='flex-1'
-              />
-              <InputNumber 
-                value={priceValues.max} 
-                onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
-                  setPriceValues({ ...priceValues, max: +e.target.value! })
-                }} 
-                className='flex-1'
-              />
-            </div>
-            <Slider 
-              range 
-              min={filtersData.price.min} 
-              max={filtersData.price.max} 
-              step={1}
-              value={[priceValues.min, priceValues.max]} 
-              onChange={handleSliderValuesChange}
-              onAfterChange={handlePriceChangeComplete} 
-            />
-          </div>
-        </Accordion>
       </Drawer>
     </div>
   );
 };
 
-export default ProductFiltersMobile;
+export default SearchFiltersMobile;

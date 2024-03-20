@@ -6,14 +6,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Divider } from 'antd';
 import { motion } from 'framer-motion';
-import { getProducts } from '@/lib/queries/product.queries';
+import { getProducts, searchProducts } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
 import { removeFalsyObjectFields } from '@/utils/helpers';
 import LoadMoreButton from './LoadMoreButton';
 
 
 interface IProductsList {
-  category: string;
+  category?: string;
 }
 
 const ProductsList: React.FC<IProductsList> = ({ category }) => {
@@ -25,6 +25,8 @@ const ProductsList: React.FC<IProductsList> = ({ category }) => {
 
   useEffect(() => {
     const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
+    const searchQuery = searchParams.get('query')
+    const categoryParam = searchParams.get('category');
     const types = searchParams.get('types');
     const features = searchParams.get('features');
     const manufacturers = searchParams.get('manufacturers');
@@ -33,25 +35,57 @@ const ProductsList: React.FC<IProductsList> = ({ category }) => {
     const order = searchParams.get('order');
     const sortIndicator = searchParams.get('sortIndicator');
 
-    const query = removeFalsyObjectFields({ page, itemsPerPage: 12, category, types, features, manufacturers, minPrice, maxPrice, order, sortIndicator });
+    const query = removeFalsyObjectFields({ 
+      page, 
+      itemsPerPage: 12, 
+      query: searchQuery,
+      category: category ? category : categoryParam, 
+      types, 
+      features, 
+      manufacturers, 
+      minPrice, 
+      maxPrice, 
+      order, 
+      sortIndicator 
+    });
 
     if(currentPage === 1 && currentPage !== page) {
-      getProducts({ ...query, page: 1, itemsPerPage: page * 12 }).then(res => {
-        setProducts(res.data.products);
-        setCount(res.data.count);
-      });
+      if(searchQuery) {
+        searchProducts({ ...query, page: 1, itemsPerPage: page * 12 }).then(res => {
+          setProducts(res.data.products);
+          setCount(res.data.count);
+        });
+      } else {
+        getProducts({ ...query, page: 1, itemsPerPage: page * 12 }).then(res => {
+          setProducts(res.data.products);
+          setCount(res.data.count);
+        });
+      }
       setCurrentPage(page);
     } else {
-      getProducts(query).then(res => {
-        if(currentPage === page && page !== 1) {
-          setProducts([...products, ...res.data.products]);
-        } else {
-          setProducts(res.data.products);
-        }
-        setCount(res.data.count);
-      });
+      if(searchQuery) {
+        searchProducts(query).then(res => {
+          if(currentPage === page && page !== 1) {
+            setProducts([...products, ...res.data.products]);
+          } else {
+            setProducts(res.data.products);
+          }
+          setCount(res.data.count);
+        });
+      } else {
+        getProducts(query).then(res => {
+          if(currentPage === page && page !== 1) {
+            setProducts([...products, ...res.data.products]);
+          } else {
+            setProducts(res.data.products);
+          }
+          setCount(res.data.count);
+        });
+      }
+      setCurrentPage(1)
+
     }
-  }, [searchParams])
+  }, [searchParams]);
 
   return (
     <div>

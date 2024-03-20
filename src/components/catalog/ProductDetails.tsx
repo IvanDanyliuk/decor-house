@@ -126,6 +126,9 @@ const ProductDetails: React.FC<IProductDetails> = ({ product }) => {
           <h1 className='my-6 text-4xl text-center md:text-left font-bold uppercase'>
             {product?.name}
           </h1>
+          <h3 className='mb-6 text-xl text-center md:text-left font-semibold'>
+            {product?.manufacturer.name}
+          </h3>
           <ul className='flex justify-center md:justify-start gap-3'>
             {product?.colors.map(color => (
               <li key={crypto.randomUUID()}>

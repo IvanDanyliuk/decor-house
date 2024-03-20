@@ -7,66 +7,7 @@ import RelatedProducts from '@/components/catalog/RelatedProducts';
 import ProductsList from '@/components/catalog/ProductsList';
 import ResetFiltersButton from '@/components/catalog/ProductFilters/ResetFiltersButton';
 import SelectedFilters from '@/components/catalog/ProductFilters/SelectedFilters';
-
-
-const sortItems = [
-  {
-    value: JSON.stringify({
-      order: 'asc',
-      sortIndicator: 'createdAt'
-    }),
-    label: 'Newest',
-  },
-  {
-    value: JSON.stringify({
-      order: 'asc',
-      sortIndicator: 'price'
-    }),
-    label: 'Price: Low to High',
-  },
-  {
-    value: JSON.stringify({
-      order: 'desc',
-      sortIndicator: 'price'
-    }),
-    label: 'Price: High to Low',
-  },
-  {
-    value: JSON.stringify({
-      order: 'asc',
-      sortIndicator: 'name'
-    }),
-    label: 'Name: A-Z',
-  },
-  {
-    value: JSON.stringify({
-      order: 'desc',
-      sortIndicator: 'name'
-    }),
-    label: 'Name: Z-A',
-  },
-  {
-    value: JSON.stringify({
-      order: 'asc',
-      sortIndicator: 'size.width'
-    }),
-    label: 'Width',
-  },
-  {
-    value: JSON.stringify({
-      order: 'asc',
-      sortIndicator: 'size.height'
-    }),
-    label: 'Height',
-  },
-  {
-    value: JSON.stringify({
-      order: 'asc',
-      sortIndicator: 'size.depth'
-    }),
-    label: 'Depth',
-  },
-];
+import { productsSortItems } from '@/lib/constants';
 
 
 const CategoryProducts = async ({ params }: { params: { category: string } }) => {
@@ -89,18 +30,13 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
         </h2>
       </section>
       <section className='w-full container mx-auto py-6'>
-        <div className='w-full flex justify-between items-center'>
-          <div className='w-full flex gap-6'>
-            <ProductFilters 
-              filtersData={filtersData} 
-              sortData={sortItems}
-            />
-          </div>
-        </div>
+        <ProductFilters 
+          filtersData={filtersData} 
+          sortData={productsSortItems}
+        />
         <Divider />
         <div className='flex justify-between items-center'>
           <SelectedFilters manufacturers={filtersData.manufacturers} />
-          
           <ResetFiltersButton />
         </div>
       </section>
@@ -109,9 +45,7 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
         <Divider />
       </section>
       <section className='w-full mx-auto container'>
-        {relatedProducts && (
-          <RelatedProducts products={relatedProducts} />
-        )}
+        <RelatedProducts products={relatedProducts} />
       </section>
     </div>
   );

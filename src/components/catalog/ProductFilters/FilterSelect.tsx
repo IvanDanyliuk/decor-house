@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { DownOutlined } from '@ant-design/icons';
 
@@ -12,10 +12,12 @@ interface IFilterSelect {
     value: string;
     label: string;
   }[];
+  disabled?: boolean;
+  multiple?: boolean;
 }
 
 
-const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options }) => {
+const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options, disabled, multiple }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const router = useRouter();
@@ -23,18 +25,10 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options }) => {
   const searchParams = useSearchParams();
 
   const handleSelectOpen = () => {
-    setIsOpen(prev => !prev);
+    if(!disabled) {
+      setIsOpen(prev => !prev);
+    }
   };
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
-      params.set('page', '1');
-      return params.toString()
-    },
-    [searchParams]
-  );
 
   const isValueChecked = (value: string) => {
     const currentSearchParams = searchParams.get(name);
@@ -46,25 +40,28 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options }) => {
     }
   };
 
-  const handleOptionSelect = (value: string) => {
-    const currentParams = searchParams.get(name);
-    if(currentParams) {
-      const splittedSearchParams = currentParams.split(';');
-      const isValueChecked = splittedSearchParams.includes(value);
+  const handleOptionSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, checked } = e.target;
 
-      if(isValueChecked) {
-        const newSearchParams = splittedSearchParams.filter(item => item !== value).join(';');
-        const newPathname = newSearchParams.length > 0 ? 
-          `${pathname}?${createQueryString(name, newSearchParams)}` : 
-          pathname;
-        router.push(newPathname);
-      } else {
-        const newSearchParams = [...splittedSearchParams, value].join(';');
-        router.push(`${pathname}?${createQueryString(name, newSearchParams)}`)
-      }
+    const currentValues = searchParams.get(name);
+    const params = new URLSearchParams(searchParams.toString());
+
+    if(!checked) {
+      const newValues = currentValues!.split(';').filter(item => item !== value).join(';');
+      params.set(name, newValues!);
+      params.set('page', '1')
     } else {
-      router.push(`${pathname}?${createQueryString(name, value)}`);
+      const newValues = multiple ? (currentValues ? currentValues + ';' + value : value) : value;
+      params.set(name, newValues);
+      params.set('page', '1')
     }
+
+    if(!params.get(name)) {
+      params.delete(name);
+      params.set('page', '1')
+    }
+
+    router.push(pathname + (pathname.toString() ? '?' + params.toString() : ''));
   };
 
   return (
@@ -76,7 +73,8 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options }) => {
         <button
           type='button'
           onClick={handleSelectOpen}
-          className='flex items-center gap-3 text-sm font-semibold'
+          className={`flex items-center gap-3 text-sm font-semibold ${disabled ? 'text-gray-regular' : ''}`}
+          disabled={disabled}
         >
           <span>{title}</span>
           <DownOutlined />
@@ -86,18 +84,20 @@ const FilterSelect: React.FC<IFilterSelect> = ({ name, title, options }) => {
             {options.map(option => (
               <li 
                 key={crypto.randomUUID()} 
-                onClick={() => handleOptionSelect(option.value)} 
-                className='px-6 py-3 flex items-center gap-3 hover:bg-gray-100 duration-150'
+                className='px-6 py-3 hover:bg-gray-100 duration-150'
               >
-                <input 
-                  id={title}
-                  type='checkbox' 
-                  value={option.value} 
-                  checked={isValueChecked(option.value)}
-                  onChange={() => handleOptionSelect(option.value)} 
-                  data-testid='selectProductCheckbox'
-                />
-                <label>{option.label}</label>
+                <label>
+                  <input 
+                    id={name}
+                    name={name}
+                    type='checkbox' 
+                    value={option.value} 
+                    checked={isValueChecked(option.value)}
+                    onChange={handleOptionSelect} 
+                    data-testid='selectProductCheckbox'
+                  />
+                  <span className='ml-3'>{option.label}</span>
+                </label>
               </li>
             ))}
           </ul>
