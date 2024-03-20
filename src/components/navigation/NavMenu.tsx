@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Divider, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import ContactLinks from '../ui/ContactLinks';
+import { usePathname } from 'next/navigation';
 
 
 const menuLinks = {
@@ -33,9 +34,15 @@ const menuLinks = {
 const NavMenu: React.FC = () => {
   const [isOpen,setIsOpen] = useState(false);
 
+  const pathname = usePathname();
+
   const handleDrawerOpen = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
     <>

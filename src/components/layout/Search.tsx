@@ -32,6 +32,15 @@ const Search: React.FC = () => {
     setSearchValue(e.target.value);
   };
 
+  const handleSearchValueSubmit = (e: any) => {
+    if(e.target.value && e.key === 'Enter') {
+      const params = new URLSearchParams(searchParams);
+      params.set('query', e.target.value.trim());
+      router.push(`/search?${params.toString()}`);
+      setIsActive(false);
+    }
+  }
+
   useEffect(() => {
     setSearchValue('');
   }, [isActive]);
@@ -70,6 +79,7 @@ const Search: React.FC = () => {
                 placeholder='Search...' 
                 autoFocus
                 onChange={handleSearchValueChange} 
+                onKeyDown={handleSearchValueSubmit}
                 className='w-full border border-white border-b-gray-regular rounded-none focus:shadow-none' 
               />
             </motion.div>
