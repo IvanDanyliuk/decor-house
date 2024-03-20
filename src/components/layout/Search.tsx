@@ -68,8 +68,9 @@ const Search: React.FC = () => {
               <Input 
                 value={searchValue} 
                 placeholder='Search...' 
+                autoFocus
                 onChange={handleSearchValueChange} 
-                className='w-full border border-white border-b-gray-regular rounded-none' 
+                className='w-full border border-white border-b-gray-regular rounded-none focus:shadow-none' 
               />
             </motion.div>
           )}
