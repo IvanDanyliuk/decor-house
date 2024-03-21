@@ -7,9 +7,25 @@ import { Divider, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import ContactLinks from '../ui/ContactLinks';
 import { usePathname } from 'next/navigation';
+import { IUser } from '@/lib/types/user.types';
 
 
-const menuLinks = {
+interface INavMenu {
+  user: IUser | null;
+}
+
+interface IMenuLink {
+  path: string;
+  title: string;
+}
+
+interface IMenuLinks {
+  main: IMenuLink[];
+  secondary: IMenuLink[];
+  additional: IMenuLink[];
+}
+
+const menuLinksInitialState: IMenuLinks = {
   main: [
     { path: '/', title: 'Home' },
     { path: '/catalog', title: 'Catalog' },
@@ -20,8 +36,6 @@ const menuLinks = {
   ],
   secondary: [
     { path: '/login', title: 'Login' },
-    { path: '/profile/:id', title: 'Profile' },
-    { path: '/dashboard', title: 'Dashboard' },
   ],
   additional: [
     { path: '/about', title: 'About Company' },
@@ -31,8 +45,9 @@ const menuLinks = {
 };
 
 
-const NavMenu: React.FC = () => {
+const NavMenu: React.FC<INavMenu> = ({ user }) => {
   const [isOpen,setIsOpen] = useState(false);
+  const [menuLinks, setMenuLinks] = useState<IMenuLinks>(menuLinksInitialState);
 
   const pathname = usePathname();
 
@@ -43,6 +58,29 @@ const NavMenu: React.FC = () => {
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if(user && user.role === 'user' && !menuLinks.secondary.some(item => item.title === 'Profile')) {
+      setMenuLinks({
+        ...menuLinks,
+        secondary: [
+          ...menuLinks.secondary,
+          { path: `/profile/${user._id}`, title: 'Profile' }
+        ]
+      });
+    }
+
+    if(user && user.role === 'admin' && !menuLinks.secondary.some(item => item.title === 'Dashboard')) {
+      setMenuLinks({
+        ...menuLinks,
+        secondary: [
+          ...menuLinks.secondary,
+          { path: `/profile/${user._id}`, title: 'Profile' },
+          { path: '/dashboard', title: 'Dashboard' }
+        ]
+      });
+    }
+  }, [user]);
 
   return (
     <>

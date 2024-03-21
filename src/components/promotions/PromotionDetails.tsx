@@ -49,7 +49,7 @@ const PromotionDetails: React.FC<IPromotionDetails> = ({ promotion }) => {
           <h1 className='text-3xl text-center md:text-left font-bold uppercase'>
             {promotion.title}
           </h1>
-          <p className='text-center md:text-left text-gray-dark font-semibold'>
+          <p className='mt-3 text-center md:text-left text-gray-dark font-semibold'>
             {formatPromotionPeriod(promotion.periodFrom, promotion.periodTo)}
           </p>
           <Divider className='my-3' />

@@ -16,7 +16,7 @@ const Header: React.FC = async () => {
     <header className='w-full h-24 flex items-center'>
       <div className='container mx-auto flex justify-between'>
         <div className='flex items-center gap-6'>
-          <NavMenu />
+          <NavMenu user={user} />
           <Link href='/' className='text-2xl font-bold text-accent-dark'>Decor House</Link>
         </div>
         <div className='flex items-center gap-6'>
