@@ -15,6 +15,10 @@ export const MAP_STARTING_POSITION = {
 
 export const DISABLED_ARROW_COLOR = 'invert(62%) sepia(0%) saturate(1438%) hue-rotate(164deg) brightness(104%) contrast(73%)';
 
+export const months = [
+  'January', 'February', 'March', 'April', 'May', 'June', 
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
 
 //PRODUCTS
 export const productsSortItems = [

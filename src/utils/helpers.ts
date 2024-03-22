@@ -1,3 +1,5 @@
+import { months } from "@/lib/constants";
+
 export const isEmailValid = (email: string) => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   return emailRegex.test(email);
@@ -42,11 +44,6 @@ export const getArrayUniqueItems = (array: any[], field: string) => {
 };
 
 export const formatPromotionPeriod = (from: string, to: string) => {
-  const months = [
-    'January', 'February', 'March', 'April', 'May', 'June', 
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-
   const fromDate = new Date(from);
   const toDate = new Date(to);
 

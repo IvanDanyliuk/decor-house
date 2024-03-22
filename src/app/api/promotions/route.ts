@@ -12,7 +12,7 @@ export const GET = async (req: NextRequest) => {
 
     const query = period === 'current' ? 
       { $and: [
-        { preiodFrom: { $lte: new Date().toISOString() } },
+        { periodFrom: { $lte: new Date().toISOString() } },
         { periodTo: { $gte: new Date().toISOString() } }
       ] } : 
         period === 'past' ? 
