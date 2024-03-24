@@ -114,6 +114,20 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
           }
         }
       },
+      {
+        $unwind: '$products'
+      },
+      {
+        $match: {
+          'products.product.category': new mongoose.Types.ObjectId(category!)
+        }
+      },
+      {
+        $group: {
+          _id: '$_id',
+          products: { $push: '$products' }
+        }
+      }
     ]);
     
     return NextResponse.json({
