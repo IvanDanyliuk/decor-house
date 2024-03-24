@@ -28,7 +28,8 @@ const StatsDetails: React.FC<IStatsDetails> = ({ data }) => {
 
   useEffect(() => {
     getStats({ 
-      categoryId: selectedCategory._id!, 
+      // categoryId: selectedCategory._id!, 
+      categoryId: '65881ca86009bbfaae701a8f',
       periodFrom: period.from, 
       periodTo: period.to 
     }).then(res => setStatsData(res));
