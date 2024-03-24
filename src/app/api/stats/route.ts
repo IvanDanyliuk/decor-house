@@ -127,7 +127,27 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
           _id: '$_id',
           products: { $push: '$products' }
         }
-      }
+      },
+      {
+        $unwind: '$products'
+      },
+      {
+        $group: {
+          _id: '$_id',
+          amount: {
+            $sum: {
+              $multiply: ['$products.product.price', '$products.quantity']
+            }
+          }
+        }
+      },
+      {
+        $sort: {
+          '_id.year': 1,
+          '_id.month': 1,
+          '_id.day': 1,
+        }
+      },
     ]);
     
     return NextResponse.json({
