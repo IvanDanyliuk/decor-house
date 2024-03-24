@@ -149,6 +149,91 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
         }
       },
     ]);
+
+    const topCategories = await Order.aggregate([
+      {
+        $match: { 
+          createdAt: { 
+            $gte: new Date(periodFrom!), 
+            $lte: new Date(periodTo!) 
+          } 
+        }
+      },
+      {
+        $unwind: {
+          path: '$products'
+        }
+      },
+      {
+        $lookup: {
+          from: Product.collection.name,
+          localField: 'products.product',
+          foreignField: '_id',
+          let: {
+            product: '$products.product',
+            quantity: '$products.quantity'
+          },
+          pipeline: [
+            {
+              $project: {
+                '_id': 0,
+                product: '$$ROOT',
+                quantity: '$$quantity'
+              }
+            }
+          ],
+          as: 'products'
+        }
+      },
+      {
+        $unwind: {
+          path: '$products'
+        }
+      },
+      {
+        $group: {
+          _id: '$products.product.category',
+          products: {
+            $push: '$products'
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: Category.collection.name,
+          localField: '_id',
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      {
+        $unwind: '$category'
+      },
+      {
+        $project: {
+          _id: '$category.name',
+          products: 1
+        }
+      },
+      {
+        $unwind: '$products'
+      },
+      {
+        $group: {
+          _id: '$_id',
+          amount: {
+            $sum: {
+              $multiply: ['$products.product.price', '$products.quantity']
+            }
+          }
+        }
+      },
+      {
+        $sort: {
+          amount: -1
+        }
+      }
+    ]);
     
     return NextResponse.json({
       total: {
@@ -158,7 +243,8 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       },
       productsSold,
       ordersDynamic,
-      salesPerCategory
+      salesPerCategory,
+      topCategories
     })
   } catch (error: any) {
     return new NextResponse(error, { status: 500 })
