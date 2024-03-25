@@ -1,12 +1,12 @@
 import StatsDetails from '@/components/stats/StatsDetails';
-import { getStats, getStatsFilterData } from '@/lib/queries/stats.queries'
-import React from 'react'
+import { getStatsFilterData } from '@/lib/queries/stats.queries'
+
 
 const Stats = async () => {
   const filtersData = await getStatsFilterData();
 
   return (
-    <div>
+    <div className='py-3'>
       <StatsDetails data={filtersData} />
     </div>
   );

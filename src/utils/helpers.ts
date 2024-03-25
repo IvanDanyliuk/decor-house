@@ -64,7 +64,7 @@ export const formatDate = (dateString: string) => {
   ];
   const date = new Date(dateString);
   return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-}
+};
 
 export const countPromotionDaysLeft = (date: string) => {
   const datesDifference = new Date(date).getTime() - new Date().getTime();
@@ -75,4 +75,25 @@ export const countPromotionDaysLeft = (date: string) => {
   }
 
   return `${daysLeft} day${daysLeft > 1 ? 's' : ''} left`;
+};
+
+export const generateColors = (numberOfColors: number) => {
+  const hexCharacters = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
+
+  const getCharacter = (index: number) => {
+    return hexCharacters[index];
+  };
+
+  const colors = [];
+
+  for(let i = 0; i < numberOfColors; i++) {
+    let hexColor = '#';
+    for (let y = 0; y < 6; y++) {
+      const randomPosition = Math.floor(Math.random() * hexCharacters.length);
+      hexColor += getCharacter(randomPosition);
+    };
+    colors.push(hexColor);
+  }
+
+  return colors;
 };

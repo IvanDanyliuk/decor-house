@@ -21,13 +21,13 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     const categories = await Category.find({}).select('-__v');
     const orders = await Order.find(query).populate({ path: 'products.product', model: Product });
 
-    const earnings = orders.reduce((acc, curr) => acc + curr.totalAmount, 0);
+    const earnings = orders.length > 0 ? orders.reduce((acc, curr) => acc + curr.totalAmount, 0) : 0;
     const averageBill = Math.round(earnings / orders.length);
     const productsSoldData = orders.map(item => item.products).flat();
     
     const productsSold = categories.map(category => {
       const products = productsSoldData.filter(product => product.product.category.toString() === category._id.toString());
-      const amountPerCategory = products.reduce((acc, curr) => acc + (curr.product.price * curr.quantity), 0);
+      const amountPerCategory = products.length > 0 ? products.reduce((acc, curr) => acc + (curr.product.price * curr.quantity), 0) : 0;
       return {
         name: category.name,
         percentage: Math.round(amountPerCategory / earnings * 100)
@@ -240,6 +240,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
         earnings,
         ordersCount: orders.length,
         averageBill,
+        productsSold: productsSoldData.length > 0 ? productsSoldData.reduce((acc, curr) => acc + curr.quantity, 0) : 0
       },
       productsSold,
       ordersDynamic,
