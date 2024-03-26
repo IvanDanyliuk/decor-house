@@ -1,7 +1,8 @@
-import { connectToDB } from "@/lib/database";
-import Category from "@/lib/models/category.model";
-import Order from "@/lib/models/order.model";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+import { connectToDB } from '@/lib/database';
+import Category from '@/lib/models/category.model';
+import Order from '@/lib/models/order.model';
+
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   try {

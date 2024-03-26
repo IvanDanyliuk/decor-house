@@ -1,4 +1,4 @@
-import { months } from "@/lib/constants";
+import { months } from '@/lib/constants';
 
 export const isEmailValid = (email: string) => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
