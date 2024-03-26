@@ -1,9 +1,15 @@
-import React from 'react'
+import StatsDetails from '@/components/stats/StatsDetails';
+import { getStatsFilterData } from '@/lib/queries/stats.queries'
 
-const page = () => {
+
+const Stats = async () => {
+  const filtersData = await getStatsFilterData();
+
   return (
-    <div>Store Statistics</div>
-  )
-}
+    <div className='py-3'>
+      <StatsDetails data={filtersData} />
+    </div>
+  );
+};
 
-export default page
+export default Stats;
