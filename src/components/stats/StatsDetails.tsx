@@ -151,26 +151,28 @@ const StatsDetails: React.FC<IStatsDetails> = ({ data }) => {
         </div>
         <div className='p-6 col-span-1 border rounded'>
           <h3 className='mb-6 text-lg font-semibold'>Sold products</h3>
-          <Doughnut 
-            data={{
-              labels: statsData!.productsSold.map((item: any) => item.name),
-              datasets: [
-                {
-                  label: '%',
-                  data: statsData!.productsSold.map((item: any) => item.percentage),
-                  backgroundColor: generateColors(statsData!.productsSold!.length)
+          <div className='h-96 flex justify-center'>
+            <Doughnut 
+              data={{
+                labels: statsData!.productsSold.map((item: any) => item.name),
+                datasets: [
+                  {
+                    label: '%',
+                    data: statsData!.productsSold.map((item: any) => item.percentage),
+                    backgroundColor: generateColors(statsData!.productsSold!.length)
+                  }
+                ]
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    display: false
+                  },
                 }
-              ]
-            }}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: {
-                  display: false
-                },
-              }
-            }}
-          />
+              }}
+            />
+          </div>
         </div>
         <div className='p-6 col-span-1 border rounded'>
           <div className='mb-6 w-full flex justify-between items-center'>
