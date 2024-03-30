@@ -16,6 +16,7 @@ import ProductSelect from '../ui/ProductSelect';
 import SubmitButton from '../ui/SubmitButton';
 import Select from '../ui/Select';
 import { removeFalsyObjectFields } from '@/utils/helpers';
+import { openNotification } from '../ui/Notification';
 
 
 interface IInteriorForm {
@@ -71,6 +72,10 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
   }, [selectedCategory, selectedType]);
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       setProducts([]);

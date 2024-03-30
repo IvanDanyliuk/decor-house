@@ -11,6 +11,7 @@ import UploadImageButton from '../ui/UploadImageBtn';
 import SubmitButton from '../ui/SubmitButton';
 import AddSubValueModal from '../ui/modals/AddSubValueModal';
 import Chip from '../ui/Chip';
+import { openNotification } from '../ui/Notification';
 
 
 interface ICategoryForm {
@@ -53,6 +54,10 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
   };
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       setTypes([]);

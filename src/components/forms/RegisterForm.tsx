@@ -28,7 +28,7 @@ const RegisterForm: React.FC = () => {
 
   useEffect(() => {
     if(state && state.error) {
-      openNotification(state.message, state.error)
+      openNotification(state.message, state.error);
     }
 
     if(state && !state.error && state.data && state.data.email && state.data.password) {

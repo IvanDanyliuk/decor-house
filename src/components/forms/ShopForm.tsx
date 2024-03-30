@@ -9,6 +9,7 @@ import { createShop, updateShop } from '@/lib/actions/shop.actions';
 import { IShop } from '@/lib/types/shop.types';
 import TextField from '../ui/TextField';
 import SubmitButton from '../ui/SubmitButton';
+import { openNotification } from '../ui/Notification';
 
 const MapInput = dynamic(() => import('../ui/MapInput'), {
   loading: () => <div>Loading...</div>,
@@ -38,6 +39,10 @@ const ShopForm: React.FC<IShopForm> = async ({ shopToUpdate }) => {
   const router = useRouter();
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       router.push('/dashboard/shops');

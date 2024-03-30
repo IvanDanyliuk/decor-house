@@ -14,6 +14,7 @@ import { createProduct, updateProduct } from '@/lib/actions/product.actions';
 import TextareaField from '../ui/TextareaField';
 import Select from '../ui/Select';
 import ColorPicker from '../ui/ColorPicker';
+import { openNotification } from '../ui/Notification';
 
 
 interface IProductForm {
@@ -91,6 +92,10 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   }, [selectedCategory]);
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       setTypes([]);

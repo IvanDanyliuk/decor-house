@@ -3,11 +3,12 @@
 import { useEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { createManufacturer, updateManufacturer } from '@/lib/actions/manufacturer.actions';
 import TextField from '../ui/TextField';
 import SubmitButton from '../ui/SubmitButton';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
-import { useRouter } from 'next/navigation';
+import { openNotification } from '../ui/Notification';
 
 
 interface IManufacturerForm {
@@ -29,6 +30,10 @@ const ManufacturerForm: React.FC<IManufacturerForm> = ({ manufacturerToUpdate })
   const router = useRouter();
   
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       router.push('/dashboard/manufacturers');

@@ -17,6 +17,7 @@ import { ICategory } from '@/lib/types/category.types';
 import { getCategories } from '@/lib/queries/category.queries';
 import { getProducts } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
+import { openNotification } from '../ui/Notification';
 
 
 interface IPromotionForm {
@@ -64,6 +65,10 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
   }, [selectedCategory]);
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       setSelectedCategory('');
