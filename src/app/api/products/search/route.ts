@@ -75,6 +75,6 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       message: '',
     });
   } catch (error: any) {
-    return new NextResponse(error, { status: 500 });
+    return new NextResponse(error, { status: 200 });
   }
 };
