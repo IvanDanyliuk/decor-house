@@ -1,14 +1,14 @@
 'use server';
 
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import { revalidatePath } from 'next/cache';
+import { signIn } from 'next-auth/react';
 import { z as zod } from 'zod';
+import bcrypt from 'bcryptjs';
 import { connectToDB } from '../database';
 import User from '../models/user.model'
 import { utapi } from '../uploadthing';
-import { revalidatePath } from 'next/cache';
 import { ICartItem } from '../types/user.types';
-import { signIn } from 'next-auth/react';
 
 
 const userSchema = zod.object({
@@ -60,9 +60,7 @@ export const register = async (prevState: any, formData: FormData) => {
     
     const existingUser = await User.findOne({ email });
 
-    // if(existingUser) return { error: 'User already exists' };
     if(existingUser) throw new Error('User already exists')
-
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const imageUrl = photo && new Blob([photo]).size > 0 ? (await utapi.uploadFiles([photo]))[0].data?.url : '/assets/icons/user_image_placeholder.jpg';
