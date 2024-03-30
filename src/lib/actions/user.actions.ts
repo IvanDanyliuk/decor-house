@@ -38,7 +38,7 @@ export const register = async (prevState: any, formData: FormData) => {
   const phone = formData.get('phone');
   const address = formData.get('address');
   const rawPhoto = formData.get('photo') as string;
-  const email = formData.get('email');
+  const email = formData.get('email') as string;
   const password = formData.get('password') as string;
   const confirmPassword = formData.get('confirmPassword');
 
@@ -46,7 +46,7 @@ export const register = async (prevState: any, formData: FormData) => {
     await connectToDB();
 
     const validatedFields = userSchema.safeParse({
-      name, phone, address, photo: rawPhoto, email, password, confirmPassword
+      name, phone, address, email, password, confirmPassword
     });
 
     if(!validatedFields.success) {
@@ -55,15 +55,17 @@ export const register = async (prevState: any, formData: FormData) => {
       };
     }
 
-    const photoFile = await fetch(rawPhoto);
-    const photo = await photoFile.blob();
+    const photoFile = rawPhoto ? await fetch(rawPhoto) : null;
+    const photo = photoFile ? await photoFile.blob() : null;
     
     const existingUser = await User.findOne({ email });
 
-    if(existingUser) return { error: 'User already exists' };
+    // if(existingUser) return { error: 'User already exists' };
+    if(existingUser) throw new Error('User already exists')
+
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const imageUrl = new Blob([photo]).size > 0 ? (await utapi.uploadFiles([photo]))[0].data?.url : '';
+    const imageUrl = photo && new Blob([photo]).size > 0 ? (await utapi.uploadFiles([photo]))[0].data?.url : '/assets/icons/user_image_placeholder.jpg';
 
     const newUser = await User.create({
       name,
@@ -77,17 +79,21 @@ export const register = async (prevState: any, formData: FormData) => {
       productCart: [],
     });
 
+    revalidatePath('/register')
+
     return {
       data: {
         email: newUser.email,
-        password: newUser.password
+        password
       },
       error: null,
       message: 'User has been successfully created!',
     };
-  } catch (error) {
+  } catch (error: any) {
     return {
-      error: 'Failed to register',
+      data: null,
+      error: error.message,
+      message: 'Failed to register'
     };
   }
 };

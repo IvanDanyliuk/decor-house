@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import TextField from '../ui/TextField';
 import { register } from '@/lib/actions/user.actions';
 import SubmitButton from '../ui/SubmitButton';
@@ -25,22 +25,43 @@ const RegisterForm: React.FC = () => {
   const [state, formAction] = useFormState(register, initialState);
   const ref = useRef<HTMLFormElement>(null);
 
-  const userSignIn = useCallback(async () => {
-    if(state.data && state.data.email && state.data.password) {
-      await signIn('credentials', { 
-        email: state.data.email, 
-        password: state.data.password, 
-        callbackUrl: '/' 
-      });
-    }
-  }, [state]);
+  const session = useSession()
+
+  // const userSignIn = useCallback(async () => {
+  //   if(state.data && state.data.email && state.data.password) {
+  //     await signIn('credentials', { 
+  //       email: state.data.email, 
+  //       password: state.data.password, 
+  //       callbackUrl: '/' 
+  //     });
+  //   }
+  // }, [state]);
+
+  // useEffect(() => {
+  //   if(state && !state.error && state.data && state.data.email && state.data.password) {
+  //     console.log('SIGNING IN...', {
+  //       email: state.data.email,
+  //       password: state.data.password
+  //     })
+  //     // userSignIn();
+  //     // ref.current?.reset();
+  //     signIn('credentials', {
+  //       email: state.data.email,
+  //       password: state.data.password,
+  //       callbackUrl: '/'
+  //     }).then(res => console.log('SIGNED IN', res))
+  //   }
+  // }, [state, formAction]);
 
   useEffect(() => {
-    if(state && !state.error) {
-      ref.current?.reset();
-      userSignIn();
+    if(state && !state.error && state.data && state.data.email && state.data.password) {
+      signIn('credentials', {
+        email: state.data.email,
+        password: state.data.password,
+        callbackUrl: '/'
+      }).then(res => console.log('SIGNED IN', res))
     }
-  }, [state, formAction]);
+  }, [state, formAction])
 
   return (
     <form 
