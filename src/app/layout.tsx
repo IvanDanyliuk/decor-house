@@ -2,11 +2,14 @@ import './globals.scss';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
-import { Divider } from 'antd';
+import { Badge, Divider } from 'antd';
 import { Montserrat } from 'next/font/google';
 import ContactLinks from '../components/ui/ContactLinks';
 import SessionProvider from '../components/SessionProvider';
 import Header from '../components/layout/Header';
+import { HomeOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import SearchMobile from '@/components/layout/SearchMobile';
+import BottomNavigationBar from '@/components/navigation/BottomNavigationBar';
 
 
 const montserrat = Montserrat({ subsets: ['latin'] });
@@ -32,7 +35,7 @@ export default async function RootLayout({
           <main>
             {children}
           </main>
-          <footer className='w-full py-10 flex flex-col justify-center items-center bg-main-bg'>
+          <footer className='w-full mb-20 md:mb-0 py-10 flex flex-col justify-center items-center bg-main-bg'>
             <div className='relative w-full container'>
               <div className='text-xl md:text-3xl font-bold text-accent-dark text-center'>Decor House</div>
               <Divider className='py-1 md:py-4 md:my-8' />
@@ -55,6 +58,7 @@ export default async function RootLayout({
               </div>
             </div>
           </footer>
+          <BottomNavigationBar />
         </SessionProvider>
       </body>
     </html>

@@ -7,7 +7,7 @@ import { IUser } from '@/lib/types/user.types';
 
 
 interface ICartIcon {
-  user: IUser;
+  user: IUser | null;
 }
 
 

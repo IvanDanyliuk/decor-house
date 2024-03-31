@@ -13,15 +13,17 @@ const Header: React.FC = async () => {
   const user = session?.user ? await getCurrentUser(session?.user?.email!) : null;
 
   return (
-    <header className='w-full h-24 flex items-center'>
+    <header className='px-3 w-full h-24 flex items-center'>
       <div className='container mx-auto flex justify-between'>
         <div className='flex items-center gap-6'>
           <NavMenu user={user} />
           <Link href='/' className='text-2xl font-bold text-accent-dark'>Decor House</Link>
         </div>
         <div className='flex items-center gap-6'>
-          <Search />
-          <CartIcon user={user} />
+          <div className='hidden md:flex md:items-center md:gap-6'>
+            <Search />
+            <CartIcon user={user} />
+          </div>
           {
             user ? (
               <UserMenu user={user} />
