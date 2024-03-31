@@ -9,7 +9,7 @@ const Profile = async ({ params }: { params: { id: string } }) => {
   return (
     <div className='relative w-full pb-6'>
       <section className='py-8 w-full bg-main-bg'>
-        <h2 className='container mx-auto page-heading-primary'>
+        <h2 className='container mx-auto px-3 md:px-0 page-heading-primary'>
           {profileData.profile.name}
         </h2>
       </section>

@@ -18,7 +18,7 @@ const Blog = async () => {
           Blog
         </h2>
       </section>
-      <section className='container mx-auto'>
+      <section className='container mx-auto px-3 md:px-0'>
         <BlogDetails categories={categoriesData} />
       </section>
     </div>

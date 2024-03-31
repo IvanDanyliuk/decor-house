@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const Hero: React.FC = () => {
   return (
-    <div className=' hero object-fill rounded'>
+    <div className='px-3 md:px-0 hero object-fill rounded'>
       <img src='./assets/images/SOFA.png' alt='hero-bg' />
       <div className='absolute w-full h-full flex'>
         <div className='flex items-end hero-item'>
@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
             </p>
             <Link 
               href='/catalog' 
-              className='absolute md:relative bottom-0 py-3 w-full link-primary'>
+              className='absolute md:relative left-0 right-0 bottom-0 py-3 mx-3 md:mx-0 link-primary '>
                 Catalog
               </Link>
           </div>

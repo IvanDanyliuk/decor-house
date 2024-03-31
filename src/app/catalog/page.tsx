@@ -18,7 +18,7 @@ const Catalog = async () => {
         <h2 className='mx-auto mb-10 text-4xl text-center font-bold uppercase'>
           Catalog
         </h2>
-        <div className='container w-full mx-auto flex flex-col gap-3 md:gap-6'>
+        <div className='container w-full mx-auto px-3 md:px-0 flex flex-col gap-3 md:gap-6'>
           {categoriesChunks.map((chunk: (ICategory | IPremiumCategory)[], i) => {
             if(chunk.length < chunkSize) {
               return (

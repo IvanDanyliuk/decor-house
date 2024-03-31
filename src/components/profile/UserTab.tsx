@@ -46,7 +46,7 @@ const UserTab: React.FC<IUserTab> = ({ user }) => {
         formData.append('id', user._id!);
         await formAction(formData);
       }} className='flex flex-wrap md:flex-row flex-1 gap-6'>
-        <fieldset className='flex flex-col flex-1 gap-3'>
+        <fieldset className='flex flex-col w-full md:flex-1 gap-3'>
           <TextField 
             name='name' 
             label='First Name and Last Name' 

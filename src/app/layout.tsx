@@ -2,13 +2,11 @@ import './globals.scss';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
-import { Badge, Divider } from 'antd';
+import { Divider } from 'antd';
 import { Montserrat } from 'next/font/google';
 import ContactLinks from '../components/ui/ContactLinks';
 import SessionProvider from '../components/SessionProvider';
 import Header from '../components/layout/Header';
-import { HomeOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import SearchMobile from '@/components/layout/SearchMobile';
 import BottomNavigationBar from '@/components/navigation/BottomNavigationBar';
 
 

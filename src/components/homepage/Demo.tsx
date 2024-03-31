@@ -54,7 +54,7 @@ const Demo: React.FC = () => {
           square metres of various departments in the AmbienteDirect Store in Munich, Germany.
         </p>
         <Link
-          href='/salons'
+          href='/shops'
           className='w-full md:w-auto px-10 py-5 bg-white text-black font-semibold text-center uppercase rounded-lg'
         >
           Salons on the map

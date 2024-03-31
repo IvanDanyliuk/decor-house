@@ -14,13 +14,13 @@ export default async function Home() {
 
   return (
     <div className='flex flex-col gap-12 md:gap-24'>
-      <Section className='relative mx-auto container'>
+      <Section className='relative mx-auto px-3 md:px-0 container'>
         <Hero />
       </Section>
       <Section className='w-full'>
         <StoreOverview />
       </Section>
-      <Section className='mx-auto container'>
+      <Section className='mx-auto px-3 md:px-0 container'>
         {productsData.data ? (
           <NewProducts products={productsData.data.products} />
         ) : (
@@ -30,7 +30,7 @@ export default async function Home() {
       <Section className='w-full'>
         <Demo />
       </Section>
-      <Section className='w-full'>
+      <Section className='w-full px-3 md:px-0'>
         <Interiors interiors={interiorsData.data.interiors} />
       </Section>
     </div>

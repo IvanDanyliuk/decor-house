@@ -15,7 +15,7 @@ interface IProductGallery {
 
 const ProductsGallery: React.FC<IProductGallery> = ({ products, currentItemIndex, productsToShow }) => {
   return (
-    <div className='mb-8 md:mb-16 w-full flex gap-10'>
+    <div className='mb-8 md:mb-16 px-3 md:px-0 w-full flex gap-10'>
       {products.slice(currentItemIndex, currentItemIndex + productsToShow).map(product => (
         <Link 
           key={crypto.randomUUID()}
