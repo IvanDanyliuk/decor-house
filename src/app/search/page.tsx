@@ -30,7 +30,7 @@ const Search = async ({ params, searchParams }: any) => {
           Search
         </h2>
       </section>
-      <section className='container mx-auto py-3'>
+      <section className='container mx-auto p-3'>
         <SearchFilters 
           categories={categoryOptions} 
           types={typesOptions} 

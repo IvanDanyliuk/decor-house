@@ -5,12 +5,12 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Divider } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { getProducts, searchProducts } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
 import { removeFalsyObjectFields } from '@/utils/helpers';
 import LoadMoreButton from './LoadMoreButton';
-import { LoadingOutlined } from '@ant-design/icons';
 
 
 interface IProductsList {

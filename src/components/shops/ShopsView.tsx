@@ -6,6 +6,7 @@ import { Divider } from 'antd';
 import { getShops } from '@/lib/queries/shop.queries';
 import { IShop } from '@/lib/types/shop.types';
 import Select from '../ui/Select';
+import { useWindowSize } from '@/utils/hooks/use-window-size';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -38,6 +39,8 @@ const ShopsView: React.FC<IShopsView> = ({ countries }) => {
   const [shops, setShops] = useState<IShop[]>([]);
   const countriesOptions = countries.map(item => ({ label: item, value: item }));
 
+  const { width } = useWindowSize();
+
   useEffect(() => {
     getShops({ country }).then(res => setShops(res.data.shops));
   }, [country]);
@@ -49,13 +52,13 @@ const ShopsView: React.FC<IShopsView> = ({ countries }) => {
   }
 
   return (
-    <div className='relative w-full'>
+    <div className='relative w-full flex flex-col md:flex-row'>
       <div className='relative w-full'>
         <MapContainer
           center={shops[0].coordinates}
           zoom={13}
           scrollWheelZoom={true}
-          style={{ position: 'relative', width: '100%', height: '80vh', zIndex: 0 }}
+          style={{ position: 'relative', width: '100%', height: width && width > 640 ? '80vh' : '55vh', zIndex: 0 }}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -72,7 +75,7 @@ const ShopsView: React.FC<IShopsView> = ({ countries }) => {
           <FlyMapTo coordinates={shops[0].coordinates} />
         </MapContainer>
       </div>
-      <div className='absolute left-52 top-0 px-10 py-16 w-[550px] h-full bg-white'>
+      <div className='relative md:absolute md:left-52 md:top-0 px-3 md:px-10 py-4 md:py-16 w-full md:w-[550px] h-full bg-white'>
         <Select defaultValue={countries[0]} options={countriesOptions} onChange={setCountry} />
         <ul className='py-5'>
           {shops.map((shop, i) => (
