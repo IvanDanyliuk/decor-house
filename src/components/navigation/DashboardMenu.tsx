@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, MenuProps } from 'antd';
+import { Drawer, Menu, MenuProps } from 'antd';
 import { usePathname } from 'next/navigation';
+import { useWindowSize } from '@/utils/hooks/use-window-size';
+import { ProfileOutlined } from '@ant-design/icons';
 
 
-const menuItems: MenuProps['items'] = [
+const menuData = [
   {
     label: <Link href='/dashboard'>Stats</Link>,
     key: 'statistics',
@@ -49,11 +51,15 @@ const menuItems: MenuProps['items'] = [
   },
 ];
 
+const menuItems: MenuProps['items'] = [...menuData];
+
 
 const DashboardMenu = () => {
   const [currentLink, setCurrentLink] = useState('statistics');
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const pathname = usePathname();
+  const { width } = useWindowSize();
 
   const onClick: MenuProps['onClick'] = (e) => {
     setCurrentLink(e.key);
@@ -67,13 +73,37 @@ const DashboardMenu = () => {
     }
   }, [pathname]);
 
+  console.log(width && width <= 640)
+
   return (
-    <Menu 
-      onClick={onClick} 
-      selectedKeys={[currentLink]} 
-      mode='horizontal' 
-      items={menuItems}
-    />
+    <>
+      {width && width >= 640 ? (
+        <Menu 
+          onClick={onClick} 
+          selectedKeys={[currentLink]} 
+          mode='horizontal' 
+          items={menuItems}
+        />
+      ) : (
+        <div className='w-full flex justify-end itens-center'>
+          <button onClick={() => setIsMenuOpen(true)}>
+            <ProfileOutlined className='text-3xl' />
+          </button>
+          <Drawer
+            open={isMenuOpen}
+            onClose={() => setIsMenuOpen(false)}
+          >
+            <ul className='flex flex-col gap-3'>
+              {menuData.map(item => (
+                <li key={crypto.randomUUID()} className='text-lg font-semibold'>
+                  {item.label}
+                </li>
+              ))}
+            </ul>
+          </Drawer>
+        </div>
+      )}
+    </>
   );
 };
 

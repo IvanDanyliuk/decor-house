@@ -72,35 +72,41 @@ const StatsDetails: React.FC<IStatsDetails> = ({ data }) => {
 
   return (
     <div className='w-full'>
-      <section className='w-full flex justify-between items-center'>
-        <button type='button' onClick={setInitialPeriod} className='px-4 py-2 text-sm text-white bg-accent-dark rounded'>Clear period</button>
-        <div className='flex gap-6'>
+      <section className='w-full flex flex-col-reverse md:flex-row justify-between items-center gap-3'>
+        <button 
+          type='button' 
+          onClick={setInitialPeriod} 
+          className='w-full md:w-auto px-4 py-2 text-sm text-white bg-accent-dark rounded'
+        >
+          Clear period
+        </button>
+        <div className='w-full md:w-auto flex gap-6'>
           <DatePicker onChange={handleDateFromChange} />
           <DatePicker onChange={handleDateToChange} />
         </div>
       </section>
       <Divider />
-      <section className='w-full flex justify-between items-center'>
-        <div className='border border-gray-medium rounded px-8 py-6'>
+      <section className='w-full flex flex-col md:flex-row justify-between items-center gap-3 md:gap-6'>
+        <div className='w-full md:w-auto border border-gray-medium rounded px-8 py-6'>
           <h3 className='mb-3 text-lg font-bold text-gray-dark'>Earnings</h3>
           <p className='text-2xl font-bold'>
             &euro;{statsData.total.earnings}
           </p>
         </div>
-        <ul className='flex gap-6'>
-          <li className='border border-gray-medium rounded px-8 py-6'>
+        <ul className='w-full md:w-auto flex flex-col md:flex-row gap-3 md:gap-6'>
+          <li className='w-full md:w-auto border border-gray-medium rounded px-8 py-6'>
             <h3 className='mb-3 text-lg font-semibold text-gray-dark'>Number of Orders</h3>
             <p className='text-2xl font-bold'>
               {statsData.total.ordersCount}
             </p>
           </li>
-          <li className='border border-gray-medium rounded px-8 py-6'>
+          <li className='w-full md:w-auto border border-gray-medium rounded px-8 py-6'>
             <h3 className='mb-3 text-lg font-semibold text-gray-dark'>Average Bill</h3>
             <p className='text-2xl font-bold'>
               &euro;{statsData.total.averageBill}
             </p>
           </li>
-          <li className='border border-gray-medium rounded px-8 py-6'>
+          <li className='w-full md:w-auto border border-gray-medium rounded px-8 py-6'>
             <h3 className='mb-3 text-lg font-semibold text-gray-dark'>Products Sold</h3>
             <p className='text-2xl font-bold'>
               {statsData.total.productsSold}
@@ -109,7 +115,7 @@ const StatsDetails: React.FC<IStatsDetails> = ({ data }) => {
         </ul>
       </section>
       <Divider />
-      <section className='w-full grid grid-cols-2 gap-6'>
+      <section className='w-full grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div className='p-6 col-span-1 border rounded'>
           <h3 className='mb-6 text-lg font-semibold'>Orders Dynamic</h3>
           <Line 
