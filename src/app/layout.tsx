@@ -46,7 +46,7 @@ export default async function RootLayout({
                     <Link href='/about'>About Company</Link>
                   </li>
                   <li>
-                    <Link href='/legal'>Legal Information</Link>
+                    <Link href='/legal-info'>Legal Information</Link>
                   </li>
                   <li>
                     <Link href='/privacy'>Privacy Policy</Link>
