@@ -38,7 +38,7 @@ const RegisterForm: React.FC = () => {
         callbackUrl: '/'
       }).then(res => console.log('SIGNED IN', res))
     }
-  }, [state, formAction])
+  }, [state, formAction]);
 
   return (
     <form 

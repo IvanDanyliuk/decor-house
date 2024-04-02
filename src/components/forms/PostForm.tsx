@@ -53,7 +53,7 @@ const PostForm: React.FC<IPostForm> = ({ categories, postToUpdate }) => {
     <form 
       ref={ref} 
       action={formAction} 
-      className='flex grow flex-1 flex-col justify-between content-between gap-6'
+      className='flex grow flex-1 flex-col justify-between content-between gap-3 md:gap-6'
     >
       <TextField 
         name='title' 

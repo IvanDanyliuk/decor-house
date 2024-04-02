@@ -95,7 +95,7 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
         formData.append('products', selectedProductIds.join(', '));
         await formAction(formData)
       }} 
-      className='flex grow flex-1 flex-wrap justify-between content-between gap-6'
+      className='flex grow flex-1 flex-wrap justify-between content-between gap-3 md:gap-6'
     >
       <TextField 
         name='title' 

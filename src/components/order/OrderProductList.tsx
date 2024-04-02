@@ -56,30 +56,30 @@ const OrderProductsList: React.FC<IOrderProducts> = ({ data }) => {
         width={width && width >= 640 ? 780 : '90%'}
       >
         <Divider />
-        <table className='w-full'>
+        <table className='w-full sticky text-sm md:text-base overflow-x-auto'>
           <tr>
-            <th className='px-3 py-2 text-left'></th>
-            <th className='px-3 py-2 text-left'>Product Name</th>
-            <th className='px-3 py-2 text-left'>Type</th>
-            <th className='px-3 py-2 text-left'>Price</th>
-            <th className='px-3 py-2 text-left'>Quantity</th>
-            <th className='px-3 py-2 text-left'>Amount</th>
+            <th className='px-1 md:px-3 py-2 text-left'></th>
+            <th className='px-1 md:px-3 py-2 text-left'>Product Name</th>
+            <th className='px-1 md:px-3 py-2 text-left'>Type</th>
+            <th className='px-1 md:px-3 py-2 text-left'>Price</th>
+            <th className='px-1 md:px-3 py-2 text-left'>Quantity</th>
+            <th className='px-1 md:px-3 py-2 text-left'>Amount</th>
           </tr>
           {data.products.map(item => (
-            <tr key={crypto.randomUUID()} className='font-semibold'>
+            <tr key={crypto.randomUUID()} className='text-sm md:text-base font-semibold'>
               <td className='px-3 py-2'>
                 <Image src={item.product.images[0]} alt={item.product.name} width={100} height={100} />
               </td>
-              <td className='px-3 py-2'>{item.product.name}</td>
-              <td className='px-3 py-2'>{item.product.type}</td>
-              <td className='px-3 py-2 text-center'>{item.product.price}</td>
-              <td className='px-3 py-2 text-center'>{item.quantity}</td>
-              <td className='px-3 py-2 text-center'>{item.product.price * item.quantity}</td>
+              <td className='px-1 md:px-3 py-2'>{item.product.name}</td>
+              <td className='px-1 md:px-3 py-2'>{item.product.type}</td>
+              <td className='px-1 md:px-3 py-2 text-center'>{item.product.price}</td>
+              <td className='px-1 md:px-3 py-2 text-center'>{item.quantity}</td>
+              <td className='px-1 md:px-3 py-2 text-center'>{item.product.price * item.quantity}</td>
             </tr>
           ))}
         </table>
         <Divider />
-        <div className='flex justify-between items-start gap-10'>
+        <div className='flex justify-between items-start gap-10 text-xs md:text-base'>
           <div>
             <div className='flex gap-1'>
               <span>Customer:</span>

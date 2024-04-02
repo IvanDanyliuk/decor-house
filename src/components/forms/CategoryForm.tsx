@@ -74,7 +74,7 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
         formData.append('features', features.join(', '));
         await formAction(formData);
       }} 
-      className='flex grow flex-1 flex-col justify-between content-between gap-6'
+      className='flex grow flex-1 flex-col justify-between content-between gap-3 md:gap-6'
     >
       <fieldset className='flex flex-col gap-3'>
         <TextField 

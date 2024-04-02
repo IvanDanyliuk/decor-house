@@ -44,7 +44,7 @@ const ManufacturerForm: React.FC<IManufacturerForm> = ({ manufacturerToUpdate })
     <form 
       ref={ref} 
       action={formAction}
-      className='w-full flex flex-wrap gap-6'
+      className='w-full flex flex-wrap gap-3 md:gap-6'
     >
       <TextField 
         name='name' 

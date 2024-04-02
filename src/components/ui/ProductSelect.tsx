@@ -114,11 +114,20 @@ const ProductSelect: React.FC<IProductSelect> = ({ label, products, defaultValue
                 width={50} 
                 height={50} 
               />
-              <span className='w-36'>{product.name}</span>
-              <span className='w-36'>{typeof product.category !== 'string' && product.category.name}</span>
-              <span className='w-36'>&euro;{product.price}</span>
+              <span className='w-full md:w-36'>
+                {product.name}
+              </span>
+              <span className='w-full md:w-36'>
+                {typeof product.category !== 'string' && product.category.name}
+              </span>
+              <span className='w-full md:w-36'>
+                &euro;{product.price}
+              </span>
             </div>
-            <CloseOutlined onClick={() => handleProductDelete(product._id!)} data-testid='deleteProductBtn' />
+            <CloseOutlined 
+              onClick={() => handleProductDelete(product._id!)} 
+              data-testid='deleteProductBtn' 
+            />
           </li>
         ))}
       </ul>
