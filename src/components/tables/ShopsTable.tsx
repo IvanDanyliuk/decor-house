@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import type { ColumnsType } from 'antd/es/table';
 import { Popconfirm, Table } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { deleteShop } from '@/lib/actions/shop.actions';
 import { IShop } from '@/lib/types/shop.types';
@@ -72,12 +72,16 @@ const ShopsTable: React.FC<IShopsTable> = ({ shops }) => {
   ];
 
   return (
-    <Table 
-      sticky
-      columns={tableColumns} 
-      dataSource={tableData} 
-      pagination={false} 
-    />
+    <div className='overflow-x-auto'>
+      <Table 
+        sticky
+        columns={tableColumns} 
+        dataSource={tableData} 
+        pagination={false} 
+        style={{ minWidth: '1000px' }}
+        scroll={{ x: '1000px' }}
+      />
+    </div>
   );
 };
 

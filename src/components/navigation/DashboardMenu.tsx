@@ -66,14 +66,16 @@ const DashboardMenu = () => {
   };
 
   useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
     const url = pathname.split('/');
 
     if(url[2] && currentLink !== url[2]) {
       setCurrentLink(url[2]);
     }
   }, [pathname]);
-
-  console.log(width && width <= 640)
 
   return (
     <>

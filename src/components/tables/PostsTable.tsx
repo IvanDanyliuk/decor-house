@@ -2,12 +2,12 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { Popconfirm, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Table } from 'antd';
 import dayjs from 'dayjs';
-import { deletePost } from "@/lib/actions/post.actions";
-import { IPost } from "@/lib/types/post.types"
+import { deletePost } from '@/lib/actions/post.actions';
+import { IPost } from '@/lib/types/post.types';
 
 
 interface IPostsTable {
@@ -94,12 +94,16 @@ const PostsTable: React.FC<IPostsTable> = ({ posts }) => {
   ];
 
   return (
-    <Table 
-      sticky
-      columns={tableColumns} 
-      dataSource={tableData} 
-      pagination={false} 
-    />
+    <div className='overflow-x-auto'>
+      <Table 
+        sticky
+        columns={tableColumns} 
+        dataSource={tableData} 
+        pagination={false} 
+        style={{ minWidth: '1000px' }}
+        scroll={{ x: '1000px' }}
+      />
+    </div>
   );
 };
 

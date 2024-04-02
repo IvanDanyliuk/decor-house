@@ -115,7 +115,7 @@ const StatsDetails: React.FC<IStatsDetails> = ({ data }) => {
         </ul>
       </section>
       <Divider />
-      <section className='w-full grid grid-cols-1 md:grid-cols-2 gap-6'>
+      <section className='w-full grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6'>
         <div className='p-6 col-span-1 border rounded'>
           <h3 className='mb-6 text-lg font-semibold'>Orders Dynamic</h3>
           <Line 
