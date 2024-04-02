@@ -31,6 +31,7 @@ const initialEmptyState = {
   products: '',
 };
 
+
 const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate }) => {
   const action = interiorToUpdate ? updateInterior : createInterior;
   const initialState = interiorToUpdate ? interiorToUpdate : initialEmptyState;

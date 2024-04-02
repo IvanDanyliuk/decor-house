@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { getStats } from '@/lib/queries/stats.queries';
 import { generateColors } from '@/utils/helpers';
 import { IFilterItem } from '@/lib/types/products.types';
+import Loader from '../ui/Loader';
 
 Chart.register(ArcElement, BarElement, CategoryScale, LinearScale, PointElement, Legend, LineElement, Tooltip)
 
@@ -65,7 +66,7 @@ const StatsDetails: React.FC<IStatsDetails> = ({ data }) => {
 
   if(!statsData) {
     return (
-      <div>Loading...</div>
+      <Loader />
     );
   }
 

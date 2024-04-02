@@ -1,8 +1,10 @@
-import { getLocations } from '@/lib/queries/shop.queries';
 import dynamic from 'next/dynamic';
+import Loader from '@/components/ui/Loader';
+import { getLocations } from '@/lib/queries/shop.queries';
+
 
 const ShopsView = dynamic(() => import('../../components/shops/ShopsView'), {
-  loading: () => <div>Loading...</div>,
+  loading: () => <Loader />,
   ssr: false,
 });
 

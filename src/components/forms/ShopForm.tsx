@@ -10,9 +10,10 @@ import { IShop } from '@/lib/types/shop.types';
 import TextField from '../ui/TextField';
 import SubmitButton from '../ui/SubmitButton';
 import { openNotification } from '../ui/Notification';
+import Loader from '../ui/Loader';
 
 const MapInput = dynamic(() => import('../ui/MapInput'), {
-  loading: () => <div>Loading...</div>,
+  loading: () => <Loader />,
   ssr: false,
 });
 

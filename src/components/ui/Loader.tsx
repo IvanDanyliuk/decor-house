@@ -1,7 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
 
 
-const DashboardLoading = () => {
+const Loader: React.FC = () => {
   return (
     <div className='w-full py-72 flex justify-center items-center'>
       <LoadingOutlined className='text-xl' />
@@ -9,4 +9,4 @@ const DashboardLoading = () => {
   );
 };
 
-export default DashboardLoading;
+export default Loader;
