@@ -19,8 +19,6 @@ interface IUserMenuProps {
 
 
 const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
-  console.log('USER MENU', user)
-
   if(!user) return null;
 
   const userItems: MenuProps['items'] = [

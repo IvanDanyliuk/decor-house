@@ -204,7 +204,11 @@ export const updatePassword = async (prevState: any, formData: FormData) => {
       message: 'User photo has been successfully updated!',
     };
   } catch (error: any) {
-    
+    return {
+      data: null,
+      error: error.message,
+      message: 'Cannot update a password!',
+    };
   }
 }
 
