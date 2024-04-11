@@ -7,7 +7,9 @@ export default withAuth(
     if(req.nextUrl.pathname.startsWith('/dashboard') && req.nextauth.token?.role !== 'admin') {
       return NextResponse.rewrite(new URL('/login', req.url));
     }
-    
+    if(req.nextUrl.pathname.startsWith('/profile/*') && req.nextauth.token) {
+      return NextResponse.rewrite(new URL('/login', req.url))
+    }
   },
   {
     callbacks: {
