@@ -110,7 +110,7 @@ export const updateUser = async (prevState: any, formData: FormData) => {
     });
 
     if(prevState.email !== data.email) {
-      await signIn('credentials', { email: data.email, callbackUrl: '/profile' });
+      await signIn('credentials', { email: data.email, callbackUrl: '/profile/*' });
     }
     
     revalidatePath(`/profile/${prevState._id}`);
