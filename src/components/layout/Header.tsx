@@ -11,7 +11,7 @@ import { getCurrentUser } from '@/lib/queries/user.queries';
 const Header: React.FC = async () => {
   const session = await getServerSession();
   const user = session?.user ? await getCurrentUser(session?.user?.email!) : null;
-
+  
   return (
     <header className='px-3 w-full h-24 flex items-center'>
       <div className='container mx-auto flex justify-between'>

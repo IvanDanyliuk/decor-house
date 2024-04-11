@@ -19,11 +19,13 @@ interface IUserMenuProps {
 
 
 const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
+  console.log('USER MENU', user)
+
   if(!user) return null;
 
   const userItems: MenuProps['items'] = [
     {
-      label: <Link href={`/profile/${user._id}`}>Profile</Link>,
+      label: <Link href={`/profile/${user._id!}`}>Profile</Link>,
       key: '0',
     },
     {
@@ -39,7 +41,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
   
   const adminItems: MenuProps['items'] = [
     {
-      label: <Link href={`/profile/${user._id}`}>Profile</Link>,
+      label: <Link href={`/profile/${user._id!}`}>Profile</Link>,
       key: '0',
     },
     {
