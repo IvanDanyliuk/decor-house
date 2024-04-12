@@ -1,4 +1,3 @@
-import React from 'react';
 import ProductsTable from '@/components/tables/ProductsTable';
 import Pagination from '@/components/ui/Pagination';
 import { getProducts } from '@/lib/queries/product.queries';

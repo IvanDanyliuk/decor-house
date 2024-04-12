@@ -1,12 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-import type { ColumnsType } from 'antd/es/table';
-import { deleteUser } from '@/lib/actions/user.actions';
-import { IUser } from '@/lib/types/user.types';
 import Image from 'next/image';
 import { Popconfirm, Table } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined } from '@ant-design/icons';
+import { deleteUser } from '@/lib/actions/user.actions';
+import { IUser } from '@/lib/types/user.types';
 
 
 interface IUsersTable {
@@ -94,12 +93,16 @@ const UsersTable: React.FC<IUsersTable> = async ({ users }) => {
   ];
 
   return (
-    <Table 
-      sticky
-      columns={tableColumns} 
-      dataSource={tableData} 
-      pagination={false} 
-    />
+    <div className='overflow-x-auto'>
+      <Table 
+        sticky
+        columns={tableColumns} 
+        dataSource={tableData} 
+        pagination={false} 
+        style={{ minWidth: '1000px' }}
+        scroll={{ x: '1000px' }}
+      />
+    </div>
   );
 };
 

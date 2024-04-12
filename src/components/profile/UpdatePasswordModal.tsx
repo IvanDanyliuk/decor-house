@@ -6,6 +6,7 @@ import { Modal } from 'antd';
 import { updatePassword } from '@/lib/actions/user.actions';
 import TextField from '../ui/TextField';
 import SubmitButton from '../ui/SubmitButton';
+import { openNotification } from '../ui/Notification';
 
 
 interface IUpdatePasswordModal {
@@ -27,6 +28,10 @@ const UpdatePasswordModal: React.FC<IUpdatePasswordModal> = ({ userId }) => {
   };
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(state && !state.error) {
       ref.current?.reset();
       setIsOpen(false);
@@ -46,6 +51,11 @@ const UpdatePasswordModal: React.FC<IUpdatePasswordModal> = ({ userId }) => {
         open={isOpen}
         onCancel={handleModalOpen}
         footer={null}
+        styles={{
+          body: {
+            paddingTop: '2rem'
+          }
+        }}
       >
         <form 
           ref={ref}
@@ -53,7 +63,7 @@ const UpdatePasswordModal: React.FC<IUpdatePasswordModal> = ({ userId }) => {
             formData.append('id', userId);
             await formAction(formData);
           }}
-          className='w-full flex flex-col gap-6'
+          className='w-full flex flex-col items-center gap-6'
         >
           <TextField 
             name='currentPassword' 

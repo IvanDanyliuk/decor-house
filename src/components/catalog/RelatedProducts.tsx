@@ -81,7 +81,7 @@ const RelatedProducts: React.FC<IRelatedProductsProps> = ({ categoryId, products
           </button>
         </div>
         {products && (
-          <div className='flex gap-6'>
+          <div className='mr-3 md:mr-0 flex gap-6'>
             <button
               type='button'
               disabled={currentIndex === 0}

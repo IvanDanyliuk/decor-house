@@ -23,7 +23,7 @@ const InteriorsView: React.FC = () => {
 
   return (
     <div>
-      <ul className='py-6 grid grid-cols-1 md:grid-cols-3 gap-6'>
+      <ul className='py-3 md:py-6 grid grid-cols-1 md:grid-cols-3 gap-6'>
         {interiors.map(interior => (
           <li key={crypto.randomUUID()} className='relative col-span-1'>
             <Link href={`/interiors/${interior._id!}`}>

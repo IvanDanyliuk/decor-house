@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Divider } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { getProducts, searchProducts } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
@@ -22,6 +23,7 @@ const ProductsList: React.FC<IProductsList> = ({ category }) => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [count, setCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
@@ -51,41 +53,92 @@ const ProductsList: React.FC<IProductsList> = ({ category }) => {
 
     if(currentPage === 1 && currentPage !== page) {
       if(searchQuery) {
+        setLoading(true);
         searchProducts({ ...query, page: 1, itemsPerPage: page * 12 }).then(res => {
-          setProducts(res.data.products);
-          setCount(res.data.count);
+          const response = res.data ? {
+            products: res.data.products,
+            count: res.data.count
+          } : {
+            products: [],
+            count: 0
+          };
+          setProducts(response.products);
+          setCount(response.count);
+          setLoading(false);
         });
       } else {
+        setLoading(true);
         getProducts({ ...query, page: 1, itemsPerPage: page * 12 }).then(res => {
-          setProducts(res.data.products);
-          setCount(res.data.count);
+          const response = res.data ? {
+            products: res.data.products,
+            count: res.data.count
+          } : {
+            products: [],
+            count: 0
+          };
+          setProducts(response.products);
+          setCount(response.count);
+          setLoading(false);
         });
       }
       setCurrentPage(page);
     } else {
       if(searchQuery) {
+        setLoading(true);
         searchProducts(query).then(res => {
+          const response = res.data ? {
+            products: res.data.products,
+            count: res.data.count
+          } : {
+            products: [],
+            count: 0
+          };
           if(currentPage === page && page !== 1) {
-            setProducts([...products, ...res.data.products]);
+            setProducts([...products, ...response.products]);
           } else {
-            setProducts(res.data.products);
+            setProducts(response.products);
           }
-          setCount(res.data.count);
+          setCount(response.count);
+          setLoading(false);
         });
       } else {
+        setLoading(true);
         getProducts(query).then(res => {
+          const response = res.data ? {
+            products: res.data.products,
+            count: res.data.count
+          } : {
+            products: [],
+            count: 0
+          };
           if(currentPage === page && page !== 1) {
-            setProducts([...products, ...res.data.products]);
+            setProducts([...products, ...response.products]);
           } else {
-            setProducts(res.data.products);
+            setProducts(response.products);
           }
-          setCount(res.data.count);
+          setCount(response.count);
+          setLoading(false);
         });
       }
       setCurrentPage(1)
-
     }
   }, [searchParams]);
+
+  if(products.length === 0) {
+    if(loading) {
+      return (
+        <div className='w-full py-52 flex justify-center items-center'>
+          <LoadingOutlined />
+        </div>
+      );
+    } else {
+      return (
+        <div className='w-full py-52 text-center text-gray-dark text-xl font-semibold'>
+          <p>Cannot find products</p>
+        </div>
+      );
+    }
+  }
 
   return (
     <div>

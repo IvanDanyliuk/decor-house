@@ -1,11 +1,11 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createPromotion, updatePromotion } from '@/lib/actions/promotion.actions';
 import { IPromotion } from '@/lib/types/propmotions.types';
-import { useEffect, useRef, useState } from 'react';
 import SubmitButton from '../ui/SubmitButton';
 import TextField from '../ui/TextField';
 import DatePicker from '../ui/DatePicker';
@@ -17,6 +17,7 @@ import { ICategory } from '@/lib/types/category.types';
 import { getCategories } from '@/lib/queries/category.queries';
 import { getProducts } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
+import { openNotification } from '../ui/Notification';
 
 
 interface IPromotionForm {
@@ -64,6 +65,10 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
   }, [selectedCategory]);
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       setSelectedCategory('');
@@ -80,7 +85,7 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
         formData.append('products', selectedProductIds.join(', '));
         await formAction(formData)
       }} 
-      className='flex grow flex-1 flex-wrap justify-between content-between gap-6'
+      className='flex grow flex-1 flex-wrap justify-between content-between gap-3 md:gap-6'
     >
       <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>
         <TextField 

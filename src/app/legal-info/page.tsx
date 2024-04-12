@@ -10,7 +10,7 @@ const LegalInfo = () => {
         </h2>
       </section>
       <section className='container mx-auto py-6 relative flex flex-col-reverse md:flex-row gap-6 md:gap-10'>
-        <div className='flex-1'>
+        <div className='px-3 md:px-0 flex flex-1 flex-col gap-3'>
           <p className='text-gray-dark'>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur ipsam amet pariatur, voluptates 
             reprehenderit qui laboriosam ullam repudiandae laudantium facere molestiae exercitationem architecto 

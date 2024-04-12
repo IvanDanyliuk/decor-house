@@ -13,6 +13,7 @@ import Select from '../ui/Select';
 import { ICategory } from '@/lib/types/category.types';
 import TextareaField from '../ui/TextareaField';
 import SubmitButton from '../ui/SubmitButton';
+import { openNotification } from '../ui/Notification';
 
 
 interface IPostForm {
@@ -38,6 +39,10 @@ const PostForm: React.FC<IPostForm> = ({ categories, postToUpdate }) => {
   const ref = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       router.push('/dashboard/posts');
@@ -48,7 +53,7 @@ const PostForm: React.FC<IPostForm> = ({ categories, postToUpdate }) => {
     <form 
       ref={ref} 
       action={formAction} 
-      className='flex grow flex-1 flex-col justify-between content-between gap-6'
+      className='flex grow flex-1 flex-col justify-between content-between gap-3 md:gap-6'
     >
       <TextField 
         name='title' 

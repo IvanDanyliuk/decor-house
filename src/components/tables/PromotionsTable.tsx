@@ -100,12 +100,16 @@ const PromotionsTable: React.FC<IPromotionsTable> = ({ promotions }) => {
   ];
 
   return (
-    <Table 
-      sticky
-      columns={tableColumns} 
-      dataSource={tableData} 
-      pagination={false} 
-    />
+    <div className='overflow-x-auto'>
+      <Table 
+        sticky
+        columns={tableColumns} 
+        dataSource={tableData} 
+        pagination={false} 
+        style={{ minWidth: '1000px' }}
+        scroll={{ x: '1000px' }}
+      />
+    </div>
   );
 };
 

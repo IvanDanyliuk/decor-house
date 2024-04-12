@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { MAP_STARTING_POSITION } from '@/lib/constants';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
-import { MAP_STARTING_POSITION } from '@/lib/constants';
 
 
 interface IMapInput {
@@ -43,13 +43,13 @@ const MapInput: React.FC<IMapInput> = ({ name, label, defaultValue, error }) => 
       {label && (
         <label 
           htmlFor={name} 
-          className='w-full md:w-36 h-10 flex items-center text-sm font-semibold'
+          className='px-3 md:px-0 w-full md:w-36 h-10 flex items-center text-sm font-semibold'
         >
           <span>{label}</span>
         </label>
       )}
       <div className='relative w-full md:grow'>
-      <p className='mt-1 text-xs text-red-600'>
+      <p className='mt-1 px-3 md:px-0 text-xs text-red-600'>
           {error && (
             <>
               <ExclamationCircleOutlined />

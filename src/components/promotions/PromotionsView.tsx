@@ -71,12 +71,12 @@ const PromotionsView: React.FC = () => {
           </button>
         </div>
       </div>
-      <div className='py-6 container mx-auto'>
+      <div className='px-3 md:px-0 py-3 md:py-6 container mx-auto'>
         <ul>
           {promotions.map((promotion, i) => (
             <li key={crypto.randomUUID()}>
-              <Link href={`/promotions/${promotion._id!}`} className='flex gap-6'>
-                <div className='relative w-1/4 h-72'>
+              <Link href={`/promotions/${promotion._id!}`} className='flex flex-col md:flex-row gap-6'>
+                <div className='relative w-full md:w-1/4 h-72'>
                   <Image 
                     src={promotion.image} 
                     alt={promotion._id!} 
@@ -98,7 +98,7 @@ const PromotionsView: React.FC = () => {
                       {promotion.description}
                     </p>
                   </div>
-                  <div className='px-4 py-3 text-center font-semibold bg-main-bg rounded'>
+                  <div className='mt-3 md:mt-0 px-4 py-3 text-center font-semibold bg-main-bg rounded'>
                     {countPromotionDaysLeft(promotion.periodTo)}
                   </div>
                 </div>

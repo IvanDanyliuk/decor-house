@@ -26,7 +26,7 @@ const Post = async ({ params }: { params: { id: string } }) => {
           fill 
         />
       </div>
-      <div className='py-6 flex-1'>
+      <div className='px-3 md:px-0 py-6 flex-1'>
         <h1 className='mb-6 text-3xl text-center font-bold uppercase'>
           {postData.data.title}
         </h1>

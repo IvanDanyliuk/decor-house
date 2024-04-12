@@ -19,7 +19,7 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
 
   return (
     <div className='w-full'>
-      <section className='w-full py-6 bg-main-bg'>
+      <section className='w-full px-3 md:px-0 py-6 bg-main-bg'>
         <div className='container mx-auto mb-3 flex gap-1 text-sm font-semibold capitalize'>
           <Link href='/catalog'>Catalog</Link>
           <span>/</span>
@@ -29,7 +29,7 @@ const CategoryProducts = async ({ params }: { params: { category: string } }) =>
           {category.replaceAll('-', ' ')}
         </h2>
       </section>
-      <section className='w-full container mx-auto py-6'>
+      <section className='w-full container mx-auto px-3 md:px-0 py-6'>
         <ProductFilters 
           filtersData={filtersData} 
           sortData={productsSortItems}

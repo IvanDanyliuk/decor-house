@@ -43,17 +43,17 @@ const PromotionDetails: React.FC<IPromotionDetails> = ({ promotion }) => {
   }, [width]);
 
   return (
-    <div className='container mx-auto py-6'>
+    <div className='container mx-auto md:py-6'>
       <div className='relative w-full flex flex-col-reverse md:flex-row gap-6 md:gap-10'>
         <div className='flex-1'>
-          <h1 className='text-3xl text-center md:text-left font-bold uppercase'>
+          <h1 className='px-3 md:px-0 text-3xl text-center md:text-left font-bold uppercase'>
             {promotion.title}
           </h1>
-          <p className='mt-3 text-center md:text-left text-gray-dark font-semibold'>
+          <p className='mt-3 px-3 md:px-0 text-center md:text-left text-gray-dark font-semibold'>
             {formatPromotionPeriod(promotion.periodFrom, promotion.periodTo)}
           </p>
-          <Divider className='my-3' />
-          <p className=''>
+          <Divider className='my-3 px-3 md:px-0' />
+          <p className='px-3 md:px-0'>
             {promotion.description}
           </p>
         </div>

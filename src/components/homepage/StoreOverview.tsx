@@ -39,7 +39,7 @@ const StoreOverview: React.FC = () => {
 
   return (
     <div className='w-full'>
-      <div className='relative w-full mx-auto container flex flex-wrap flex-col md:flex-row'>
+      <div className='relative w-full mx-auto px-3 md:px-0 container flex flex-wrap flex-col md:flex-row'>
         <div className='w-full md:w-1/2'>
           <img 
             src={galleryItems[currentItemIndex].imagePath} 
@@ -71,7 +71,7 @@ const StoreOverview: React.FC = () => {
         </div>
       </div>
       <div className='relative w-full flex justify-end bg-main-bg'>
-        <div className='relative mx-auto w-full container flex justify-end'>
+        <div className='relative mx-auto px-3 w-full container flex justify-end'>
           <SliderNavPanel 
             currentIndex={currentItemIndex} 
             itemsCount={galleryItems.length} 

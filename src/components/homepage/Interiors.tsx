@@ -34,7 +34,7 @@ const Interiors: React.FC<IInteriors> = ({ interiors }) => {
         <h3>
           Interior <span>Designs</span>
         </h3>
-        <Link href='/catalog'>
+        <Link href='/interiors  '>
           <span className='text-semibold'>
             {`All${width && width >= 640 ? ' interiors' : ''}`}
           </span>

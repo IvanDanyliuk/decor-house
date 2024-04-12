@@ -11,6 +11,7 @@ import UploadImageButton from '../ui/UploadImageBtn';
 import SubmitButton from '../ui/SubmitButton';
 import AddSubValueModal from '../ui/modals/AddSubValueModal';
 import Chip from '../ui/Chip';
+import { openNotification } from '../ui/Notification';
 
 
 interface ICategoryForm {
@@ -53,6 +54,10 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
   };
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       setTypes([]);
@@ -69,7 +74,7 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
         formData.append('features', features.join(', '));
         await formAction(formData);
       }} 
-      className='flex grow flex-1 flex-col justify-between content-between gap-6'
+      className='flex grow flex-1 flex-col justify-between content-between gap-3 md:gap-6'
     >
       <fieldset className='flex flex-col gap-3'>
         <TextField 

@@ -1,8 +1,11 @@
-import React from 'react'
+import { LoadingOutlined } from '@ant-design/icons';
+
 
 const DashboardLoading = () => {
   return (
-    <div>loading dashboard...</div>
+    <div className='w-full py-72 flex justify-center items-center'>
+      <LoadingOutlined className='text-xl' />
+    </div>
   );
 };
 

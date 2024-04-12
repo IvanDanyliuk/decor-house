@@ -5,9 +5,9 @@ const Register: React.FC = () => {
   return (
     <div className='w-full'>
       <section className='w-full py-10 bg-main-bg'>
-        <h2 className='container mx-auto page-heading-primary'>Register</h2>
+        <h2 className='container mx-auto px-3 md:px-0 page-heading-primary'>Register</h2>
       </section>
-      <section className='container mx-auto py-10 box-border'>
+      <section className='container mx-auto px-3 md:px-0 py-10 box-border'>
         <RegisterForm />
       </section>
     </div>

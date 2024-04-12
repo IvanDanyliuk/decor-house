@@ -52,11 +52,11 @@ const InteriorDetails: React.FC<IInteriorDetails> = ({ interior }) => {
           fill 
         />
       </div>
-      <h1 className='my-6 text-3xl text-center font-bold uppercase'>
+      <h1 className='my-6 px-3 md:px-0 text-3xl text-center font-bold uppercase'>
         {interior.title}
       </h1>
       <Divider className='my-6' />
-      <p className='mb-6 text-gray-dark'>
+      <p className='mb-6 px-3 md:px-0 text-gray-dark'>
         {interior.description}
       </p>
       <div className='py-6'>
@@ -65,7 +65,7 @@ const InteriorDetails: React.FC<IInteriorDetails> = ({ interior }) => {
           productsToShow={productsToShow} 
           products={interior.products} 
         />
-        <div className='flex justify-between items-center'>
+        <div className='px-3 md:px-0 flex justify-between items-center'>
           {interior.products && (
             <div className='flex gap-6'>
               <button

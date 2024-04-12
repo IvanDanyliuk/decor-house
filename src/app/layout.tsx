@@ -7,6 +7,7 @@ import { Montserrat } from 'next/font/google';
 import ContactLinks from '../components/ui/ContactLinks';
 import SessionProvider from '../components/SessionProvider';
 import Header from '../components/layout/Header';
+import BottomNavigationBar from '@/components/navigation/BottomNavigationBar';
 
 
 const montserrat = Montserrat({ subsets: ['latin'] });
@@ -32,7 +33,7 @@ export default async function RootLayout({
           <main>
             {children}
           </main>
-          <footer className='w-full py-10 flex flex-col justify-center items-center bg-main-bg'>
+          <footer className='w-full mb-20 md:mb-0 py-10 flex flex-col justify-center items-center bg-main-bg'>
             <div className='relative w-full container'>
               <div className='text-xl md:text-3xl font-bold text-accent-dark text-center'>Decor House</div>
               <Divider className='py-1 md:py-4 md:my-8' />
@@ -45,7 +46,7 @@ export default async function RootLayout({
                     <Link href='/about'>About Company</Link>
                   </li>
                   <li>
-                    <Link href='/legal'>Legal Information</Link>
+                    <Link href='/legal-info'>Legal Information</Link>
                   </li>
                   <li>
                     <Link href='/privacy'>Privacy Policy</Link>
@@ -55,6 +56,7 @@ export default async function RootLayout({
               </div>
             </div>
           </footer>
+          <BottomNavigationBar />
         </SessionProvider>
       </body>
     </html>

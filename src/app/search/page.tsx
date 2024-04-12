@@ -1,3 +1,4 @@
+import { Divider } from 'antd';
 import ResetFiltersButton from '@/components/catalog/ProductFilters/ResetFiltersButton';
 import SelectedFilters from '@/components/catalog/ProductFilters/SelectedFilters';
 import ProductsList from '@/components/catalog/ProductsList';
@@ -5,7 +6,6 @@ import SearchFilters from '@/components/catalog/search/SearchFilters';
 import { getSearchFilterData } from '@/lib/queries/product.queries';
 import { ICategory } from '@/lib/types/category.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
-import { Divider } from 'antd';
 
 
 const Search = async ({ params, searchParams }: any) => {
@@ -30,7 +30,7 @@ const Search = async ({ params, searchParams }: any) => {
           Search
         </h2>
       </section>
-      <section className='container mx-auto py-3'>
+      <section className='container mx-auto p-3'>
         <SearchFilters 
           categories={categoryOptions} 
           types={typesOptions} 

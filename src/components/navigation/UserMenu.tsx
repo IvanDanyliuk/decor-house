@@ -23,7 +23,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
 
   const userItems: MenuProps['items'] = [
     {
-      label: <Link href={`/profile/${user._id}`}>Profile</Link>,
+      label: <Link href={`/profile/${user._id!}`}>Profile</Link>,
       key: '0',
     },
     {
@@ -39,7 +39,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ user }) => {
   
   const adminItems: MenuProps['items'] = [
     {
-      label: <Link href={`/profile/${user._id}`}>Profile</Link>,
+      label: <Link href={`/profile/${user._id!}`}>Profile</Link>,
       key: '0',
     },
     {

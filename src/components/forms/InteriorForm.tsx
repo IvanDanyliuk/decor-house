@@ -16,6 +16,7 @@ import ProductSelect from '../ui/ProductSelect';
 import SubmitButton from '../ui/SubmitButton';
 import Select from '../ui/Select';
 import { removeFalsyObjectFields } from '@/utils/helpers';
+import { openNotification } from '../ui/Notification';
 
 
 interface IInteriorForm {
@@ -29,6 +30,7 @@ const initialEmptyState = {
   image: '',
   products: '',
 };
+
 
 const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate }) => {
   const action = interiorToUpdate ? updateInterior : createInterior;
@@ -71,6 +73,10 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
   }, [selectedCategory, selectedType]);
 
   useEffect(() => {
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
     if(!state.error && state.message) {
       ref.current?.reset();
       setProducts([]);
@@ -89,7 +95,7 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
         formData.append('products', selectedProductIds.join(', '));
         await formAction(formData)
       }} 
-      className='flex grow flex-1 flex-wrap justify-between content-between gap-6'
+      className='flex grow flex-1 flex-wrap justify-between content-between gap-3 md:gap-6'
     >
       <TextField 
         name='title' 

@@ -12,9 +12,9 @@ const Login: React.FC = async () => {
   return (
     <div className='w-full'>
       <section className='w-full py-10 bg-main-bg'>
-        <h2 className='container mx-auto page-heading-primary'>Login</h2>
+        <h2 className='container mx-auto px-3 md:px-0 page-heading-primary'>Login</h2>
       </section>
-      <section className='container mx-auto max-w-md py-10 box-border'>
+      <section className='container mx-auto px-3 md:px-0 max-w-md py-10 box-border'>
         <LoginForm />
         <Divider>or</Divider>
         <div className='my-10'>

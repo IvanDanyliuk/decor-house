@@ -19,7 +19,11 @@ const Product = async ({ params }: { params: { category: string, id: string } })
           <span>/</span>
           <Link href='/catalog'>Catalog</Link>
           <span>/</span>
-          <Link href={`/catalog/${category}`} className='capitalize'>{category}</Link>
+          {
+            category !== 'undefined' && (
+              <Link href={`/catalog/${category}`} className='capitalize'>{category}</Link>
+            )
+          }
         </p>
       </section>
       <section className='mx-auto container flex flex-col md:flex-row gap-6 md:gap-10'>

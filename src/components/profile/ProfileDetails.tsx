@@ -47,7 +47,7 @@ const ProfileDetails: React.FC<IProfileDetails> = ({ data }) => {
           Orders History
         </button>
       </div>
-      <div className='py-6'>
+      <div className='px-3 md:px-0 py-6'>
         {activeTab === ProfileTabs.Profile ? (
           <UserTab user={data.profile} />
         ) : (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
@@ -8,6 +8,7 @@ import TextField from '../ui/TextField';
 import { register } from '@/lib/actions/user.actions';
 import SubmitButton from '../ui/SubmitButton';
 import UploadImageButton from '../ui/UploadImageBtn';
+import { openNotification } from '../ui/Notification';
 
 
 const initialState = {
@@ -25,20 +26,17 @@ const RegisterForm: React.FC = () => {
   const [state, formAction] = useFormState(register, initialState);
   const ref = useRef<HTMLFormElement>(null);
 
-  const userSignIn = useCallback(async () => {
-    if(state.data && state.data.email && state.data.password) {
-      await signIn('credentials', { 
-        email: state.data.email, 
-        password: state.data.password, 
-        callbackUrl: '/' 
-      });
-    }
-  }, [state]);
-
   useEffect(() => {
-    if(state && !state.error) {
-      ref.current?.reset();
-      userSignIn();
+    if(state && state.error) {
+      openNotification(state.message, state.error);
+    }
+
+    if(state && !state.error && state.data && state.data.email && state.data.password) {
+      signIn('credentials', {
+        email: state.data.email,
+        password: state.data.password,
+        callbackUrl: '/'
+      }).then(res => console.log('SIGNED IN', res))
     }
   }, [state, formAction]);
 
