@@ -83,15 +83,15 @@ const OrderProductsList: React.FC<IOrderProducts> = ({ data }) => {
           <div>
             <div className='flex gap-1'>
               <span>Customer:</span>
-              <span>{data.user.name}:</span>
+              <span>{data.user.name}</span>
             </div>
             <div className='flex gap-1'>
               <span>Phone:</span>
-              <span>{data.user.phone}:</span>
+              <span>{data.user.phone}</span>
             </div>
             <div className='flex gap-1'>
               <span>Email:</span>
-              <span>{data.user.email}:</span>
+              <span>{data.user.email}</span>
             </div>
             <div className='flex gap-1'>
               <span>Address:</span>

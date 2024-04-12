@@ -22,7 +22,6 @@ const UserTab: React.FC<IUserTab> = ({ user }) => {
   const router = useRouter();
   const [state, formAction] = useFormState(updateUser, user);
   const { data: session, update } = useSession();
-  
 
   useEffect(() => {
     if(state && !state.error) {
