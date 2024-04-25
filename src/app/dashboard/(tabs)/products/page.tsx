@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import ProductsTable from '@/components/tables/ProductsTable';
 import Pagination from '@/components/ui/Pagination';
 import { getProducts } from '@/lib/queries/product.queries';
@@ -9,18 +10,17 @@ const Products = async ({
   searchParams: { [key: string]: string | string[] | undefined } 
 }) => {
   const page = +searchParams.page! || 1;
+  
   const { data } = await getProducts({ page, itemsPerPage: 10 });
+
+  if(!data) {
+    notFound();
+  }
 
   return (
     <>
-      {data ? (
-        <>
-          <ProductsTable products={data.products} />
-          <Pagination itemsCount={data.count} />
-        </>
-      ) : (
-        <div>Products not found</div>
-      )}
+      <ProductsTable products={data.products} />
+      <Pagination itemsCount={data.count} />
     </>
   );
 };

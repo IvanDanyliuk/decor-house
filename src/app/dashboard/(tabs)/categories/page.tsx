@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import CategoriesTable from '@/components/tables/CategoriesTable';
 import Pagination from '@/components/ui/Pagination';
 import { getCategories } from '@/lib/queries/category.queries';
@@ -12,16 +13,14 @@ const Categories = async ({
 
   const { data } = await getCategories({ page: +page, itemsPerPage: 10 });
 
+  if(!data) {
+    notFound();
+  }
+
   return (
     <>
-      {data ? (
-        <>
-          <CategoriesTable categories={data.categories} />
-          <Pagination itemsCount={data.count} />
-        </>
-      ) : (
-        <div>Categories not found</div>
-      )}
+      <CategoriesTable categories={data.categories} />
+      <Pagination itemsCount={data.count} />
     </>
   );
 };
