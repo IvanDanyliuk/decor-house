@@ -3,13 +3,19 @@ import { getServerSession } from 'next-auth';
 import { getProduct, getRelatedProducts } from '@/lib/queries/product.queries';
 import RelatedProducts from '@/components/catalog/RelatedProducts';
 import ProductDetails from '@/components/catalog/ProductDetails';
+import { notFound } from 'next/navigation';
 
 
 const Product = async ({ params }: { params: { category: string, id: string } }) => {
   const { category, id } = params;
+
   const session = await getServerSession(); 
   const product = await getProduct(id);
-  const relatedProducts = await getRelatedProducts(session?.user?.email!, 10, product.category);
+  const relatedProducts = product ? await getRelatedProducts(session?.user?.email!, 10, product.category) : null;
+
+  if(!product) {
+    notFound();
+  }
 
   return (
     <div className='w-full'>

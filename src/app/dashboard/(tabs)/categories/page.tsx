@@ -10,7 +10,6 @@ const Categories = async ({
   searchParams: { [key: string]: string | string[] | undefined } 
 }) => {
   const page = searchParams.page || 1;
-
   const { data } = await getCategories({ page: +page, itemsPerPage: 10 });
 
   if(!data) {
