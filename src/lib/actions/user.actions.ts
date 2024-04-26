@@ -6,8 +6,8 @@ import { signIn } from 'next-auth/react';
 import { z as zod } from 'zod';
 import bcrypt from 'bcryptjs';
 import { connectToDB } from '../database';
-import User from '../models/user.model'
 import { utapi } from '../uploadthing';
+import User from '../models/user.model'
 import { ICartItem } from '../types/user.types';
 
 
