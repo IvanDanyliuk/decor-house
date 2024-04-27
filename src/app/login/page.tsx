@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Divider } from 'antd';
 import LoginForm from '@/components/forms/LoginForm';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/next-auth';
 import AuthButton from '@/components/ui/AuthButton';
 
 

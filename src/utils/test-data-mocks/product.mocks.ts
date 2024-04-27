@@ -1,6 +1,6 @@
 import { IProduct } from "@/lib/types/products.types";
 
-export const products: IProduct[] = [
+export const products: any[] = [
   {
       size: {
           "width": "252",
