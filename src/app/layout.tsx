@@ -28,36 +28,7 @@ export default async function RootLayout({
   return (
     <html lang='en'>
       <body className={montserrat.className}>
-        <SessionProvider session={session}>
-          <Header />
-          <main>
-            {children}
-          </main>
-          <footer className='w-full mb-20 md:mb-0 py-10 flex flex-col justify-center items-center bg-main-bg'>
-            <div className='relative w-full container'>
-              <div className='text-xl md:text-3xl font-bold text-accent-dark text-center'>Decor House</div>
-              <Divider className='py-1 md:py-4 md:my-8' />
-              <div className='w-full flex flex-col md:flex-row md:justify-between items-center gap-6'>
-                <div className='text-sm text-gray-dark'>
-                  {`Decor House Group. ${year}`}
-                </div>
-                <ul className='flex flex-col md:flex-row items-center gap-4 md:gap-8 text-sm text-gray-dark font-semibold'>
-                  <li>
-                    <Link href='/about'>About Company</Link>
-                  </li>
-                  <li>
-                    <Link href='/legal-info'>Legal Information</Link>
-                  </li>
-                  <li>
-                    <Link href='/privacy'>Privacy Policy</Link>
-                  </li>
-                </ul>
-                <ContactLinks />
-              </div>
-            </div>
-          </footer>
-          <BottomNavigationBar />
-        </SessionProvider>
+        <h1>Hello world!</h1>
       </body>
     </html>
   );

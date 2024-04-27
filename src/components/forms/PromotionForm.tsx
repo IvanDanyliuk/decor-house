@@ -14,10 +14,11 @@ import TextareaField from '../ui/TextareaField';
 import ProductSelect from '../ui/ProductSelect';
 import Select from '../ui/Select';
 import { ICategory } from '@/lib/types/category.types';
-import { getCategories } from '@/lib/queries/category.queries';
+// import { getCategories } from '@/lib/queries/category.queries';
 import { getProducts } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
 import { openNotification } from '../ui/Notification';
+import { getCategories } from '@/lib/actions/category.actions';
 
 
 interface IPromotionForm {

@@ -1,5 +1,6 @@
 import CategoryForm from '@/components/forms/CategoryForm';
-import { getCategory } from '@/lib/queries/category.queries';
+import { getCategory } from '@/lib/actions/category.actions';
+// import { getCategory } from '@/lib/queries/category.queries';
 
 
 const UpdateCategory = async ({ params }: { params: { id: string } }) => {

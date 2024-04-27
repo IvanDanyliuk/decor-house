@@ -1,5 +1,6 @@
 import CategoriesListLayout from '@/components/catalog/CategoriesListLayout';
-import { getCategories } from '@/lib/queries/category.queries';
+import { getCategories } from '@/lib/actions/category.actions';
+// import { getCategories } from '@/lib/queries/category.queries';
 import { ICategory, IPremiumCategory } from '@/lib/types/category.types';
 import { splitArrayIntoChunks } from '@/utils/helpers';
 

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import CategoriesTable from '@/components/tables/CategoriesTable';
 import Pagination from '@/components/ui/Pagination';
-import { getCategories } from '@/lib/queries/category.queries';
+import { getCategories } from '@/lib/queries/category.queries';z
 
 
 const Categories = async ({ 

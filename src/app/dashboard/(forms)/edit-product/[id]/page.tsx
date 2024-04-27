@@ -1,7 +1,8 @@
 import ProductForm from '@/components/forms/ProductForm';
-import { getCategories } from '@/lib/queries/category.queries';
+// import { getCategories } from '@/lib/queries/category.queries';
 import { getProduct } from '@/lib/queries/product.queries';
 import { getManufacturers } from '@/lib/queries/manufacturers.queries';
+import { getCategories } from '@/lib/actions/category.actions';
 
 
 const UpdateProduct = async ({ params }: { params: { id: string } }) => {

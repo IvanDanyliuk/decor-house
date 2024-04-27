@@ -1,5 +1,6 @@
 import ProductForm from '@/components/forms/ProductForm';
-import { getCategories } from '@/lib/queries/category.queries';
+import { getCategories } from '@/lib/actions/category.actions';
+// import { getCategories } from '@/lib/queries/category.queries';
 import { getManufacturers } from '@/lib/queries/manufacturers.queries';
 
 
