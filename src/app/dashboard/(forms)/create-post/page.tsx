@@ -1,6 +1,5 @@
 import PostForm from '@/components/forms/PostForm';
-import { getCategories } from '@/lib/actions/category.actions';
-// import { getCategories } from '@/lib/queries/category.queries';
+import { getCategories } from '@/lib/queries/category.queries';
 
 
 const CreatePost: React.FC = async () => {

@@ -16,7 +16,7 @@ const UpdateInterior = async ({ params }: { params: { id: string } }) => {
       <section className='px-3 md:px-0 container mx-auto py-3 md:py-10 box-border'>
         {data && (
           <InteriorForm 
-            categories={categories.data .categories} 
+            categories={categories.data.categories} 
             interiorToUpdate={data} 
           />
         )}

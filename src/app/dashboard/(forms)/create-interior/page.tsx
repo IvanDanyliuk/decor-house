@@ -1,6 +1,5 @@
 import InteriorForm from '@/components/forms/InteriorForm';
-import { getCategories } from '@/lib/actions/category.actions';
-// import { getCategories } from '@/lib/queries/category.queries';
+import { getCategories } from '@/lib/queries/category.queries';
 import React from 'react';
 
 
