@@ -11,7 +11,7 @@ export const getOrders = async ({
   email?: string 
 }) => {
   const { data } = await AXIOS.get(
-    '/api/orders',
+    'https://decor-house.vercel.app/api/orders',
     { params: { page, itemsPerPage, email } }
   );
   return data;
@@ -19,7 +19,7 @@ export const getOrders = async ({
 
 export const getOrder = async (id: string) => {
   const { data } = await AXIOS.get(
-    `/api/orders/${id}`,
+    `https://decor-house.vercel.app/api/orders/${id}`,
     { params: { id } }
   );
   return data;

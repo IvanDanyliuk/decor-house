@@ -10,18 +10,18 @@ export const getShops = async ({
   country?: string;
 }) => {
   const { data } = await AXIOS.get(
-    '/api/shops', 
+    'https://decor-house.vercel.app/api/shops', 
     { params: { page, itemsPerPage, country } }
   );
   return data;
 };
 
 export const getShop = async (id: string) => {
-  const { data } = await AXIOS.get(`/api/shops/${id}`);
+  const { data } = await AXIOS.get(`https://decor-house.vercel.app/api/shops/${id}`);
   return data;
 };
 
 export const getLocations = async () => {
-  const { data } = await AXIOS.get('/api/shops/locations');
+  const { data } = await AXIOS.get('https://decor-house.vercel.app/api/shops/locations');
   return data;
 };

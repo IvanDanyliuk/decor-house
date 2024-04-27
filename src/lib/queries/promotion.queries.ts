@@ -10,13 +10,13 @@ export const getPromotions = async ({
   period?: string;
 }) => {
   const { data } = await AXIOS.get(
-    '/api/promotions', 
+    'https://decor-house.vercel.app/api/promotions', 
     { params: { page, itemsPerPage, period } }
   );
   return data;
 };
 
 export const getPromotion = async (id: string) => {
-  const { data } = await AXIOS.get(`/api/promotions/${id}`);
+  const { data } = await AXIOS.get(`https://decor-house.vercel.app/api/promotions/${id}`);
   return data;
 };

@@ -10,13 +10,13 @@ export const getPosts = async ({
   tags?: string;
 }) => {
   const { data } = await AXIOS.get(
-    '/api/posts', 
+    'https://decor-house.vercel.app/api/posts', 
     { params: { page, itemsPerPage, tags } }
   );
   return data;
 };
 
 export const getPost = async (id: string) => {
-  const { data } = await AXIOS.get(`/api/posts/${id}`);
+  const { data } = await AXIOS.get(`https://decor-house.vercel.app/api/posts/${id}`);
   return data;
 };
