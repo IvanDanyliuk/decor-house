@@ -9,13 +9,13 @@ export const getInteriors = async ({
   itemsPerPage?: number 
 }) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/interiors',
+    '/api/interiors',
     { params: { page, itemsPerPage } }
   );
   return data;
 };
 
 export const getInterior = async (id: string) => {
-  const { data } = await AXIOS.get(`https://decor-house.vercel.app/api/interiors/${id}`);
+  const { data } = await AXIOS.get(`/api/interiors/${id}`);
   return data;
 };

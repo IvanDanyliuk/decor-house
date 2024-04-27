@@ -18,7 +18,7 @@ export const getStats = async ({
   periodTo: string;
 }) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/stats',
+    '/api/stats',
     { params: { categoryId, periodFrom, periodTo } }
   );
   return data;

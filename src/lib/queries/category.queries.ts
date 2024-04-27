@@ -8,13 +8,13 @@ export const getCategories = async ({
   itemsPerPage?: number 
 }) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/categories', 
+    '/api/categories', 
     { params: { page, itemsPerPage } }
   );
   return data;
 };
 
 export const getCategory = async (id: string) => {
-  const { data } = await AXIOS.get(`https://decor-house.vercel.app/api/categories/${id}`);
+  const { data } = await AXIOS.get(`/api/categories/${id}`);
   return data;
 };

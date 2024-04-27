@@ -25,7 +25,7 @@ export const getProducts = async ({
   sortIndicator?: string;
 }) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/products', 
+    '/api/products', 
     { params: { 
         page, 
         itemsPerPage, 
@@ -43,13 +43,13 @@ export const getProducts = async ({
 };
 
 export const getProduct = async (id: string) => {
-  const { data } = await AXIOS.get(`https://decor-house.vercel.app/api/products/${id}`);
+  const { data } = await AXIOS.get(`/api/products/${id}`);
   return data;
 };
 
 export const getProductsFilterData = async (category: string) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/products/filters',
+    '/api/products/filters',
     { params: { category }}
   );
   return data;
@@ -57,7 +57,7 @@ export const getProductsFilterData = async (category: string) => {
 
 export const getRelatedProducts = async (email: string, limit: number, categoryId?: string) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/products/related',
+    '/api/products/related',
     { params: { email, limit, categoryId } }
   );
   return data;
@@ -65,7 +65,7 @@ export const getRelatedProducts = async (email: string, limit: number, categoryI
 
 export const getSearchFilterData = async () => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/products/search/filter'
+    '/api/products/search/filter'
   );
   return data;
 };
@@ -90,7 +90,7 @@ export const searchProducts = async ({
   sortIndicator?: string;
 }) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/products/search',
+    '/api/products/search',
     { params: { page, itemsPerPage, query, category, types, manufacturers, order, sortIndicator } }
   );
   return data;

@@ -8,13 +8,13 @@ export const getManufacturers = async ({
   itemsPerPage?: number 
 }) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/manufacturers', 
+    '/api/manufacturers', 
     { params: { page, itemsPerPage } }
   );
   return data;
 };
 
 export const getManufacturer = async (id: string) => {
-  const { data } = await AXIOS.get(`https://decor-house.vercel.app/api/manufacturers/${id}`);
+  const { data } = await AXIOS.get(`/api/manufacturers/${id}`);
   return data;
 };

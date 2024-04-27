@@ -9,7 +9,7 @@ export const getUsers = async ({
   itemsPerPage?: number 
 }) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/user/all', 
+    '/api/user/all', 
     { params: { page, itemsPerPage } }
   );
   return data;
@@ -17,7 +17,7 @@ export const getUsers = async ({
 
 export const getUser = async (id: string) => {
   const { data } = await AXIOS.get(
-    `https://decor-house.vercel.app/api/users/${id}`,
+    `/api/users/${id}`,
     { params: { id } }
   );
   return data;
@@ -25,7 +25,7 @@ export const getUser = async (id: string) => {
 
 export const getCurrentUser = async (email: string) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/user/current',
+    '/api/user/current',
     { params: { email } }
   );
   return data;
@@ -33,7 +33,7 @@ export const getCurrentUser = async (email: string) => {
 
 export const getProfileData = async (id: string) => {
   const { data } = await AXIOS.get(
-    'https://decor-house.vercel.app/api/user/profile',
+    '/api/user/profile',
     { params: { id } }
   );
   return data;
