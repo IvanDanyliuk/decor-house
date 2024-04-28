@@ -14,7 +14,6 @@
     "@ant-design/icons": "^5.2.6",
     "@uploadthing/react": "^6.0.2",
     "antd": "^5.11.0",
-    "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.2",
     "dayjs": "^1.11.10",
