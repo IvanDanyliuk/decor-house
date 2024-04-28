@@ -64,7 +64,7 @@ const BlogDetails: React.FC<IBlogDetails> = ({ categories }) => {
           <button 
             type='button' 
             onClick={clearTags}
-            className='w-28'
+            className='w-32'
           >
             Clear Tags
           </button>

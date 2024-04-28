@@ -1,6 +1,8 @@
-// import { AXIOS } from '../axios';
+'use server';
+
 import { connectToDB } from '../database';
 import Manufacturer from '../models/manufacturer.model';
+
 
 export const getManufacturers = async ({ 
   page, 
@@ -9,12 +11,6 @@ export const getManufacturers = async ({
   page?: number, 
   itemsPerPage?: number 
 }) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/manufacturers', 
-  //   { params: { page, itemsPerPage } }
-  // );
-  // return data;
-
   await connectToDB();
 
   const manufacturers = (page && itemsPerPage) ? 
@@ -42,9 +38,6 @@ export const getManufacturers = async ({
 };
 
 export const getManufacturer = async (id: string) => {
-  // const { data } = await AXIOS.get(`/api/manufacturers/${id}`);
-  // return data;
-
   await connectToDB();
 
   const manufacturer = await Manufacturer

@@ -1,4 +1,5 @@
-// import { AXIOS } from '../axios';
+'use server';
+
 import { connectToDB } from '../database';
 import Shop from '../models/shop.model';
 
@@ -11,12 +12,6 @@ export const getShops = async ({
   itemsPerPage?: number; 
   country?: string;
 }) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/shops', 
-  //   { params: { page, itemsPerPage, country } }
-  // );
-  // return data;
-
   const query = country ? { country } : {};
 
   await connectToDB();
@@ -46,9 +41,6 @@ export const getShops = async ({
 };
 
 export const getShop = async (id: string) => {
-  // const { data } = await AXIOS.get(`/api/shops/${id}`);
-  // return data;
-
   await connectToDB();
 
   const shop = await Shop
@@ -63,13 +55,8 @@ export const getShop = async (id: string) => {
 };
 
 export const getLocations = async () => {
-  // const { data } = await AXIOS.get('/api/shops/locations');
-  // return data;
-
   await connectToDB();
-    
   const locations = await Shop.find().select('country');
   const countries = [...new Set(locations.map(item => item.country))];
-
   return countries as any;
 };

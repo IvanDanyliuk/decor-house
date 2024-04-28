@@ -1,7 +1,6 @@
 'use server';
 
 import mongoose from 'mongoose';
-// import { AXIOS } from '../axios';
 import { connectToDB } from '../database';
 import Category from '../models/category.model';
 import Order from '../models/order.model';
@@ -9,11 +8,6 @@ import Product from '../models/product.model';
 
 
 export const getStatsFilterData = async () => {
-  // const { data } = await AXIOS.get(
-  //   '/api/stats/filters'
-  // );
-  // return data;
-
   await connectToDB();
 
   const categoriesData = await Category.find({}).select('-__v');
@@ -38,12 +32,6 @@ export const getStats = async ({
   periodFrom: string;
   periodTo: string;
 }) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/stats',
-  //   { params: { categoryId, periodFrom, periodTo } }
-  // );
-  // return data;
-
   const query = {
     createdAt: { $gte: periodFrom, $lte: periodTo }
   };

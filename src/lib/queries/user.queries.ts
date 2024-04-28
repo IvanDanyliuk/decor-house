@@ -1,4 +1,5 @@
-import { AXIOS } from '../axios';
+'use server';
+
 import { connectToDB } from '../database';
 import Order from '../models/order.model';
 import Product from '../models/product.model';
@@ -12,12 +13,6 @@ export const getUsers = async ({
   page?: number, 
   itemsPerPage?: number 
 }) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/user/all', 
-  //   { params: { page, itemsPerPage } }
-  // );
-  // return data;
-
   await connectToDB();
 
   const users = (page && itemsPerPage) ? 
@@ -45,12 +40,6 @@ export const getUsers = async ({
 };
 
 export const getUser = async (id: string) => {
-  // const { data } = await AXIOS.get(
-  //   `/api/users/${id}`,
-  //   { params: { id } }
-  // );
-  // return data;
-
   await connectToDB();
 
   const user = await User
@@ -66,12 +55,6 @@ export const getUser = async (id: string) => {
 };
 
 export const getCurrentUser = async (email: string) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/user/current',
-  //   { params: { email } }
-  // );
-  // return data;
-
   await connectToDB();
 
   const user = await User.findOne({ email }).select('-password -__v');
@@ -80,12 +63,6 @@ export const getCurrentUser = async (email: string) => {
 };
 
 export const getProfileData = async (id: string) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/user/profile',
-  //   { params: { id } }
-  // );
-  // return data;
-
   await connectToDB();
 
   const user = await User

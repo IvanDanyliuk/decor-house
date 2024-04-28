@@ -1,4 +1,5 @@
-// import { AXIOS } from '../axios';
+'use server';
+
 import { connectToDB } from '../database';
 import Order from '../models/order.model';
 import Product from '../models/product.model';
@@ -13,12 +14,6 @@ export const getOrders = async ({
   itemsPerPage?: number, 
   email?: string 
 }) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/orders',
-  //   { params: { page, itemsPerPage, email } }
-  // );
-  // return data;
-
   const query = email ? { 'user.email': email } : {};
 
   await connectToDB();
@@ -52,12 +47,6 @@ export const getOrders = async ({
 };
 
 export const getOrder = async (id: string) => {
-  // const { data } = await AXIOS.get(
-  //   `/api/orders/${id}`,
-  //   { params: { id } }
-  // );
-  // return data;
-
   await connectToDB();
     
   const order = await Order

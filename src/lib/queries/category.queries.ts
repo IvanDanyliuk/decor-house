@@ -1,4 +1,5 @@
-// import { AXIOS } from '../axios';
+'use server';
+
 import { connectToDB } from '../database';
 import Category from '../models/category.model';
 
@@ -9,12 +10,6 @@ export const getCategories = async ({
   page?: number, 
   itemsPerPage?: number 
 }) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/categories', 
-  //   { params: { page, itemsPerPage } }
-  // );
-  // return data;
-
   await connectToDB();
 
   const categories = (page && itemsPerPage) ? 
@@ -42,9 +37,6 @@ export const getCategories = async ({
 };
 
 export const getCategory = async (id: string) => {
-  // const { data } = await AXIOS.get(`/api/categories/${id}`);
-  // return data;
-
   await connectToDB();
     
   const category = await Category

@@ -1,8 +1,10 @@
+'use server';
+
 import mongoose from 'mongoose';
-// import { AXIOS } from '../axios';
 import { connectToDB } from '../database';
 import Product from '../models/product.model';
 import Promotion from '../models/promotion.model';
+
 
 export const getPromotions = async ({ 
   page, 
@@ -13,12 +15,6 @@ export const getPromotions = async ({
   itemsPerPage?: number;
   period?: string;
 }) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/promotions', 
-  //   { params: { page, itemsPerPage, period } }
-  // );
-  // return data;
-
   const query = period === 'current' ? 
     { $and: [
       { periodFrom: { $lte: new Date().toISOString() } },
@@ -59,9 +55,6 @@ export const getPromotions = async ({
 };
 
 export const getPromotion = async (id: string) => {
-  // const { data } = await AXIOS.get(`/api/promotions/${id}`);
-  // return data;
-
   await connectToDB();
 
   const isPromotionIdValid = mongoose.Types.ObjectId.isValid(id);

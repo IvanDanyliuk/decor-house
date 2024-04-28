@@ -1,5 +1,6 @@
+'use server';
+
 import mongoose from 'mongoose';
-// import { AXIOS } from '../axios';
 import { connectToDB } from '../database';
 import Category from '../models/category.model';
 import Post from '../models/post.model';
@@ -13,12 +14,6 @@ export const getPosts = async ({
   itemsPerPage?: number;
   tags?: string;
 }) => {
-  // const { data } = await AXIOS.get(
-  //   '/api/posts', 
-  //   { params: { page, itemsPerPage, tags } }
-  // );
-  // return data;
-
   const query = tags ? { tags: { $in: tags.split(', ') } } : {};
 
   await connectToDB();
@@ -52,9 +47,6 @@ export const getPosts = async ({
 };
 
 export const getPost = async (id: string) => {
-  // const { data } = await AXIOS.get(`/api/posts/${id}`);
-  // return data;
-
   await connectToDB();
 
   const isPostIdValid = mongoose.Types.ObjectId.isValid(id);
