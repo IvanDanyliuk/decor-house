@@ -5,12 +5,11 @@ import NewProducts from '@/components/homepage/NewProducts';
 import StoreOverview from '@/components/homepage/StoreOverview';
 import Section from '@/components/ui/Section';
 import { getInteriors } from '@/lib/queries/interior.queries';
-import { getProducts, getProductsForHomePage } from '@/lib/queries/product.queries';
+import { getProducts } from '@/lib/queries/product.queries';
 
 
 export default async function Home() {
-  // const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
-  const productsData = await getProductsForHomePage({ page: 1, itemsPerPage: 6 })
+  const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
   const interiorsData = await getInteriors({ page: 1, itemsPerPage: 6 });
 
   return (
@@ -22,7 +21,11 @@ export default async function Home() {
         <StoreOverview />
       </Section>
       <Section className='mx-auto px-3 md:px-0 container'>
-        {/* <NewProducts products={productsData.data.products} /> */}
+        {productsData.data ? (
+          <NewProducts products={productsData.data.products} />
+        ) : (
+          <div className='w-full h-96'>Loading products...</div>
+        )}
       </Section>
       <Section className='w-full'>
         <Demo />

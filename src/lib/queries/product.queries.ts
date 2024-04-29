@@ -9,29 +9,6 @@ import User from '../models/user.model';
 import { removeFalsyObjectFields } from '@/utils/helpers';
 
 
-export const getProductsForHomePage = async ({ page, itemsPerPage }: { page: number, itemsPerPage: number }) => {
-  const products = await Product
-    .find()
-    .sort({ createdAt: -1 })
-    .limit(+itemsPerPage)
-    .skip((+page - 1) * +itemsPerPage)
-    // .populate([
-    //   { path: 'category', select: 'name', model: Category },
-    //   { path: 'manufacturer', model: Manufacturer }
-    // ])
-    .select('-__v')
-    // .lean();
-
-  return {
-    data: {
-      products: JSON.parse(JSON.stringify(products)),
-      count: itemsPerPage,
-    },
-    error: null,
-    message: ''
-  } as any;
-}
-
 export const getProducts = async ({ 
   page, 
   itemsPerPage, 
@@ -55,13 +32,14 @@ export const getProducts = async ({
   order?: string;
   sortIndicator?: string;
 }) => {
-  console.log('GET PRODUCTS', { page, itemsPerPage, category, types, features, manufacturers, minPrice, maxPrice, order, sortIndicator })
-  const isCategoryDataValidObjectId = category ? mongoose.Types.ObjectId.isValid(category!) : false;
-  const categoryPattern = category ? new RegExp(`${category?.replaceAll('-', ' ')}`) : null;
+  await connectToDB();
+  
+  const isCategoryDataValidObjectId = mongoose.Types.ObjectId.isValid(category!);
+  const categoryPattern = new RegExp(`${category?.replaceAll('-', ' ')}`);
   
   const categoryData = isCategoryDataValidObjectId ? 
-    category ? await Category.findById(category) : null : 
-    categoryPattern ? await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } }) : null;
+    await Category.findById(category) : 
+    await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
 
   const typesData = types ? { $in: types.split(';') } : null;
   const featuresData = features ? { $in: features.split(';') } : null;
@@ -104,7 +82,7 @@ export const getProducts = async ({
 
   return {
     data: {
-      products: JSON.parse(JSON.stringify(products)),
+      products,
       count,
     },
     error: null,
