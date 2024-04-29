@@ -9,7 +9,7 @@ import { getProducts } from '@/lib/queries/product.queries';
 
 
 export default async function Home() {
-  const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
+  // const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
   // const interiorsData = await getInteriors({ page: 1, itemsPerPage: 6 });
 
   return (
@@ -20,13 +20,13 @@ export default async function Home() {
       <Section className='w-full'>
         <StoreOverview />
       </Section>
-      <Section className='mx-auto px-3 md:px-0 container'>
+      {/* <Section className='mx-auto px-3 md:px-0 container'>
         {productsData.data ? (
           <NewProducts products={productsData.data.products} />
         ) : (
           <div className='w-full h-96'>Loading products...</div>
         )}
-      </Section>
+      </Section> */}
       <Section className='w-full'>
         <Demo />
       </Section>
