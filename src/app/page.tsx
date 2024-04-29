@@ -17,20 +17,20 @@ export default async function Home() {
       <Section className='relative mx-auto px-3 md:px-0 container'>
         <Hero />
       </Section>
-      {/* <Section className='w-full'>
+      <Section className='w-full'>
         <StoreOverview />
       </Section>
-      <Section className='mx-auto px-3 md:px-0 container'>
+      {/* <Section className='mx-auto px-3 md:px-0 container'>
         {productsData.data ? (
           <NewProducts products={productsData.data.products} />
         ) : (
           <div className='w-full h-96'>Loading products...</div>
         )}
-      </Section>
+      </Section> */}
       <Section className='w-full'>
         <Demo />
       </Section>
-      <Section className='w-full px-3 md:px-0'>
+      {/* <Section className='w-full px-3 md:px-0'>
         <Interiors interiors={interiorsData.data.interiors} />
       </Section> */}
     </div>
