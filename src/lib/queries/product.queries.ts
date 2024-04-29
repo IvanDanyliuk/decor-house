@@ -32,6 +32,7 @@ export const getProducts = async ({
   order?: string;
   sortIndicator?: string;
 }) => {
+  console.log('GET PRODUCTS', { page, itemsPerPage, category, types, features, manufacturers, minPrice, maxPrice, order, sortIndicator })
   const isCategoryDataValidObjectId = mongoose.Types.ObjectId.isValid(category!);
   const categoryPattern = new RegExp(`${category?.replaceAll('-', ' ')}`);
   
@@ -80,7 +81,7 @@ export const getProducts = async ({
 
   return {
     data: {
-      products,
+      products: JSON.parse(JSON.stringify(products)),
       count,
     },
     error: null,
