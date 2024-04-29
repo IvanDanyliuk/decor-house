@@ -5,12 +5,12 @@ import NewProducts from '@/components/homepage/NewProducts';
 import StoreOverview from '@/components/homepage/StoreOverview';
 import Section from '@/components/ui/Section';
 import { getInteriors } from '@/lib/queries/interior.queries';
-import { getProducts } from '@/lib/queries/product.queries';
+import { getProducts, getProductsForHomePage } from '@/lib/queries/product.queries';
 
 
 export default async function Home() {
-  const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
-  // const productsData = { data: { products: null } }
+  // const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
+  const productsData = await getProductsForHomePage({ page: 1, itemsPerPage: 6 })
   const interiorsData = await getInteriors({ page: 1, itemsPerPage: 6 });
 
   return (

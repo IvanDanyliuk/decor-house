@@ -9,6 +9,29 @@ import User from '../models/user.model';
 import { removeFalsyObjectFields } from '@/utils/helpers';
 
 
+export const getProductsForHomePage = async ({ page, itemsPerPage }: { page: number, itemsPerPage: number }) => {
+  const products = await Product
+    .find()
+    .sort({ createdAt: -1 })
+    .limit(+itemsPerPage)
+    .skip((+page - 1) * +itemsPerPage)
+    .populate([
+      { path: 'category', select: 'name', model: Category },
+      { path: 'manufacturer', model: Manufacturer }
+    ])
+    .select('-__v')
+    .lean();
+
+  return {
+    data: {
+      products: JSON.parse(JSON.stringify(products)),
+      count: itemsPerPage,
+    },
+    error: null,
+    message: ''
+  } as any;
+}
+
 export const getProducts = async ({ 
   page, 
   itemsPerPage, 
