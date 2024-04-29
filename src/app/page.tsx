@@ -14,10 +14,10 @@ export default async function Home() {
 
   return (
     <div className='flex flex-col gap-12 md:gap-24'>
-      {/* <Section className='relative mx-auto px-3 md:px-0 container'>
+      <Section className='relative mx-auto px-3 md:px-0 container'>
         <Hero />
       </Section>
-      <Section className='w-full'>
+      {/* <Section className='w-full'>
         <StoreOverview />
       </Section>
       <Section className='mx-auto px-3 md:px-0 container'>
@@ -33,7 +33,6 @@ export default async function Home() {
       <Section className='w-full px-3 md:px-0'>
         <Interiors interiors={interiorsData.data.interiors} />
       </Section> */}
-      Hello!
     </div>
   );
 };
