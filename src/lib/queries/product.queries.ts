@@ -15,12 +15,12 @@ export const getProductsForHomePage = async ({ page, itemsPerPage }: { page: num
     .sort({ createdAt: -1 })
     .limit(+itemsPerPage)
     .skip((+page - 1) * +itemsPerPage)
-    .populate([
-      { path: 'category', select: 'name', model: Category },
-      { path: 'manufacturer', model: Manufacturer }
-    ])
+    // .populate([
+    //   { path: 'category', select: 'name', model: Category },
+    //   { path: 'manufacturer', model: Manufacturer }
+    // ])
     .select('-__v')
-    .lean();
+    // .lean();
 
   return {
     data: {
