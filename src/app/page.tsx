@@ -9,12 +9,12 @@ import { getProducts } from '@/lib/queries/product.queries';
 
 
 export default async function Home() {
-  const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
-  const interiorsData = await getInteriors({ page: 1, itemsPerPage: 6 });
+  // const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
+  // const interiorsData = await getInteriors({ page: 1, itemsPerPage: 6 });
 
   return (
     <div className='flex flex-col gap-12 md:gap-24'>
-      <Section className='relative mx-auto px-3 md:px-0 container'>
+      {/* <Section className='relative mx-auto px-3 md:px-0 container'>
         <Hero />
       </Section>
       <Section className='w-full'>
@@ -32,7 +32,8 @@ export default async function Home() {
       </Section>
       <Section className='w-full px-3 md:px-0'>
         <Interiors interiors={interiorsData.data.interiors} />
-      </Section>
+      </Section> */}
+      Hello!
     </div>
   );
 };
