@@ -33,7 +33,7 @@ export const getProducts = async ({
   sortIndicator?: string;
 }) => {
   await connectToDB();
-  
+
   const isCategoryDataValidObjectId = mongoose.Types.ObjectId.isValid(category!);
   const categoryPattern = new RegExp(`${category?.replaceAll('-', ' ')}`);
   
@@ -45,6 +45,7 @@ export const getProducts = async ({
   const featuresData = features ? { $in: features.split(';') } : null;
   const manufacturersData = manufacturers ? { $in: manufacturers.split(';') } : null;
   const price = minPrice && maxPrice ? { $gte: Number(minPrice), $lte: Number(maxPrice) } : null;
+  const sortIndicatorData = sortIndicator || 'createdAt';
 
   const params = removeFalsyObjectFields({ 
     category: categoryData, 
@@ -59,7 +60,7 @@ export const getProducts = async ({
   const products = (page && itemsPerPage) ? 
     await Product
       .find(params)
-      .sort({ [sortIndicator!]: order === 'asc' ? 1 : -1 })
+      .sort({ [sortIndicatorData]: order === 'asc' ? 1 : -1 })
       .limit(+itemsPerPage)
       .skip((+page - 1) * +itemsPerPage)
       .populate([
@@ -70,7 +71,7 @@ export const getProducts = async ({
       .lean() :
     await Product
       .find(params)
-      .sort({ [sortIndicator!]: order === 'asc' ? -1 : 1  })
+      .sort({ [sortIndicatorData]: order === 'asc' ? -1 : 1  })
       .populate([
         { path: 'category', select: 'name', model: Category },
         { path: 'manufacturer', model: Manufacturer }

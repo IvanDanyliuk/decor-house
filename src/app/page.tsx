@@ -21,10 +21,10 @@ export default async function Home() {
         <StoreOverview />
       </Section>
       <Section className='mx-auto px-3 md:px-0 container'>
-        {productsData.data ? (
+        {productsData.data.products ? (
           <NewProducts products={productsData.data.products} />
         ) : (
-          <div className='w-full h-96'>Loading products...</div>
+          <div className='w-full h-96'>Products not found</div>
         )}
       </Section>
       <Section className='w-full'>
