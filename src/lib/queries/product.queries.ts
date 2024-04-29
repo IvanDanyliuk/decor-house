@@ -33,12 +33,12 @@ export const getProducts = async ({
   sortIndicator?: string;
 }) => {
   console.log('GET PRODUCTS', { page, itemsPerPage, category, types, features, manufacturers, minPrice, maxPrice, order, sortIndicator })
-  const isCategoryDataValidObjectId = mongoose.Types.ObjectId.isValid(category!);
-  const categoryPattern = new RegExp(`${category?.replaceAll('-', ' ')}`);
+  const isCategoryDataValidObjectId = category ? mongoose.Types.ObjectId.isValid(category!) : false;
+  const categoryPattern = category ? new RegExp(`${category?.replaceAll('-', ' ')}`) : null;
   
   const categoryData = isCategoryDataValidObjectId ? 
-    await Category.findById(category) : 
-    await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } });
+    category ? await Category.findById(category) : null : 
+    categoryPattern ? await Category.findOne({ name: { $regex: categoryPattern, $options: 'i' } }) : null;
 
   const typesData = types ? { $in: types.split(';') } : null;
   const featuresData = features ? { $in: features.split(';') } : null;
