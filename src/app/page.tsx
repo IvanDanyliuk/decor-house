@@ -8,7 +8,7 @@ import { getInteriors } from '@/lib/queries/interior.queries';
 import { getProducts } from '@/lib/queries/product.queries';
 
 
-// export default async function Home() {
+export default async function Home() {
 //   const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
   const productsData = { data: { products: null } }
   const interiorsData = await getInteriors({ page: 1, itemsPerPage: 6 });
