@@ -8,8 +8,9 @@ import { getInteriors } from '@/lib/queries/interior.queries';
 import { getProducts } from '@/lib/queries/product.queries';
 
 
-export default async function Home() {
-  const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
+// export default async function Home() {
+//   const productsData = await getProducts({ page: 1, itemsPerPage: 6 });
+  const productsData = { data: { products: null } }
   const interiorsData = await getInteriors({ page: 1, itemsPerPage: 6 });
 
   return (
@@ -20,13 +21,13 @@ export default async function Home() {
       <Section className='w-full'>
         <StoreOverview />
       </Section>
-      {/* <Section className='mx-auto px-3 md:px-0 container'>
-        {productsData.data ? (
+      <Section className='mx-auto px-3 md:px-0 container'>
+        {productsData.data.products ? (
           <NewProducts products={productsData.data.products} />
         ) : (
-          <div className='w-full h-96'>Loading products...</div>
+          <div className='w-full h-96'>Products Not Found</div>
         )}
-      </Section> */}
+      </Section>
       <Section className='w-full'>
         <Demo />
       </Section>
