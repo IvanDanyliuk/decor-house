@@ -13,7 +13,7 @@ const Header: React.FC = async () => {
   const user = session?.user ? await getCurrentUser(session?.user?.email!) : null;
   
   return (
-    <header className='px-3 w-full h-24 flex items-center'>
+    <header className='sticky top-0 px-3 w-full h-24 flex items-center bg-white z-50'>
       <div className='container mx-auto flex justify-between'>
         <div className='flex items-center gap-6'>
           <NavMenu user={user} />

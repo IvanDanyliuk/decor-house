@@ -6,7 +6,11 @@ import { Input, Modal } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 
-const SearchMobile: React.FC = () => {
+interface ISearchMobile {
+  onClick: () => void;
+}
+
+const SearchMobile: React.FC<ISearchMobile> = ({ onClick }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -14,6 +18,9 @@ const SearchMobile: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
 
   const handleActiveMode = () => { 
+    if(!isActive) {
+      onClick();
+    }
     if(isActive && searchValue) {
       const params = new URLSearchParams(searchParams);
       params.set('query', searchValue.trim());

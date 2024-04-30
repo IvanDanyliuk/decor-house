@@ -2,13 +2,18 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link';
-import { Badge } from 'antd';
-import { HomeOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { Badge, Drawer } from 'antd';
+import { HomeOutlined, MoreOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import SearchMobile from '../layout/SearchMobile';
 
 
 const BottomNavigationBar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [cartSize, setCartSize] = useState<number>(0);
+
+  const handleMenuOpen = () => {
+    setIsOpen(prev => !prev);
+  };
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -30,17 +35,44 @@ const BottomNavigationBar: React.FC = () => {
   }, []);
 
   return (
-    <div className='fixed bottom-0 px-6 w-full h-20 md:hidden flex justify-between items-center bg-accent-dark text-white z-30'>
-      <Link href='/cart'>
-        <Badge count={cartSize} color='#F1F5FA' style={{ color: '#000000' }}>
-          <ShoppingCartOutlined className='text-3xl text-white' />
-        </Badge>
-      </Link>
-      <Link href='/' className='text-3xl'>
-        <HomeOutlined />
-      </Link>
-      <SearchMobile />
-    </div>
+    <>
+      <button 
+        onClick={handleMenuOpen} 
+        className='fixed right-3 bottom-3 w-14 h-14 flex justify-center items-center bg-accent-dark text-2xl text-white rounded-full shadow-lg'
+      >
+        <MoreOutlined />
+      </button>
+      <Drawer
+        open={isOpen} 
+        closable={true}
+        placement='bottom'
+        onClose={handleMenuOpen}
+        height={'6rem'}
+        styles={{
+          header: {
+            display: 'none',
+          },
+          body: {
+            height: '5rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            background: '#000000',
+            color: '#ffffff'
+          }
+        }}
+      >
+        <Link href='/cart' onClick={handleMenuOpen}>
+          <Badge count={cartSize} color='#F1F5FA' style={{ color: '#000000' }}>
+            <ShoppingCartOutlined className='text-3xl text-white' />
+          </Badge>
+        </Link>
+        <Link href='/' onClick={handleMenuOpen} className='text-3xl'>
+          <HomeOutlined />
+        </Link>
+        <SearchMobile onClick={handleMenuOpen} />
+      </Drawer>
+    </>
   );
 };
 

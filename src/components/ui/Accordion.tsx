@@ -21,7 +21,7 @@ const Accordion: React.FC<IAccordion> = ({ title, children }) => {
         initial={false}
         animate={{ backgroundColor: isExpanded ? '#F1F5FA' : 'white' }}
         onClick={handleAccordionExpanded}
-        className='relative px-2 py-3 w-full flex justify-between items-center gap-10 text-base font-semibold'
+        className='relative px-2 py-3 w-full flex justify-between items-center md:gap-10 text-base font-semibold'
       >
         <div className='flex-1'>{title}</div>
         <DownOutlined />

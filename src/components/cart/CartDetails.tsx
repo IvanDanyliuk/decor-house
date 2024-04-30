@@ -118,17 +118,17 @@ const CartDetails: React.FC<ICartDetails> = ({ user }) => {
         </>
       ) : (
         <div className='w-full flex justify-center items-center'>
-          <div className='flex flex-col items-center gap-6'>
+          <div className='py-14 flex flex-col items-center gap-6'>
             <Image 
               src='/assets/icons/cart.png'
               alt='previous'
-              width={300}
-              height={300}
+              width={150}
+              height={150}
             />
-            <p className='text-5xl text-center font-bold'>
+            <p className='text-3xl text-center font-bold'>
               Cart is empty
             </p>
-            <p className='text-xl text-center text-gray-dark font-semibold'>
+            <p className='px-6 text-lg text-center text-gray-dark font-semibold'>
               Choose products and return to checkout an order
             </p>
             <Link href='/catalog' className='py-3 w-full md:w-72 link-primary'>

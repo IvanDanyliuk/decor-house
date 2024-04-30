@@ -32,7 +32,7 @@ const Product = async ({ params }: { params: { category: string, id: string } })
           }
         </p>
       </section>
-      <section className='mx-auto container flex flex-col md:flex-row gap-6 md:gap-10'>
+      <section className='mx-auto px-3 container flex flex-col md:flex-row gap-6 md:gap-10'>
         {product && <ProductDetails product={product} />}
       </section>
       <section className='mx-auto mt-6 container'>

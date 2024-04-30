@@ -51,7 +51,7 @@ const OrderTitle = ({ order }: { order: IOrder }) => (
 
 const OrdersTab: React.FC<IOrdersTab> = ({ orders }) => {
   return (
-    <ul>
+    <ul className='overflow-x-auto'>
       {orders.map((order, i) => (
         <li key={crypto.randomUUID()}>
           <Accordion title={<OrderTitle order={order} />} >

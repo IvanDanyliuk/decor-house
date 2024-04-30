@@ -33,7 +33,7 @@ export default async function RootLayout({
           <main>
             {children}
           </main>
-          <footer className='w-full mb-20 md:mb-0 py-10 flex flex-col justify-center items-center bg-main-bg'>
+          <footer className='w-full md:mb-0 py-10 flex flex-col justify-center items-center bg-main-bg'>
             <div className='relative w-full container'>
               <div className='text-xl md:text-3xl font-bold text-accent-dark text-center'>Decor House</div>
               <Divider className='py-1 md:py-4 md:my-8' />
