@@ -12,6 +12,8 @@ const LoginForm: React.FC = () => {
   const ref = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
+    localStorage.setItem('cart', '[]');
+
     if(state && !state.error) {
       ref.current?.reset();
     }

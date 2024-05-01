@@ -17,10 +17,11 @@ const orderSchema = zod.object({
 });
 
 
-export const createOrder = async (prevState: any, formData: FormData) => {
+export const createOrder = async (details: any, prevState: any, formData: FormData) => {
   try {
+    console.log('CREATE ORDER ACTION', details)
     const data = Object.fromEntries(formData);
-    const productsData = formData.get('products') as string;
+    // const productsData = formData.get('products') as string;
 
     await connectToDB();
 
@@ -38,13 +39,13 @@ export const createOrder = async (prevState: any, formData: FormData) => {
         phone: data.phone,
         email: data.email,
       },
-      products: JSON.parse(productsData),
-      totalAmount: +data.totalAmount,
+      products: JSON.parse(details.products),
+      totalAmount: +details.totalAmount,
       deliveryAddress: data.deliveryAddress,
       deliveryMethod: data.deliveryMethod,
-      deliveryStatus: data.deliveryStatus,
+      deliveryStatus: details.deliveryStatus,
       paymentMethod: data.paymentMethod,
-      paymentStatus: data.paymentStatus,
+      paymentStatus: details.paymentStatus,
     });
 
     revalidatePath('/dashboard/orders');

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react'
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { createOrder } from '@/lib/actions/order.actions';
 import { DeliveryMethod, DeliveryStatus, PaymentMethod, PaymentStatus } from '@/lib/types/order.types';
@@ -32,7 +32,13 @@ const OrderDetails: React.FC<IOrderDetails> = ({ user }) => {
   const [products, setProducts] = useState<ICartItem[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [isPersonalDataSubmitted, setIsPersonalDataSubmitted] = useState<boolean>(false);
-  const [state, formAction] = useFormState(createOrder, initialState);
+  
+  const [state, formAction] = useFormState(createOrder.bind(null, {
+    products: JSON.stringify(products),
+    totalAmount: totalAmount.toString(),
+    deliveryStatus: DeliveryStatus.NotDelivered,
+    paymentStatus: PaymentStatus.NotPaid
+  }), initialState);
 
   const router = useRouter();
   const ref = useRef<HTMLFormElement>(null);
@@ -80,13 +86,7 @@ const OrderDetails: React.FC<IOrderDetails> = ({ user }) => {
   return (
     <div className='py-6'>
       <form 
-        action={async (formData: FormData) => {
-          formData.append('products', JSON.stringify(products));
-          formData.append('totalAmount', totalAmount.toString());
-          formData.append('deliveryStatus', DeliveryStatus.NotDelivered);
-          formData.append('paymentStatus', PaymentStatus.NotPaid);
-          await formAction(formData);
-        }}
+        action={formAction}
         className='flex gap-10'
       >
         <fieldset className='flex flex-col flex-1 gap-6'>
