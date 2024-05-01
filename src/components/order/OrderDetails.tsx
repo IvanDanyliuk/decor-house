@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { createOrder } from '@/lib/actions/order.actions';
 import { DeliveryMethod, DeliveryStatus, PaymentMethod, PaymentStatus } from '@/lib/types/order.types';
@@ -32,7 +32,7 @@ const OrderDetails: React.FC<IOrderDetails> = ({ user }) => {
   const [products, setProducts] = useState<ICartItem[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [isPersonalDataSubmitted, setIsPersonalDataSubmitted] = useState<boolean>(false);
-  
+
   const [state, formAction] = useFormState(createOrder.bind(null, {
     products: JSON.stringify(products),
     totalAmount: totalAmount.toString(),

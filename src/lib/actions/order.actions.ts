@@ -19,9 +19,7 @@ const orderSchema = zod.object({
 
 export const createOrder = async (details: any, prevState: any, formData: FormData) => {
   try {
-    console.log('CREATE ORDER ACTION', details)
     const data = Object.fromEntries(formData);
-    // const productsData = formData.get('products') as string;
 
     await connectToDB();
 
