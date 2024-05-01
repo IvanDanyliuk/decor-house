@@ -27,7 +27,7 @@ const TextareaField: React.FC<ITextareaField> = ({ label, name, value, defaultVa
       )}
       <div className='relative w-full md:grow'>
         <textarea 
-          className={`px-3 w-full text-sm border ${error ? 'border-red-600' : 'border-gray-regular'} rounded`}
+          className={`px-3 py-2 w-full text-sm border ${error ? 'border-red-600' : 'border-gray-regular'} rounded`}
           id={name}
           name={name} 
           value={value}
