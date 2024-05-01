@@ -57,20 +57,22 @@ export const getUser = async (id: string) => {
 export const getCurrentUser = async (email: string) => {
   await connectToDB();
 
-  const user = await User.findOne({ email }).select('-password -__v');
+  const user = await User.findOne({ email }).populate({ path: 'cart.product', select: '-__v', model: Product }).select('-password -__v');
 
-  return user as any;
+  return JSON.parse(JSON.stringify(user)) as any;
 };
 
 export const getProfileData = async (id: string) => {
   await connectToDB();
 
-  const user = await User
+  const user: any = await User
     .findById(id)
-    .select('-__v');
+    .populate({ path: 'cart.product', select: '-__v', model: Product })
+    .select('-__v')
+    .lean();
     
   const orders = await Order
-    .find({ 'user.email': user.email })
+    .find({ 'user.email': user!.email! })
     .populate({ path: 'products.product', select: '-__v', model: Product })
     .select('-__v')
     .lean();
