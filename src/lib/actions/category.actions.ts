@@ -4,7 +4,6 @@ import { revalidatePath } from 'next/cache';
 import { z as zod } from 'zod';
 import { connectToDB } from '../database';
 import Category from '../models/category.model';
-import { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_SIZE } from '../constants';
 import { utapi } from '../uploadthing';
 
 
@@ -16,11 +15,11 @@ const categorySchema = zod.object({
 });
 
 
-export const createCategory = async (prevState: any, formData: FormData) => {
+export const createCategory = async (details: any, prevState: any, formData: FormData) => {
   const name = formData.get('name');
   const rawImage = formData.get('image') as string;
-  const types = formData.get('types') as string;
-  const features = formData.get('features') as string;
+  const types = details.types as string;
+  const features = details.features as string;
 
   try {
     await connectToDB();
@@ -71,17 +70,15 @@ export const createCategory = async (prevState: any, formData: FormData) => {
   }
 };
 
-export const updateCategory = async (prevState: any, formData: FormData) => {
-  const id = prevState._id;
+export const updateCategory = async (details: any, prevState: any, formData: FormData) => {
+  const id = details.categoryId;
   const name = formData.get('name');
   const rawImage = formData.get('image') as string;
-  const types = formData.get('types') as string;
-  const features = formData.get('features') as string;
 
   try {
     await connectToDB();
 
-    const validatedFields = categorySchema.safeParse({ name, image: rawImage, types, features });
+    const validatedFields = categorySchema.safeParse({ name, image: rawImage, types: details.types, features: details.features });
 
     if(!validatedFields.success) {
       return {
@@ -104,8 +101,8 @@ export const updateCategory = async (prevState: any, formData: FormData) => {
     await Category.findByIdAndUpdate(id, { 
       name, 
       image: imageUrl, 
-      types: types ? types.split(', ') : [], 
-      features: features ? features.split(', ') : [] 
+      types: details.types ? details.types.split(', ') : [], 
+      features: details.features ? details.features.split(', ') : [] 
     });
 
     revalidatePath('/dashboard/categories');

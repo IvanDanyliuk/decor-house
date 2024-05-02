@@ -17,9 +17,8 @@ const promotionSchema = zod.object({
 });
 
 
-export const createPromotion = async (prevState: any, formData: FormData) => {
+export const createPromotion = async (details: any, prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
-  const products = formData.get('products') as string;
 
   try {
     await connectToDB();
@@ -43,7 +42,7 @@ export const createPromotion = async (prevState: any, formData: FormData) => {
 
     await Promotion.create({
       ...data, 
-      products: products.split(', '),
+      products: details.products.split(', '),
       image: imageUrl,
     });
 
@@ -63,11 +62,10 @@ export const createPromotion = async (prevState: any, formData: FormData) => {
   }
 };
 
-export const updatePromotion = async (prevState: any, formData: FormData) => {
-  const id = prevState._id;
+export const updatePromotion = async (details: any, prevState: any, formData: FormData) => {
+  const id = details.promotionId;
   const data = Object.fromEntries(formData);
   const rawImage = formData.get('image') as string;
-  const products = formData.get('products') as string;
 
   try {
     await connectToDB();
@@ -93,7 +91,7 @@ export const updatePromotion = async (prevState: any, formData: FormData) => {
     await Promotion.findByIdAndUpdate(id, {
       ...data,
       image: imageUrl,
-      products: products.split(', '),
+      products: details.products.split(', '),
     });
 
     revalidatePath('/dashboard/promotions');

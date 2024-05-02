@@ -9,6 +9,7 @@ import { register } from '@/lib/actions/user.actions';
 import SubmitButton from '../ui/SubmitButton';
 import UploadImageButton from '../ui/UploadImageBtn';
 import { openNotification } from '../ui/Notification';
+import { NotificationType } from '@/lib/common.types';
 
 
 const initialState = {
@@ -28,7 +29,7 @@ const RegisterForm: React.FC = () => {
 
   useEffect(() => {
     if(state && state.error) {
-      openNotification(state.message, state.error);
+      openNotification(state.message, state.error, NotificationType.Error);
     }
 
     if(state && !state.error && state.data && state.data.email && state.data.password) {
@@ -36,7 +37,7 @@ const RegisterForm: React.FC = () => {
         email: state.data.email,
         password: state.data.password,
         callbackUrl: '/'
-      }).then(res => console.log('SIGNED IN', res))
+      }).then(res => openNotification('Welcome!', 'You have been successfully signed up!'));
     }
   }, [state, formAction]);
 

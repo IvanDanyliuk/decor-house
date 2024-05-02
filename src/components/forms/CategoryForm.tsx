@@ -12,6 +12,7 @@ import SubmitButton from '../ui/SubmitButton';
 import AddSubValueModal from '../ui/modals/AddSubValueModal';
 import Chip from '../ui/Chip';
 import { openNotification } from '../ui/Notification';
+import { NotificationType } from '@/lib/common.types';
 
 
 interface ICategoryForm {
@@ -32,9 +33,15 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
 
   const router = useRouter();
 
-  const [state, formAction] = useFormState(action, initialState);
   const [types, setTypes] = useState<string[]>(categoryToUpdate?.types || []);
   const [features, setFeatures] = useState<string[]>(categoryToUpdate?.features || []);
+
+  const [state, formAction] = useFormState(action.bind(null, {
+    types: types.join(', '),
+    features: features.join(', '),
+    categoryId: categoryToUpdate ? categoryToUpdate._id : null
+  }), initialState);
+
   const ref = useRef<HTMLFormElement>(null);
 
   const addNewType = (type: string) => {
@@ -55,13 +62,14 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
 
   useEffect(() => {
     if(state && state.error) {
-      openNotification(state.message, state.error);
+      openNotification(state.message, state.error, NotificationType.Error);
     }
 
     if(!state.error && state.message) {
       ref.current?.reset();
       setTypes([]);
       setFeatures([]);
+      openNotification('Done!', state.message)
       router.push('/dashboard/categories');
     }
   }, [state, formAction]);
@@ -69,11 +77,7 @@ const CategoryForm: React.FC<ICategoryForm> = ({ categoryToUpdate }) => {
   return (
     <form 
       ref={ref} 
-      action={async (formData: FormData) => {
-        formData.append('types', types.join(', '));
-        formData.append('features', features.join(', '));
-        await formAction(formData);
-      }} 
+      action={formAction}
       className='flex grow flex-1 flex-col justify-between content-between gap-3 md:gap-6'
     >
       <fieldset className='flex flex-col gap-3'>

@@ -18,6 +18,7 @@ import { getCategories } from '@/lib/queries/category.queries';
 import { getProducts } from '@/lib/queries/product.queries';
 import { IProduct } from '@/lib/types/products.types';
 import { openNotification } from '../ui/Notification';
+import { NotificationType } from '@/lib/common.types';
 
 
 interface IPromotionForm {
@@ -38,7 +39,6 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
   const initialState = promotionToUpdate ? promotionToUpdate : initialEmptyState;
 
   const router = useRouter();
-  const [state, formAction] = useFormState(action, initialState);
   const ref = useRef<HTMLFormElement>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -46,6 +46,11 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [products, setProducts] = useState<IProduct[]>([]);
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+
+  const [state, formAction] = useFormState(action.bind(null, {
+    products: selectedProductIds.join(', '),
+    promotionId: promotionToUpdate ? promotionToUpdate._id : null
+  }), initialState);
 
   useEffect(() => {
     getCategories({}).then(res => {
@@ -66,14 +71,15 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
 
   useEffect(() => {
     if(state && state.error) {
-      openNotification(state.message, state.error);
+      openNotification(state.message, state.error, NotificationType.Error);
     }
 
     if(!state.error && state.message) {
       ref.current?.reset();
       setSelectedCategory('');
       setProducts([]);
-      setSelectedProductIds([])
+      setSelectedProductIds([]);
+      openNotification('Done!', state.message);
       router.push('/dashboard/promotions');
     }
   }, [state, formAction]);
@@ -81,10 +87,7 @@ const PromotionForm: React.FC<IPromotionForm> = ({ promotionToUpdate }) => {
   return (
     <form 
       ref={ref} 
-      action={async (formData: FormData) => {
-        formData.append('products', selectedProductIds.join(', '));
-        await formAction(formData)
-      }} 
+      action={formAction} 
       className='flex grow flex-1 flex-wrap justify-between content-between gap-3 md:gap-6'
     >
       <fieldset className='w-full md:w-auto grow flex flex-col gap-3'>

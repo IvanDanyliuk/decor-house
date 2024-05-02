@@ -15,16 +15,15 @@ const interiorSchema = zod.object({
 });
 
 
-export const createInterior = async (prevState: any, formData: FormData) => {
+export const createInterior = async (details: any, prevState: any, formData: FormData) => {
   const data = Object.fromEntries(formData);
   const rawImage = formData.get('image') as string;
-  const products = formData.get('products') as string;
 
   try {
     await connectToDB();
 
     const validatedFields = interiorSchema.safeParse({
-      ...data, image: rawImage, products: products.split(', ')
+      ...data, image: rawImage, products: details.products.split(', ')
     });
 
     if(!validatedFields.success) {
@@ -38,14 +37,14 @@ export const createInterior = async (prevState: any, formData: FormData) => {
 
     const imageUrl = new Blob([image]).size > 0 ? 
       (await utapi.uploadFiles([image]))[0].data?.url : 
-      prevState.image;
+      null;
 
     if(!imageUrl) return { error: 'Interior Image is required' };
 
     await Interior.create({
       ...data,
       image: imageUrl,
-      products: products ? products.split(', ') : [],
+      products: details.products ? details.products.split(', ') : [],
     });
 
     revalidatePath('/dashboard/interiors');
@@ -64,17 +63,16 @@ export const createInterior = async (prevState: any, formData: FormData) => {
   }
 };
 
-export const updateInterior = async (prevState: any, formData: FormData) => {
+export const updateInterior = async (details: any, prevState: any, formData: FormData) => {
   const id = prevState._id;
   const data = Object.fromEntries(formData);
   const rawImage = formData.get('image') as string;
-  const products = formData.get('products') as string;
 
   try {
     await connectToDB();
 
     const validatedFields = interiorSchema.safeParse({
-      ...data, image: rawImage, products: products.split(', ')
+      ...data, image: rawImage, products: details.products.split(', ')
     });
 
     if(!validatedFields.success) {
@@ -100,7 +98,7 @@ export const updateInterior = async (prevState: any, formData: FormData) => {
     await Interior.findByIdAndUpdate(id, {
       ...data,
       image: imageUrl,
-      products: products ? products.split(', ') : [],
+      products: details.products ? details.products.split(', ') : [],
     });
     
     revalidatePath('/dashboard/interiors');

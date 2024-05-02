@@ -11,6 +11,7 @@ import TextField from '../ui/TextField';
 import SubmitButton from '../ui/SubmitButton';
 import { openNotification } from '../ui/Notification';
 import Loader from '../ui/Loader';
+import { NotificationType } from '@/lib/common.types';
 
 const MapInput = dynamic(() => import('../ui/MapInput'), {
   loading: () => <Loader />,
@@ -41,11 +42,12 @@ const ShopForm: React.FC<IShopForm> = async ({ shopToUpdate }) => {
 
   useEffect(() => {
     if(state && state.error) {
-      openNotification(state.message, state.error);
+      openNotification(state.message, state.error, NotificationType.Error);
     }
 
     if(!state.error && state.message) {
       ref.current?.reset();
+      openNotification('Done!', state.message);
       router.push('/dashboard/shops');
     }
   }, [state, formAction]);

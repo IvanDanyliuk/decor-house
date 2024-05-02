@@ -9,6 +9,7 @@ import TextField from '../ui/TextField';
 import SubmitButton from '../ui/SubmitButton';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
 import { openNotification } from '../ui/Notification';
+import { NotificationType } from '@/lib/common.types';
 
 
 interface IManufacturerForm {
@@ -31,11 +32,12 @@ const ManufacturerForm: React.FC<IManufacturerForm> = ({ manufacturerToUpdate })
   
   useEffect(() => {
     if(state && state.error) {
-      openNotification(state.message, state.error);
+      openNotification(state.message, state.error, NotificationType.Error);
     }
 
     if(!state.error && state.message) {
       ref.current?.reset();
+      openNotification('Done!', state.message);
       router.push('/dashboard/manufacturers');
     }
   }, [state, formAction]);

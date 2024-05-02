@@ -14,6 +14,7 @@ import { ICategory } from '@/lib/types/category.types';
 import TextareaField from '../ui/TextareaField';
 import SubmitButton from '../ui/SubmitButton';
 import { openNotification } from '../ui/Notification';
+import { NotificationType } from '@/lib/common.types';
 
 
 interface IPostForm {
@@ -40,11 +41,12 @@ const PostForm: React.FC<IPostForm> = ({ categories, postToUpdate }) => {
 
   useEffect(() => {
     if(state && state.error) {
-      openNotification(state.message, state.error);
+      openNotification(state.message, state.error, NotificationType.Error);
     }
 
     if(!state.error && state.message) {
       ref.current?.reset();
+      openNotification('Done!', state.message);
       router.push('/dashboard/posts');
     }
   }, [state, formAction]);

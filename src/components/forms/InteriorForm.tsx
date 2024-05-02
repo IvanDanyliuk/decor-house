@@ -17,6 +17,7 @@ import SubmitButton from '../ui/SubmitButton';
 import Select from '../ui/Select';
 import { removeFalsyObjectFields } from '@/utils/helpers';
 import { openNotification } from '../ui/Notification';
+import { NotificationType } from '@/lib/common.types';
 
 
 interface IInteriorForm {
@@ -38,8 +39,6 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
   const categoriesOptions = categories.map(category => ({ label: category.name, value: category._id! }));
 
   const router = useRouter();
-  const [state, formAction] = useFormState(action, initialState);
-  const ref = useRef<HTMLFormElement>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -47,6 +46,13 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [types, setTypes] = useState<{ label: string, value: string }[]>([]);
   const [selectedType, setSelectedType] = useState<string>('');
+
+  const [state, formAction] = useFormState(action.bind(null, {
+    products: selectedProductIds.join(', '),
+    interiorId: interiorToUpdate ? interiorToUpdate._id : null
+  }), initialState);
+
+  const ref = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     const category = categories.find(item => item._id === selectedCategory);
@@ -74,7 +80,7 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
 
   useEffect(() => {
     if(state && state.error) {
-      openNotification(state.message, state.error);
+      openNotification(state.message, state.error, NotificationType.Error);
     }
 
     if(!state.error && state.message) {
@@ -84,17 +90,15 @@ const InteriorForm: React.FC<IInteriorForm> = ({ categories, interiorToUpdate })
       setSelectedCategory('');
       setTypes([]);
       setSelectedType('');
+      openNotification('Done!', state.message);
       router.push('/dashboard/interiors');
     }
   }, [state, formAction]);
 
   return (
     <form 
-      ref={ref} 
-      action={async (formData: FormData) => {
-        formData.append('products', selectedProductIds.join(', '));
-        await formAction(formData)
-      }} 
+      ref={ref}
+      action={formAction} 
       className='flex grow flex-1 flex-wrap justify-between content-between gap-3 md:gap-6'
     >
       <TextField 

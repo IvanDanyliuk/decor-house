@@ -15,6 +15,7 @@ import TextareaField from '../ui/TextareaField';
 import Select from '../ui/Select';
 import ColorPicker from '../ui/ColorPicker';
 import { openNotification } from '../ui/Notification';
+import { NotificationType } from '@/lib/common.types';
 
 
 interface IProductForm {
@@ -75,7 +76,6 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
   const router = useRouter();
 
   const [state, formAction] = useFormState(action, initialState);
-  const status = useFormStatus();
   const ref = useRef<HTMLFormElement>(null);
 
   const [selectedCategory, setSelectedCategory] = useState<string>(productToUpdate && typeof productToUpdate.category === 'string' ? productToUpdate.category : '');
@@ -93,7 +93,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
 
   useEffect(() => {
     if(state && state.error) {
-      openNotification(state.message, state.error);
+      openNotification(state.message, state.error, NotificationType.Error);
     }
 
     if(!state.error && state.message) {
@@ -101,6 +101,7 @@ const ProductForm: React.FC<IProductForm> = ({ categories, manufacturers, produc
       setTypes([]);
       setFeatures([]);
       setSelectedCategory('');
+      openNotification('Done!', state.message);
       router.push('/dashboard/products');
     }
   }, [state, formAction]);

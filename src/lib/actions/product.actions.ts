@@ -82,7 +82,7 @@ export const createProduct = async (prevState: any, formData: FormData) => {
       images: imageUrls.map(item => item.data?.url)
     });
 
-    revalidatePath('/dashboard/create-product');
+    revalidatePath('/dashboard/products');
 
     return {
       data: null,
