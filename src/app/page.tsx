@@ -10,7 +10,7 @@ import { getProducts } from '@/lib/queries/product.queries';
 
 
 export const metadata: Metadata = {
-  title: 'Decor House',
+  title: 'Welcome to Decor House',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

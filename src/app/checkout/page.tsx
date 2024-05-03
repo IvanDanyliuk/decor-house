@@ -5,7 +5,7 @@ import OrderDetails from '@/components/order/OrderDetails';
 
 
 export const metadata: Metadata = {
-  title: 'Checkout | Decor House',
+  title: 'Checkout',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

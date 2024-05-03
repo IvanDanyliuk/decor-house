@@ -1,5 +1,6 @@
 'use server';
 
+import { cache } from 'react';
 import mongoose from 'mongoose';
 import { connectToDB } from '../database';
 import Product from '../models/product.model';
@@ -90,7 +91,7 @@ export const getProducts = async ({
   } as any;
 };
 
-export const getProduct = async (id: string) => {
+export const getProduct = cache(async (id: string) => {
   await connectToDB();
 
   const isProductIdValid = mongoose.Types.ObjectId.isValid(id);
@@ -104,7 +105,7 @@ export const getProduct = async (id: string) => {
     null;
 
   return product as any;
-};
+});
 
 export const getProductsFilterData = async (category: string) => {
   await connectToDB();

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 
 export const metadata: Metadata = {
-  title: 'Legal Information | Decor House',
+  title: 'Legal Information',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

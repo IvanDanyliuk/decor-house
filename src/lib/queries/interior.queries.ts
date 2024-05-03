@@ -1,5 +1,6 @@
 'use server';
 
+import { cache } from 'react';
 import mongoose from 'mongoose';
 import { connectToDB } from '../database';
 import Interior from '../models/interior.model';
@@ -43,7 +44,7 @@ export const getInteriors = async ({
   } as any;
 };
 
-export const getInterior = async (id: string) => {
+export const getInterior = cache(async (id: string) => {
   await connectToDB();
 
   const isInteriorIdValid = mongoose.Types.ObjectId.isValid(id);
@@ -61,4 +62,4 @@ export const getInterior = async (id: string) => {
     error: null,
     message: '',
   } as any;
-};
+});

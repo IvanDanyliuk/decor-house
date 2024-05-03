@@ -5,7 +5,7 @@ import { ICategory } from '@/lib/types/category.types';
 
 
 export const metadata: Metadata = {
-  title: 'Blog | Decor House',
+  title: 'Blog',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

@@ -5,6 +5,18 @@ import { getPost } from '@/lib/queries/post.queries';
 import { formatDate } from '@/utils/helpers';
 
 
+export const generateMetadata = async ({ params }: { params: { id: string } }) => {
+  const id = params.id;
+  const post = await getPost(id);
+  return {
+    title: {
+      absolute: post.data.title
+    },
+    description: post.data.content
+  };
+};
+
+
 const Post = async ({ params }: { params: { id: string } }) => {
   const { data } = await getPost(params.id);
 

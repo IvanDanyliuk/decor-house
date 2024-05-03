@@ -6,6 +6,15 @@ import ProductDetails from '@/components/catalog/ProductDetails';
 import { notFound } from 'next/navigation';
 
 
+export const generateMetadata = async ({ params }: { params: { id: string } }) => {
+  const product = await getProduct(params.id);
+  return {
+    title: `${product.type} ${product.name}`,
+    description: product.description
+  }
+};
+
+
 const Product = async ({ params }: { params: { category: string, id: string } }) => {
   const { category, id } = params;
 

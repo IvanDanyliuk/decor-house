@@ -6,7 +6,7 @@ import { getCurrentUser } from '@/lib/queries/user.queries';
 
 
 export const metadata: Metadata = {
-  title: 'Shopping Cart | Decor House',
+  title: 'Shopping Cart',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

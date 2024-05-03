@@ -3,7 +3,7 @@ import PromotionsView from '@/components/promotions/PromotionsView';
 
 
 export const metadata: Metadata = {
-  title: 'Promotions | Decor House',
+  title: 'Promotions',
   description: 'Check out the current promotions in Decor House stores'
 }
 

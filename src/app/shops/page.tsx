@@ -10,7 +10,7 @@ const ShopsView = dynamic(() => import('../../components/shops/ShopsView'), {
 });
 
 export const metadata: Metadata = {
-  title: 'Shops | Decor House',
+  title: 'Shops',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

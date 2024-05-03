@@ -13,7 +13,10 @@ import BottomNavigationBar from '@/components/navigation/BottomNavigationBar';
 const montserrat = Montserrat({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Decor House',
+  title: {
+    default: 'Welcome',
+    template: '%s | Decor House'
+  },
   description: 'Decor House: your guide for making interiors',
 }
 

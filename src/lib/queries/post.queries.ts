@@ -1,9 +1,11 @@
 'use server';
 
+import { cache } from 'react';
 import mongoose from 'mongoose';
 import { connectToDB } from '../database';
 import Category from '../models/category.model';
 import Post from '../models/post.model';
+
 
 export const getPosts = async ({ 
   page, 
@@ -46,7 +48,7 @@ export const getPosts = async ({
   } as any;
 };
 
-export const getPost = async (id: string) => {
+export const getPost = cache(async (id: string) => {
   await connectToDB();
 
   const isPostIdValid = mongoose.Types.ObjectId.isValid(id);
@@ -64,4 +66,4 @@ export const getPost = async (id: string) => {
     error: null,
     message: '',
   } as any;
-};
+});

@@ -1,5 +1,6 @@
 'use server';
 
+import { cache } from 'react';
 import { connectToDB } from '../database';
 import Order from '../models/order.model';
 import Product from '../models/product.model';
@@ -62,7 +63,7 @@ export const getCurrentUser = async (email: string) => {
   return JSON.parse(JSON.stringify(user)) as any;
 };
 
-export const getProfileData = async (id: string) => {
+export const getProfileData = cache(async (id: string) => {
   await connectToDB();
 
   const user: any = await User
@@ -81,4 +82,4 @@ export const getProfileData = async (id: string) => {
     profile: user,
     orders
   } as any;
-};
+});

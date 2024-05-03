@@ -8,7 +8,7 @@ import AuthButton from '@/components/ui/AuthButton';
 
 
 export const metadata: Metadata = {
-  title: 'Login | Decor House',
+  title: 'Login',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

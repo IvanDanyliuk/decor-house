@@ -10,7 +10,7 @@ import { IManufacturer } from '@/lib/types/manufacturer.types';
 
 
 export const metadata: Metadata = {
-  title: 'Search | Decor House',
+  title: 'Search',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

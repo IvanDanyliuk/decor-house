@@ -1,5 +1,6 @@
 'use server';
 
+import { cache } from 'react';
 import mongoose from 'mongoose';
 import { connectToDB } from '../database';
 import Product from '../models/product.model';
@@ -54,7 +55,7 @@ export const getPromotions = async ({
   } as any;
 };
 
-export const getPromotion = async (id: string) => {
+export const getPromotion = cache(async (id: string) => {
   await connectToDB();
 
   const isPromotionIdValid = mongoose.Types.ObjectId.isValid(id);
@@ -72,4 +73,4 @@ export const getPromotion = async (id: string) => {
     error: null,
     message: '',
   } as any;
-};
+});

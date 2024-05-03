@@ -3,7 +3,7 @@ import RegisterForm from '@/components/forms/RegisterForm';
 
 
 export const metadata: Metadata = {
-  title: 'Register | Decor House',
+  title: 'Register',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

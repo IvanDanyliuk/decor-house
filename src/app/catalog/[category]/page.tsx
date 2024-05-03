@@ -10,6 +10,14 @@ import SelectedFilters from '@/components/catalog/ProductFilters/SelectedFilters
 import { productsSortItems } from '@/lib/constants';
 
 
+export const generateMetadata = ({ params }: { params: { category: string } }) => {
+  return {
+    title: params.category[0].toUpperCase() + params.category.slice(1),
+    description: `Explore all the available ${params.category} at Decor House`
+  }
+};
+
+
 const CategoryProducts = async ({ params }: { params: { category: string } }) => {
   const { category } = params;
 

@@ -6,7 +6,7 @@ import { splitArrayIntoChunks } from '@/utils/helpers';
 
 
 export const metadata: Metadata = {
-  title: 'Catalog | Decor House',
+  title: 'Catalog',
   description: 'Decor House is a company that sells high-quality furniture and accessories'
 }
 

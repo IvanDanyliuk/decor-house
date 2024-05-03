@@ -3,7 +3,7 @@ import InteriorsView from '@/components/interiors/InteriorsView';
 
 
 export const metadata: Metadata = {
-  title: 'Interiors | Decor House',
+  title: 'Interiors',
   description: 'Explore Interiors'
 }
 
