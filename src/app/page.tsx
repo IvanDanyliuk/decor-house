@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Demo from '@/components/homepage/Demo';
 import Hero from '@/components/homepage/Hero';
 import Interiors from '@/components/homepage/Interiors';
@@ -6,6 +7,12 @@ import StoreOverview from '@/components/homepage/StoreOverview';
 import Section from '@/components/ui/Section';
 import { getInteriors } from '@/lib/queries/interior.queries';
 import { getProducts } from '@/lib/queries/product.queries';
+
+
+export const metadata: Metadata = {
+  title: 'Decor House',
+  description: 'Decor House is a company that sells high-quality furniture and accessories'
+}
 
 
 export default async function Home() {

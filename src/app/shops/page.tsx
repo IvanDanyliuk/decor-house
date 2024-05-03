@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Loader from '@/components/ui/Loader';
 import { getLocations } from '@/lib/queries/shop.queries';
@@ -7,6 +8,11 @@ const ShopsView = dynamic(() => import('../../components/shops/ShopsView'), {
   loading: () => <Loader />,
   ssr: false,
 });
+
+export const metadata: Metadata = {
+  title: 'Shops | Decor House',
+  description: 'Decor House is a company that sells high-quality furniture and accessories'
+}
 
 
 const Shops = async () => {

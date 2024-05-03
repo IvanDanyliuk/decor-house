@@ -1,4 +1,11 @@
+import type { Metadata } from 'next';
 import InteriorsView from '@/components/interiors/InteriorsView';
+
+
+export const metadata: Metadata = {
+  title: 'Interiors | Decor House',
+  description: 'Explore Interiors'
+}
 
 
 const Interiors = () => {

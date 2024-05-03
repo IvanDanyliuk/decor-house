@@ -1,7 +1,14 @@
+import type { Metadata } from 'next';
 import BlogDetails from '@/components/blog/BlogDetails';
 import { getCategories } from '@/lib/queries/category.queries';
 import { ICategory } from '@/lib/types/category.types';
-import React from 'react'
+
+
+export const metadata: Metadata = {
+  title: 'Blog | Decor House',
+  description: 'Decor House is a company that sells high-quality furniture and accessories'
+}
+
 
 const Blog = async () => {
   const categories = await getCategories({});

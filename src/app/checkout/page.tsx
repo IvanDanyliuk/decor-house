@@ -1,6 +1,13 @@
+import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { getCurrentUser } from '@/lib/queries/user.queries';
 import OrderDetails from '@/components/order/OrderDetails';
+
+
+export const metadata: Metadata = {
+  title: 'Checkout | Decor House',
+  description: 'Decor House is a company that sells high-quality furniture and accessories'
+}
 
 
 const Order = async () => {

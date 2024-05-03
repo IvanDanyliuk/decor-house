@@ -1,5 +1,12 @@
 import Image from 'next/image';
-import React from 'react'
+import type { Metadata } from 'next';
+
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Decor House',
+  description: 'Decor House is a company that sells high-quality furniture and accessories'
+}
+
 
 const PrivacyPolicy = () => {
   return (

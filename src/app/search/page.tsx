@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Divider } from 'antd';
 import ResetFiltersButton from '@/components/catalog/ProductFilters/ResetFiltersButton';
 import SelectedFilters from '@/components/catalog/ProductFilters/SelectedFilters';
@@ -6,6 +7,12 @@ import SearchFilters from '@/components/catalog/search/SearchFilters';
 import { getSearchFilterData } from '@/lib/queries/product.queries';
 import { ICategory } from '@/lib/types/category.types';
 import { IManufacturer } from '@/lib/types/manufacturer.types';
+
+
+export const metadata: Metadata = {
+  title: 'Search | Decor House',
+  description: 'Decor House is a company that sells high-quality furniture and accessories'
+}
 
 
 const Search = async ({ params, searchParams }: any) => {

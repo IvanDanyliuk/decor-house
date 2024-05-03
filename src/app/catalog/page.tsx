@@ -1,8 +1,14 @@
+import type { Metadata } from 'next';
 import CategoriesListLayout from '@/components/catalog/CategoriesListLayout';
 import { getCategories } from '@/lib/queries/category.queries';
 import { ICategory, IPremiumCategory } from '@/lib/types/category.types';
 import { splitArrayIntoChunks } from '@/utils/helpers';
 
+
+export const metadata: Metadata = {
+  title: 'Catalog | Decor House',
+  description: 'Decor House is a company that sells high-quality furniture and accessories'
+}
 
 const chunkSize = 5;
 

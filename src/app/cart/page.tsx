@@ -1,7 +1,14 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import CartDetails from '@/components/cart/CartDetails';
 import { getCurrentUser } from '@/lib/queries/user.queries';
+
+
+export const metadata: Metadata = {
+  title: 'Shopping Cart | Decor House',
+  description: 'Decor House is a company that sells high-quality furniture and accessories'
+}
 
 
 const Cart = async () => {

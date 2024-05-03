@@ -1,9 +1,16 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { Divider } from 'antd';
 import LoginForm from '@/components/forms/LoginForm';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/next-auth';
 import AuthButton from '@/components/ui/AuthButton';
+
+
+export const metadata: Metadata = {
+  title: 'Login | Decor House',
+  description: 'Decor House is a company that sells high-quality furniture and accessories'
+}
 
 
 const Login: React.FC = async () => {
