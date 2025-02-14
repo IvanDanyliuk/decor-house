@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Furniture E-Commerce Platform
 
-## Getting Started
+## Project Overview:
+This project is a modern furniture e-commerce platform built using Next.js and MongoDB. The application provides a seamless shopping experience with advanced features for customers and administrators.
 
-First, run the development server:
+## Key Features:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. User Authentication & Registration: 
+- Secure user authentication using Next-Auth.
+- Registration and login functionality.
+- User profile management.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Product Catalog
+- A well-structured catalog with various furniture items.
+- Sorting and filtering options based on categories, price, and date of addition.
+- Detailed product pages with images, descriptions, and specifications.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Order Management
+- Users can add products to the cart and proceed to checkout.
+- Order placement and tracking functionality.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 4. Blog Section
+- Informative articles related to furniture trends, design ideas, and home decor.
+- Categorized blog posts with a user-friendly reading experience.
 
-## Learn More
+### 5. Interior Design Showcase
+- A collection of typical interior design inspirations.
+- Visual representation of how the furniture fits into different settings.
 
-To learn more about Next.js, take a look at the following resources:
+### 6. Admin Panel
+- Product Management: Add, edit, or remove products from the catalog.
+- Order Management: Track and process customer orders efficiently.
+- Sales Analytics: Insights into revenue, popular products, and customer behavior.
+- Entity Management: Manage categories, tags, and other key aspects of the platform.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technologies Used:
+- Frontend: Next.js (React framework), Tailwind CSS for styling, Framer Motion for animations.
+- Backend: Server Actions, MongoDB with Mongoose, Zod for form validations.
+- Authentication: Next-Auth.
+- UI Components: AntDesign.
+- Data Visualization: Chart.js for analytics.
+- Maps: Leaflet for adding a map with stores
+- Uploading Files: Uploadthing for uploading files of user photo or adding photos of products
+- Deployment: Vercel for hosting.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## How to run the project
+In you terminal, navigate to the project directory
+Run `npm install` to install dependencies
+Run `npm run dev` to start the application
+Open your browser in [http://localhost:3000]
 
-## Deploy on Vercel
+## Sign In Data
+To explore the project features you can use the following data to sign in as the admin role
+Email: j.doe@gmail.com
+Password: 123456
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## This project is create for learning purpose only
