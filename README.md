@@ -3,7 +3,7 @@
 ## Project Overview:
 This project is a modern furniture e-commerce platform built using Next.js and MongoDB. The application provides a seamless shopping experience with advanced features for customers and administrators.
 
-![decor-house-title](https://github.com/user-attachments/assets/e4bb9da0-06e7-43e8-a960-97b754c05e2d)
+![decor-house-main](https://github.com/user-attachments/assets/e67813c3-262b-4e9e-9e38-803a84faa007)
 
 ## Key Features:
 
