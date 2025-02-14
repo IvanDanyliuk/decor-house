@@ -40,11 +40,11 @@ This project is a modern furniture e-commerce platform built using Next.js and M
 - UI Components: AntDesign.
 - Data Visualization: Chart.js for analytics.
 - Maps: Leaflet for adding a map with stores
-- Uploading Files: Uploadthing for uploading files of user photo or adding photos of products
+- Uploading Files: Uploadthing for uploading files of user photos or adding images of products
 - Deployment: Vercel for hosting.
 
 ## How to run the project
-In you terminal, navigate to the project directory
+In your terminal, navigate to the project directory
 Run `npm install` to install dependencies
 Run `npm run dev` to start the application
 Open your browser in ()[http://localhost:3000]
@@ -54,4 +54,4 @@ To explore the project features you can use the following data to sign in as the
 Email: j.doe@gmail.com
 Password: 123456
 
-## This project is create for learning purpose only
+## This project is created for learning purposes only
