@@ -49,7 +49,7 @@ This project is a modern furniture e-commerce platform built using Next.js and M
 - In your terminal, navigate to the project directory
 - Run `npm install` to install dependencies
 - Run `npm run dev` to start the application
-- Open your browser in ()[http://localhost:3000]
+- Open your browser in [](http://localhost:3000)
 
 ## Sign In Data
 To explore the project features you can use the following data to sign in as the admin role:
