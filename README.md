@@ -46,14 +46,14 @@ This project is a modern furniture e-commerce platform built using Next.js and M
 - Deployment: Vercel for hosting.
 
 ## How to run the project
-In your terminal, navigate to the project directory
-Run `npm install` to install dependencies
-Run `npm run dev` to start the application
-Open your browser in ()[http://localhost:3000]
+- In your terminal, navigate to the project directory
+- Run `npm install` to install dependencies
+- Run `npm run dev` to start the application
+- Open your browser in ()[http://localhost:3000]
 
 ## Sign In Data
-To explore the project features you can use the following data to sign in as the admin role
-Email: j.doe@gmail.com
-Password: 123456
+To explore the project features you can use the following data to sign in as the admin role:
+- Email: j.doe@gmail.com
+- Password: 123456
 
 ## This project is created for learning purposes only
