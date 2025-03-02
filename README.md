@@ -36,7 +36,7 @@ This project is a modern furniture e-commerce platform built using Next.js and M
 - Entity Management: Manage categories, tags, and other key aspects of the platform.
 
 ## Technologies Used:
-- Frontend: Next.js (React framework), Tailwind CSS for styling, Framer Motion for animations.
+- Frontend: Next.js, Tailwind CSS for styling, Framer Motion for animations.
 - Backend: Server Actions, MongoDB with Mongoose, Zod for form validations.
 - Authentication: Next-Auth.
 - UI Components: AntDesign.
